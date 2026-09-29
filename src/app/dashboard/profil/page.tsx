@@ -138,25 +138,27 @@ export default async function ProfilPage({
 
         <div className="mt-6 rounded-2xl border border-summit-200 bg-summit-50 p-5">
           <p className="text-xs font-semibold uppercase tracking-widest text-summit-600">
-            Offre actuelle
+            Abonnement
           </p>
           <p className="mt-1 font-display text-2xl text-trail-900">
             {SUBSCRIPTION_LABELS[profile.subscription_tier]}
           </p>
           <div className="mt-2 flex flex-wrap items-center gap-4">
-            <Link
-              href="/dashboard/abonnement"
-              className="text-sm font-semibold text-summit-600 hover:underline"
-            >
-              {hasStripeAccount ? "Changer d'offre" : "Passer Premium"} →
-            </Link>
+            {!hasStripeAccount && (
+              <Link
+                href="/bienvenue/paywall"
+                className="text-sm font-semibold text-summit-600 hover:underline"
+              >
+                Devenir Le MUL →
+              </Link>
+            )}
             {hasStripeAccount && (
               <form action={createPortalSessionAction}>
                 <button
                   type="submit"
                   className="text-sm font-semibold text-trail-600 hover:underline"
                 >
-                  Gérer mon abonnement (facturation, résiliation)
+                  Gérer mon abonnement (facturation, formule, résiliation)
                 </button>
               </form>
             )}

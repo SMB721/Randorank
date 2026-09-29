@@ -528,7 +528,7 @@ export default async function Home() {
         )}
 
         {/* Offres — teaser seulement : le tableau de prix complet est dans le
-            dashboard, réservé aux comptes créés (voir /dashboard/abonnement). */}
+            dashboard, réservé aux comptes créés (voir /bienvenue/paywall). */}
         <section id="offres" className="bg-white px-6 py-24">
           <div className="mx-auto max-w-2xl text-center">
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-summit-600">
