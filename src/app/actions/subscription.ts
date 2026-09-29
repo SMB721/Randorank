@@ -4,8 +4,6 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { stripe, PRICE_IDS, type BillingPeriod, type PaidTier } from "@/lib/stripe";
 
-const TRIAL_PERIOD_DAYS = 5;
-
 export async function createCheckoutSessionAction(tier: PaidTier, period: BillingPeriod) {
   const supabase = await createClient();
   const {
@@ -13,12 +11,12 @@ export async function createCheckoutSessionAction(tier: PaidTier, period: Billin
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect(`/auth?mode=login&redirect=/dashboard/profil`);
+    redirect("/auth?mode=login");
   }
 
   const priceId = PRICE_IDS[tier][period];
   if (!priceId) {
-    redirect("/dashboard/profil?checkout=error");
+    redirect("/bienvenue/paywall?checkout=error");
   }
 
   const { data: profile } = await supabase
@@ -51,20 +49,19 @@ export async function createCheckoutSessionAction(tier: PaidTier, period: Billin
       customer_email: profile?.stripe_customer_id ? undefined : (user!.email ?? undefined),
       client_reference_id: user!.id,
       subscription_data: {
-        trial_period_days: TRIAL_PERIOD_DAYS,
         metadata: { supabase_user_id: user!.id },
       },
       metadata: { supabase_user_id: user!.id },
-      success_url: `${siteUrl}/dashboard/profil?checkout=success`,
-      cancel_url: `${siteUrl}/dashboard/profil?checkout=canceled`,
+      success_url: `${siteUrl}/bienvenue/paywall?checkout=success`,
+      cancel_url: `${siteUrl}/bienvenue/paywall?checkout=canceled`,
     });
     checkoutUrl = session.url;
   } catch {
-    redirect("/dashboard/profil?checkout=error");
+    redirect("/bienvenue/paywall?checkout=error");
   }
 
   if (!checkoutUrl) {
-    redirect("/dashboard/profil?checkout=error");
+    redirect("/bienvenue/paywall?checkout=error");
   }
 
   redirect(checkoutUrl);

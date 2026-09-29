@@ -63,10 +63,9 @@ export default function MentionsLegalesPage() {
 
         <h3 className="text-lg font-semibold text-trail-900">Hébergement</h3>
         <p className="text-trail-700">
-          Le site est hébergé par Vercel Inc. (frontend) et par [Railway / Render — à
-          confirmer selon le choix retenu] (backend et base de données). Les mentions
-          légales complètes de chaque hébergeur sont disponibles sur leurs sites
-          respectifs.
+          Le site est hébergé par Vercel Inc. (frontend) et par Supabase Inc.
+          (base de données et authentification). Les mentions légales complètes de
+          chaque hébergeur sont disponibles sur leurs sites respectifs.
         </p>
 
         <h3 className="text-lg font-semibold text-trail-900">Propriété intellectuelle</h3>
@@ -74,8 +73,8 @@ export default function MentionsLegalesPage() {
           La marque RandoRank, son logo, sa charte graphique et l&apos;ensemble des
           contenus du site (textes, visuels, badges, noms d&apos;offres) sont protégés au
           titre de la propriété intellectuelle. Toute reproduction non autorisée est
-          interdite. Les traces GPX, photos et contenus que tu publies restent ta
-          propriété ; tu accordes à RandoRank une licence limitée pour les afficher dans
+          interdite. Les traces GPX, photos et contenus que vous publiez restent votre
+          propriété ; vous accordez à RandoRank une licence limitée pour les afficher dans
           le cadre du service (classements, fiches de rando, partage).
         </p>
       </section>
@@ -97,8 +96,7 @@ export default function MentionsLegalesPage() {
         <h3 className="text-lg font-semibold text-trail-900">Compte et offres</h3>
         <p className="text-trail-700">
           L&apos;accès à certaines fonctionnalités nécessite la création d&apos;un compte.
-          RandoRank propose une offre gratuite (Freemium) et des offres payantes
-          (Premium, VIP) par abonnement mensuel ou annuel, résiliables à tout moment
+          RandoRank est accessible sur abonnement Premium, mensuel ou annuel, résiliables à tout moment
           depuis l&apos;espace compte ; la résiliation prend effet à la fin de la période
           déjà payée. Le détail des offres et de leurs tarifs est disponible sur la page
           d&apos;accueil.
@@ -148,14 +146,20 @@ export default function MentionsLegalesPage() {
         <ul className="list-inside list-disc space-y-1 text-trail-700">
           <li>Données d&apos;identification : email, nom d&apos;utilisateur, avatar, région.</li>
           <li>
-            Données de localisation issues de tes traces GPX ou de l&apos;enregistrement de
-            tes sorties — des données sensibles, car elles peuvent révéler ton lieu de
-            domicile ou tes habitudes.
+            Date de naissance (facultative), utilisée uniquement pour calculer votre âge et
+            afficher un message le jour de votre anniversaire — jamais affichée publiquement
+            ni sur le classement.
           </li>
-          <li>Photos géolocalisées rattachées à tes randos.</li>
           <li>
-            Informations de santé que tu choisis de renseigner (facultatif), utilisées
-            uniquement pour adapter la génération d&apos;itinéraire à ton niveau.
+            Données de localisation issues de vos traces GPX ou de l&apos;enregistrement de
+            vos sorties — des données sensibles, car elles peuvent révéler votre lieu de
+            domicile ou vos habitudes.
+          </li>
+          <li>Photos géolocalisées rattachées à vos randos.</li>
+          <li>
+            Informations de santé que vous choisissez de renseigner (facultatif),
+            utilisées uniquement pour adapter la génération d&apos;itinéraire à votre
+            niveau.
           </li>
           <li>Données d&apos;abonnement et de facturation, traitées par Stripe.</li>
         </ul>
@@ -163,22 +167,23 @@ export default function MentionsLegalesPage() {
         <h3 className="text-lg font-semibold text-trail-900">Finalités et base légale</h3>
         <p className="text-trail-700">
           Ces données sont utilisées pour fournir le service (suivi, classement, génération
-          d&apos;itinéraire, partage), sur la base de l&apos;exécution du contrat qui te lie à
-          RandoRank. Le traitement des données de localisation et de santé repose sur ton
-          consentement explicite, recueilli séparément et retirable à tout moment.
+          d&apos;itinéraire, partage), sur la base de l&apos;exécution du contrat qui vous
+          lie à RandoRank. Le traitement des données de localisation et de santé repose
+          sur votre consentement explicite, recueilli séparément et retirable à tout
+          moment.
         </p>
 
         <h3 className="text-lg font-semibold text-trail-900">Confidentialité et floutage</h3>
         <p className="text-trail-700">
-          Tes statistiques détaillées sont privées. Seuls les kilomètres validés
-          apparaissent dans le classement public. Tu peux activer un floutage des points
-          de départ et d&apos;arrivée de tes traces pour ne pas exposer ton domicile sur les
-          cartes ou fiches partagées.
+          Vos statistiques détaillées sont privées. Seuls les kilomètres validés
+          apparaissent dans le classement public. Vous pouvez activer un floutage des
+          points de départ et d&apos;arrivée de vos traces pour ne pas exposer votre
+          domicile sur les cartes ou fiches partagées.
         </p>
 
         <h3 className="text-lg font-semibold text-trail-900">Destinataires des données</h3>
         <p className="text-trail-700">
-          Tes données sont hébergées et traitées par nos sous-traitants techniques :
+          Vos données sont hébergées et traitées par nos sous-traitants techniques :
           Supabase (authentification et base de données), Stripe (paiement des
           abonnements), un service de stockage compatible S3 (photos), et les moteurs de
           routing utilisés pour la génération d&apos;itinéraire. Aucune donnée n&apos;est
@@ -187,18 +192,20 @@ export default function MentionsLegalesPage() {
 
         <h3 className="text-lg font-semibold text-trail-900">Durée de conservation</h3>
         <p className="text-trail-700">
-          Tes données sont conservées tant que ton compte est actif. En cas de suppression
-          de compte, tes données personnelles sont supprimées sous [délai à compléter],
-          sauf obligation légale de conservation plus longue.
+          Vos données sont conservées tant que votre compte est actif. En cas de
+          suppression de compte, vos données personnelles (profil, randos, photos,
+          badges) sont supprimées immédiatement et définitivement, sauf obligation
+          légale de conservation plus longue (ex. données de facturation Stripe).
         </p>
 
-        <h3 className="text-lg font-semibold text-trail-900">Tes droits</h3>
+        <h3 className="text-lg font-semibold text-trail-900">Vos droits</h3>
         <p className="text-trail-700">
-          Conformément au RGPD, tu disposes d&apos;un droit d&apos;accès, de rectification,
-          d&apos;export et de suppression de tes données, ainsi que du droit de retirer ton
-          consentement à tout moment. Tu peux exercer ces droits depuis les paramètres de
-          ton compte ou en écrivant à l&apos;adresse indiquée en section Contact. Tu peux
-          également introduire une réclamation auprès de la CNIL (cnil.fr).
+          Conformément au RGPD, vous disposez d&apos;un droit d&apos;accès, de
+          rectification, d&apos;export et de suppression de vos données, ainsi que du
+          droit de retirer votre consentement à tout moment. Vous pouvez exercer ces
+          droits depuis les paramètres de votre compte ou en écrivant à l&apos;adresse
+          indiquée en section Contact. Vous pouvez également introduire une réclamation
+          auprès de la CNIL (cnil.fr).
         </p>
       </section>
 
@@ -207,12 +214,12 @@ export default function MentionsLegalesPage() {
         <h2 className="text-2xl font-bold text-trail-900">4. Cookies</h2>
         <p className="text-trail-700">
           RandoRank utilise des cookies strictement nécessaires au fonctionnement du
-          service, notamment pour maintenir ta session connectée (authentification
+          service, notamment pour maintenir votre session connectée (authentification
           Supabase). Ces cookies ne nécessitent pas de consentement préalable.
         </p>
         <p className="text-trail-700">
           Si des cookies de mesure d&apos;audience ou de publicité venaient à être ajoutés,
-          un bandeau de consentement te permettrait de les accepter ou de les refuser
+          un bandeau de consentement vous permettrait de les accepter ou de les refuser
           avant tout dépôt, conformément à la réglementation en vigueur.
         </p>
       </section>
@@ -221,8 +228,8 @@ export default function MentionsLegalesPage() {
       <section id="contact" className="mt-12 scroll-mt-24 space-y-4">
         <h2 className="text-2xl font-bold text-trail-900">5. Contact</h2>
         <p className="text-trail-700">
-          Pour toute question relative à ces conditions ou à tes données personnelles,
-          contacte-nous à [adresse email à compléter].
+          Pour toute question relative à ces conditions ou à vos données personnelles,
+          contactez-nous à contact@randorank.com.
         </p>
       </section>
     </main>

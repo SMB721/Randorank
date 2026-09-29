@@ -67,15 +67,15 @@ create trigger on_profile_stats_updated_award_badges
   for each row execute function public.award_badges();
 
 insert into public.badges (code, name, description, icon, metric, threshold) values
-  ('first_hike', 'Premier Pas', 'Ta toute première rando enregistrée. Le début d''une obsession.', '🥾', 'hike_count', 1),
-  ('regular_10', 'Randonneur Régulier', '10 sorties au compteur. Tu commences à connaître tes sentiers par cœur.', '🔁', 'hike_count', 10),
-  ('unstoppable_30', 'Increvable', '30 randos. À ce stade, tes chaussures ont plus vécu que toi.', '🔥', 'hike_count', 30),
+  ('first_hike', 'Premier Pas', 'Votre toute première rando enregistrée. Le début d''une obsession.', '🥾', 'hike_count', 1),
+  ('regular_10', 'Randonneur Régulier', '10 sorties au compteur. Vous commencez à connaître vos sentiers par cœur.', '🔁', 'hike_count', 10),
+  ('unstoppable_30', 'Increvable', '30 randos. À ce stade, vos chaussures ont plus vécu que vous.', '🔥', 'hike_count', 30),
   ('distance_50', 'Les Mollets Chauffés', '50 km cumulés. Le corps commence à comprendre ce qu''on lui demande.', '🏃', 'total_distance_km', 50),
   ('distance_200', 'Marathonien des Sentiers', '200 km parcourus. Largement de quoi traverser un département à pied.', '🏅', 'total_distance_km', 200),
-  ('distance_500', 'Traceur d''Horizon', '500 km cumulés. La carte commence à manquer de place pour tes traces.', '🧭', 'total_distance_km', 500),
-  ('elevation_1000', 'Grimpeur du Dimanche', '1000 m de dénivelé cumulé. Le début de la fin pour tes mollets.', '⛰️', 'total_elevation_m', 1000),
+  ('distance_500', 'Traceur d''Horizon', '500 km cumulés. La carte commence à manquer de place pour vos traces.', '🧭', 'total_distance_km', 500),
+  ('elevation_1000', 'Grimpeur du Dimanche', '1000 m de dénivelé cumulé. Le début de la fin pour vos mollets.', '⛰️', 'total_elevation_m', 1000),
   ('elevation_5000', 'Chasseur de Sommets', '5000 m de D+ cumulés. Presque l''Everest depuis le camp de base.', '🏔️', 'total_elevation_m', 5000),
   ('elevation_10000', 'Roi des Cimes', '10 000 m de D+ cumulés. On ne discute plus, on salue.', '👑', 'total_elevation_m', 10000),
-  ('level_amateur', 'Passage Amateur', 'Tu as quitté le rang des débutants. Retour en arrière impossible.', '🎖️', 'user_level', 1),
+  ('level_amateur', 'Passage Amateur', 'Vous avez quitté le rang des débutants. Retour en arrière impossible.', '🎖️', 'user_level', 1),
   ('level_avance', 'Élite du Sentier', 'Niveau avancé atteint. La référence de la communauté RandoRank.', '🥇', 'user_level', 2)
 on conflict (code) do nothing;

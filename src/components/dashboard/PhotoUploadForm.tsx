@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { uploadPhotosAction } from "@/app/dashboard/randos/[id]/photo-actions";
+import { uploadPhotosAction } from "@/app/dashboard/(premium)/randos/[id]/photo-actions";
 
 export default function PhotoUploadForm({ hikeId }: { hikeId: string }) {
   const router = useRouter();

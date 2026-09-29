@@ -9,19 +9,19 @@ type FaqItem = {
 
 const faqItems: FaqItem[] = [
   {
-    question: "RandoRank est-il gratuit ?",
+    question: "RandoRank est-il payant ?",
     answer:
-      "Oui : l'offre Freemium te permet de créer ton profil et de suivre tes stats de base gratuitement, sans limite de temps, avec 1 rando enregistrée ou importée par semaine. Les offres Premium et VIP débloquent les randos illimitées, la génération d'itinéraire, les statistiques avancées et des défis exclusifs — détail dans la section Offres ci-dessus.",
+      "Oui : RandoRank fonctionne uniquement sur abonnement Premium (mensuel ou annuel, résiliable à tout moment). Vous avez accès à tout : randos et tracés illimités, photos, classement national et régional, badges — détail des tarifs affiché à la création de votre profil.",
   },
   {
     question: "Comment fonctionne la génération d'itinéraire ?",
     answer:
-      "Tu indiques la distance que tu veux réaliser (et éventuellement un point de départ ou un dénivelé max). RandoRank te propose un parcours réellement praticable, puis affine la proposition selon ton niveau et les infos de santé que tu renseignes dans ton profil, pour te suggérer un tracé adapté plutôt qu'un simple itinéraire générique.",
+      "Vous indiquez la distance que vous voulez réaliser (et éventuellement un point de départ ou un dénivelé max). RandoRank vous propose un parcours réellement praticable, puis affine la proposition selon votre niveau et les infos de santé que vous renseignez dans votre profil, pour vous suggérer un tracé adapté plutôt qu'un simple itinéraire générique.",
   },
   {
     question: "Est-ce que mes statistiques sont publiques ?",
     answer:
-      "Tes statistiques détaillées restent privées et te servent avant tout à analyser ta propre progression. Seuls les kilomètres validés apparaissent dans le classement public, pour comparer ta progression à celle des autres randonneurs sans exposer le détail de tes sorties.",
+      "Vos statistiques détaillées restent privées et vous servent avant tout à analyser votre propre progression. Seuls les kilomètres validés apparaissent dans le classement public, pour comparer votre progression à celle des autres randonneurs sans exposer le détail de vos sorties.",
   },
   {
     question: "Comment les kilomètres sont-ils validés ?",

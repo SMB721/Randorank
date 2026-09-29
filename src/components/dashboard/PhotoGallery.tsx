@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import Image from "next/image";
-import { deletePhotoAction } from "@/app/dashboard/randos/[id]/photo-actions";
+import { deletePhotoAction } from "@/app/dashboard/(premium)/randos/[id]/photo-actions";
 
 export type GalleryPhoto = {
   id: string;

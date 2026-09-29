@@ -4,6 +4,7 @@ import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Polyline, CircleMarker } from "react-leaflet";
 import type { LatLngBoundsLiteral, LatLngExpression } from "leaflet";
 import { useColorScheme } from "@/hooks/useColorScheme";
+import { blurEndpoints } from "@/lib/geoPrivacy";
 
 const TILE_URLS = {
   light:
@@ -13,17 +14,25 @@ const TILE_URLS = {
 
 export default function HikeMap({
   coordinates,
+  blurred = false,
 }: {
   // GeoJSON order: [lon, lat] — Leaflet wants [lat, lon].
   coordinates: [number, number][];
+  // When true, trims the start/end of the track so the exact departure and
+  // arrival points (often home) are never rendered — see src/lib/geoPrivacy.
+  blurred?: boolean;
 }) {
   const scheme = useColorScheme();
-  const positions: LatLngExpression[] = coordinates.map(([lon, lat]) => [lat, lon]);
+  const displayCoordinates = blurred ? blurEndpoints(coordinates) : coordinates;
+  const positions: LatLngExpression[] = displayCoordinates.map(([lon, lat]) => [lat, lon]);
   const start = positions[0];
   const end = positions[positions.length - 1];
 
-  const lats = coordinates.map(([, lat]) => lat);
-  const lons = coordinates.map(([lon]) => lon);
+  // Bounds are derived from the same (possibly trimmed) points as the
+  // polyline — otherwise the map would still zoom/pan to reveal roughly
+  // where the hidden endpoint sits, defeating the point of blurring it.
+  const lats = displayCoordinates.map(([, lat]) => lat);
+  const lons = displayCoordinates.map(([lon]) => lon);
   const bounds: LatLngBoundsLiteral = [
     [Math.min(...lats), Math.min(...lons)],
     [Math.max(...lats), Math.max(...lons)],

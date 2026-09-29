@@ -6,6 +6,7 @@ export type Profile = {
   username: string | null;
   avatar_url: string | null;
   region: string | null;
+  birth_date: string | null;
   user_level: UserLevel;
   total_distance_km: number;
   total_elevation_m: number;
@@ -13,6 +14,20 @@ export type Profile = {
   subscription_tier: SubscriptionTier;
   subscription_status: string;
   stripe_customer_id: string | null;
+  install_prompt_seen: boolean;
+  free_route_used: boolean;
+  first_name: string | null;
+  last_name: string | null;
+  declared_level: string | null;
+  hiking_experience: string | null;
+  hikes_per_month: string | null;
+  usual_area: string | null;
+  goal: string | null;
+  typical_distance: string | null;
+  gear: string | null;
+  referral_source: string | null;
+  onboarding_completed_at: string | null;
+  blur_endpoints: boolean;
   created_at: string;
   updated_at: string;
 };
@@ -130,6 +145,18 @@ export type ChallengeProgressRow = {
   rank: number;
 };
 
+export type CommunityStats = {
+  total_km: number;
+  total_elevation_m: number;
+  total_hikes: number;
+  total_hikers: number;
+};
+
+export type CommunityWeeklyKm = {
+  week_start: string;
+  km: number;
+};
+
 export type Spot = {
   id: string;
   name: string;
@@ -153,6 +180,9 @@ export const FRENCH_REGIONS = [
   "Occitanie",
   "Pays de la Loire",
   "Provence-Alpes-Côte d'Azur",
+  "Belgique",
+  "Luxembourg",
+  "Suisse",
   "Autre / étranger",
 ] as const;
 
@@ -179,7 +209,7 @@ export const NEXT_LEVEL: Record<UserLevel, UserLevel | null> = {
 };
 
 export const SUBSCRIPTION_LABELS: Record<SubscriptionTier, string> = {
-  freemium: "Le Monchu · Freemium",
+  freemium: "Sans abonnement",
   premium: "Le MUL · Premium",
   vip: "Le Thru-Hiker · VIP",
 };

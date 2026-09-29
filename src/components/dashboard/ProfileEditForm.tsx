@@ -3,7 +3,14 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { computeAge } from "@/lib/birthday";
 import { FRENCH_REGIONS, type Profile } from "@/lib/supabase/types";
+
+function isoDateYearsAgo(years: number): string {
+  const d = new Date();
+  d.setFullYear(d.getFullYear() - years);
+  return d.toISOString().slice(0, 10);
+}
 
 export default function ProfileEditForm({ profile }: { profile: Profile }) {
   const router = useRouter();
@@ -11,6 +18,7 @@ export default function ProfileEditForm({ profile }: { profile: Profile }) {
 
   const [username, setUsername] = useState(profile.username ?? "");
   const [region, setRegion] = useState(profile.region ?? "");
+  const [birthDate, setBirthDate] = useState(profile.birth_date ?? "");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
@@ -26,6 +34,7 @@ export default function ProfileEditForm({ profile }: { profile: Profile }) {
       .update({
         username: username.trim() || null,
         region: region || null,
+        birth_date: birthDate || null,
       })
       .eq("id", profile.id);
 
@@ -34,7 +43,7 @@ export default function ProfileEditForm({ profile }: { profile: Profile }) {
     if (error) {
       setError(
         error.code === "23505"
-          ? "Ce pseudo est déjà pris, essaie-en un autre."
+          ? "Ce pseudo est déjà pris, essayez-en un autre."
           : error.message
       );
       return;
@@ -56,7 +65,7 @@ export default function ProfileEditForm({ profile }: { profile: Profile }) {
           maxLength={30}
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          placeholder="Ton pseudo sur le classement"
+          placeholder="Votre pseudo sur le classement"
           className="w-full rounded-xl border border-trail-200 px-4 py-2.5 text-sm outline-none focus:border-summit-400 focus:ring-2 focus:ring-summit-100"
         />
       </div>
@@ -78,6 +87,27 @@ export default function ProfileEditForm({ profile }: { profile: Profile }) {
             </option>
           ))}
         </select>
+      </div>
+
+      <div className="space-y-1.5">
+        <label htmlFor="birth-date" className="text-sm font-medium text-trail-800">
+          Date de naissance{" "}
+          <span className="font-normal text-trail-400">(facultatif, jamais publique)</span>
+        </label>
+        <input
+          id="birth-date"
+          type="date"
+          value={birthDate}
+          onChange={(e) => setBirthDate(e.target.value)}
+          min={isoDateYearsAgo(120)}
+          max={isoDateYearsAgo(5)}
+          className="w-full rounded-xl border border-trail-200 px-4 py-2.5 text-sm outline-none focus:border-summit-400 focus:ring-2 focus:ring-summit-100"
+        />
+        {birthDate && (
+          <p className="text-xs text-trail-500">
+            {computeAge(birthDate)} ans — de quoi glaner un petit message le jour J 🎂
+          </p>
+        )}
       </div>
 
       {error && <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}

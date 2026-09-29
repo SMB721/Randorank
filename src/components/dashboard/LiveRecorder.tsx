@@ -3,10 +3,10 @@
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
 import { computeStats, haversineKm, type TrackPoint } from "@/lib/gpx";
 import { useWakeLock } from "@/hooks/useWakeLock";
 import { formatDuration } from "@/lib/format";
+import { saveLiveHikeAction } from "@/app/dashboard/(premium)/randos/live/actions";
 
 const LiveMap = dynamic(() => import("./LiveMap"), {
   ssr: false,
@@ -28,7 +28,6 @@ type Status = "idle" | "requesting" | "recording" | "finishing" | "error";
 
 export default function LiveRecorder() {
   const router = useRouter();
-  const supabase = createClient();
   const wakeLock = useWakeLock();
 
   const [status, setStatus] = useState<Status>("idle");
@@ -85,7 +84,7 @@ export default function LiveRecorder() {
     setGpsWarning(null);
 
     if (!("geolocation" in navigator)) {
-      setError("Ton navigateur ne supporte pas la géolocalisation.");
+      setError("Votre navigateur ne supporte pas la géolocalisation.");
       setStatus("error");
       return;
     }
@@ -132,7 +131,7 @@ export default function LiveRecorder() {
       (geoError) => {
         if (geoError.code === geoError.PERMISSION_DENIED) {
           setError(
-            "Accès à la position refusé. Autorise la géolocalisation dans les réglages de ton navigateur pour enregistrer ta rando."
+            "Accès à la position refusé. Autorisez la géolocalisation dans les réglages de votre navigateur pour enregistrer votre rando."
           );
           setStatus("error");
           stopWatching();
@@ -157,38 +156,35 @@ export default function LiveRecorder() {
 
     if (points.length < 2) {
       setError(
-        "Pas assez de points GPS enregistrés pour créer une rando — réessaie avec un meilleur signal."
+        "Pas assez de points GPS enregistrés pour créer une rando — réessayez avec un meilleur signal."
       );
       setStatus("error");
       return;
     }
 
     const stats = computeStats(points);
-    const coordinates = points.map((p) => [p.lon, p.lat]);
+    const coordinates: [number, number][] = points.map((p) => [p.lon, p.lat]);
     const name = `Randonnée du ${new Date().toLocaleDateString("fr-FR")}`;
 
-    const { data, error: rpcError } = await supabase
-      .rpc("create_hike", {
-        p_name: name,
-        p_source: "live_recording",
-        p_coordinates: coordinates,
-        p_distance_km: stats.distanceKm,
-        p_elevation_gain_m: stats.elevationGainM,
-        p_duration_seconds: stats.durationSeconds,
-        p_avg_speed_kmh: stats.avgSpeedKmh,
-        p_started_at: stats.startedAt,
-        p_is_valid: stats.isValid,
-        p_validation_notes: stats.validationNotes,
-      })
-      .single<{ id: string }>();
+    const result = await saveLiveHikeAction({
+      name,
+      coordinates,
+      distanceKm: stats.distanceKm,
+      elevationGainM: stats.elevationGainM,
+      durationSeconds: stats.durationSeconds,
+      avgSpeedKmh: stats.avgSpeedKmh,
+      startedAt: stats.startedAt,
+      isValid: stats.isValid,
+      validationNotes: stats.validationNotes,
+    });
 
-    if (rpcError || !data) {
-      setError(rpcError?.message ?? "Erreur lors de l'enregistrement de ta rando.");
+    if (!result.success) {
+      setError(result.error);
       setStatus("error");
       return;
     }
 
-    router.push(`/dashboard/randos/${data.id}`);
+    router.push(`/dashboard/randos/${result.id}`);
   }
 
   function handleRetry() {
@@ -201,9 +197,9 @@ export default function LiveRecorder() {
   return (
     <div className="space-y-4">
       <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-        Garde cet onglet ouvert et ton téléphone déverrouillé pendant toute la rando :
-        si tu changes d&apos;application ou verrouilles manuellement l&apos;écran,
-        l&apos;enregistrement s&apos;interrompt.
+        Gardez cet onglet ouvert et votre téléphone déverrouillé pendant toute la
+        rando : si vous changez d&apos;application ou verrouillez manuellement
+        l&apos;écran, l&apos;enregistrement s&apos;interrompt.
       </div>
 
       {status === "idle" && (
@@ -254,8 +250,8 @@ export default function LiveRecorder() {
           )}
           {!wakeLock.supported && (
             <p className="text-xs text-trail-500">
-              Ton navigateur ne supporte pas le maintien automatique de l&apos;écran
-              allumé — pense à désactiver la mise en veille manuellement.
+              Votre navigateur ne supporte pas le maintien automatique de l&apos;écran
+              allumé — pensez à désactiver la mise en veille manuellement.
             </p>
           )}
 

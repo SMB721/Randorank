@@ -51,15 +51,17 @@ export default function AuthForm() {
 
     try {
       if (mode === "signup") {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            emailRedirectTo: `${window.location.origin}/auth/callback`,
-          },
-        });
+        const { data, error } = await supabase.auth.signUp({ email, password });
         if (error) throw error;
-        setInfo("Compte créé ! Vérifie tes emails pour confirmer ton inscription. 🥾");
+        // With "Confirm email" disabled in Supabase, signUp returns a live
+        // session and the user goes straight in. No session means the
+        // dashboard setting is still on — fall back to asking for the email.
+        if (data.session) {
+          router.push("/bienvenue");
+          router.refresh();
+        } else {
+          setInfo("Compte créé ! Vérifiez vos emails pour confirmer votre inscription. 🥾");
+        }
       } else {
         const { error } = await supabase.auth.signInWithPassword({
           email,
@@ -76,10 +78,10 @@ export default function AuthForm() {
     }
   }
 
-  async function handleGoogleAuth() {
+  async function handleOAuth(provider: "google" | "facebook") {
     setError(null);
     const { error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
+      provider,
       options: {
         redirectTo: `${window.location.origin}/auth/callback`,
       },
@@ -91,12 +93,12 @@ export default function AuthForm() {
     <div className="mx-auto w-full max-w-md space-y-6 rounded-2xl border border-white/10 bg-trail-950/70 p-8 text-white shadow-2xl backdrop-blur-xl">
       <div className="space-y-1 text-center">
         <h1 className="font-display text-3xl tracking-wide">
-          {mode === "signup" ? "Crée ton compte." : "Content de te revoir 👋"}
+          {mode === "signup" ? "Créez votre compte." : "Content de vous revoir 👋"}
         </h1>
         <p className="text-sm text-white/60">
           {mode === "signup"
-            ? "Crée ton profil en 2 minutes."
-            : "Connecte-toi pour retrouver tes randos."}
+            ? "Créez votre profil en 2 minutes."
+            : "Connectez-vous pour retrouver vos randos."}
         </p>
       </div>
 
@@ -121,14 +123,24 @@ export default function AuthForm() {
         </button>
       </div>
 
-      <button
-        type="button"
-        onClick={handleGoogleAuth}
-        className="flex w-full items-center justify-center gap-3 rounded-xl border border-white/20 bg-white/5 py-2.5 text-sm font-semibold text-white transition hover:border-white/40 hover:bg-white/10"
-      >
-        <GoogleIcon />
-        Continuer avec Google
-      </button>
+      <div className="space-y-3">
+        <button
+          type="button"
+          onClick={() => handleOAuth("google")}
+          className="flex w-full items-center justify-center gap-3 rounded-xl border border-white/20 bg-white/5 py-2.5 text-sm font-semibold text-white transition hover:border-white/40 hover:bg-white/10"
+        >
+          <GoogleIcon />
+          Continuer avec Google
+        </button>
+        <button
+          type="button"
+          onClick={() => handleOAuth("facebook")}
+          className="flex w-full items-center justify-center gap-3 rounded-xl border border-white/20 bg-white/5 py-2.5 text-sm font-semibold text-white transition hover:border-white/40 hover:bg-white/10"
+        >
+          <FacebookIcon />
+          Continuer avec Facebook
+        </button>
+      </div>
 
       <div className="flex items-center gap-3">
         <div className="h-px flex-1 bg-white/10" />
@@ -147,7 +159,7 @@ export default function AuthForm() {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="toi@exemple.com"
+            placeholder="vous@exemple.com"
             className="w-full rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-white/30 outline-none focus:border-summit-400 focus:ring-2 focus:ring-summit-400/20"
           />
         </div>
@@ -221,7 +233,7 @@ export default function AuthForm() {
 
         {mode === "signup" && (
           <p className="text-xs text-white/40">
-            En continuant, tu acceptes nos{" "}
+            En continuant, vous acceptez nos{" "}
             <Link href="/mentions-legales#conditions" className="underline hover:text-white/70">
               Conditions d&apos;utilisation
             </Link>{" "}
@@ -267,6 +279,17 @@ function GoogleIcon() {
       <path
         fill="#EA4335"
         d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.7 1.29 6.62l3.98 3.09c.95-2.85 3.6-4.96 6.73-4.96z"
+      />
+    </svg>
+  );
+}
+
+function FacebookIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-5 w-5" aria-hidden="true">
+      <path
+        fill="#1877F2"
+        d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07C0 18.1 4.39 23.09 10.13 24v-8.44H7.08v-3.49h3.05V9.41c0-3.02 1.79-4.7 4.53-4.7 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.95.93-1.95 1.89v2.26h3.32l-.53 3.49h-2.79V24C19.61 23.09 24 18.1 24 12.07z"
       />
     </svg>
   );

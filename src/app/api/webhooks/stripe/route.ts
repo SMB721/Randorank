@@ -49,13 +49,19 @@ export async function POST(req: NextRequest) {
       const tier = priceId ? tierForPriceId(priceId) : null;
 
       if (tier) {
-        await supabase
-          .from("profiles")
-          .update({
-            subscription_tier: ACTIVE_STATUSES.includes(subscription.status) ? tier : "freemium",
-            subscription_status: subscription.status,
-          })
-          .eq("stripe_customer_id", customerId);
+        // Stripe doesn't guarantee event order: subscription.created can land
+        // before checkout.session.completed has stored stripe_customer_id, in
+        // which case matching on the customer alone updates zero rows and a
+        // user who just paid stays locked behind the paywall. The user id
+        // stamped on the subscription at checkout is always there, so match
+        // on it and (re)store the customer id in the same write.
+        const userId = subscription.metadata?.supabase_user_id;
+        const query = supabase.from("profiles").update({
+          stripe_customer_id: customerId,
+          subscription_tier: ACTIVE_STATUSES.includes(subscription.status) ? tier : "freemium",
+          subscription_status: subscription.status,
+        });
+        await (userId ? query.eq("id", userId) : query.eq("stripe_customer_id", customerId));
       }
       break;
     }

@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Bebas_Neue } from "next/font/google";
+import PwaServiceWorker from "@/components/PwaServiceWorker";
 import "./globals.css";
 
 const displayFont = Bebas_Neue({
@@ -45,6 +46,18 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  icons: {
+    apple: "/icons/icon-192.png",
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "RandoRank",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0f1a0c",
 };
 
 export default function RootLayout({
@@ -54,7 +67,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="fr" className={displayFont.variable} data-scroll-behavior="smooth">
-      <body>{children}</body>
+      <body>
+        <PwaServiceWorker />
+        {children}
+      </body>
     </html>
   );
 }

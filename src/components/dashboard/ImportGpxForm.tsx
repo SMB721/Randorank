@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { importGpxAction } from "@/app/dashboard/randos/actions";
+import { importGpxAction } from "@/app/dashboard/(premium)/randos/actions";
 
 export default function ImportGpxForm() {
   const router = useRouter();
@@ -54,13 +54,13 @@ export default function ImportGpxForm() {
       {error && <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
       {success && !warning && (
         <p className="rounded-lg bg-trail-50 px-3 py-2 text-sm text-trail-700">
-          Rando importée et comptabilisée dans tes stats ✓
+          Rando importée et comptabilisée dans vos stats ✓
         </p>
       )}
       {success && warning && (
         <p className="rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-800">
           Rando enregistrée, mais une anomalie a été détectée et elle n&apos;est pas
-          comptabilisée dans tes stats : {warning}
+          comptabilisée dans vos stats : {warning}
         </p>
       )}
 

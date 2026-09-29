@@ -10,17 +10,13 @@ import Stripe from "stripe";
 // auth error, which callers catch and turn into a friendly message.
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "sk_test_not_configured");
 
-export type PaidTier = "premium" | "vip";
+export type PaidTier = "premium";
 export type BillingPeriod = "monthly" | "yearly";
 
 export const PRICE_IDS: Record<PaidTier, Record<BillingPeriod, string | undefined>> = {
   premium: {
     monthly: process.env.STRIPE_PRICE_PREMIUM_MONTHLY,
     yearly: process.env.STRIPE_PRICE_PREMIUM_YEARLY,
-  },
-  vip: {
-    monthly: process.env.STRIPE_PRICE_VIP_MONTHLY,
-    yearly: process.env.STRIPE_PRICE_VIP_YEARLY,
   },
 };
 

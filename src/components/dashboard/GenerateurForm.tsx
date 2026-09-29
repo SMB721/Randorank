@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import HikeMapLoader from "@/components/dashboard/HikeMapLoader";
-import { generateRouteAction, saveRouteAction, type GeneratedRouteResult } from "@/app/dashboard/generateur/actions";
+import { generateRouteAction, saveRouteAction, type GeneratedRouteResult } from "@/app/dashboard/(premium)/generateur/actions";
 import { USER_LEVEL_LABELS, type UserLevel } from "@/lib/supabase/types";
 
 type GeoStatus = "idle" | "loading" | "ready" | "error";
@@ -100,8 +100,8 @@ export default function GenerateurForm() {
           )}
           {geoStatus === "error" && (
             <p className="text-sm text-red-600">
-              Localisation refusée ou indisponible — autorise l&apos;accès à ta position pour
-              générer un tracé.
+              Localisation refusée ou indisponible — autorisez l&apos;accès à votre
+              position pour générer un tracé.
             </p>
           )}
         </div>
@@ -195,6 +195,10 @@ export default function GenerateurForm() {
             </button>
           </div>
           {saveError && <p className="text-sm text-red-600">{saveError}</p>}
+          <p className="text-xs text-trail-400">
+            ⚠️ Vérifiez la météo et votre niveau avant de partir — cet itinéraire est
+            indicatif.
+          </p>
         </div>
       )}
     </div>

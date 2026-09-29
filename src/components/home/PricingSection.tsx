@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { createCheckoutSessionAction } from "@/app/actions/subscription";
 import type { PaidTier } from "@/lib/stripe";
+import { PREMIUM_PRICE } from "@/lib/pricing";
 
 type Period = "monthly" | "yearly";
 
@@ -16,65 +17,45 @@ type Tier = {
   paidTier?: PaidTier;
   highlight?: boolean;
   dark?: boolean;
+  quickStats?: { label: string; value: string }[];
   features: string[];
   cta: string;
 };
 
 const tiers: Tier[] = [
   {
-    name: "Freemium",
-    nickname: "Le Monchu",
-    tagline: "Le citadin suréquipé, mais un peu perdu.",
-    hook: "Pour découvrir RandoRank",
-    price: "free",
-    features: [
-      "Profil et badges de base",
-      "1 rando enregistrée ou importée par semaine",
-      "Historique avec carte du tracé",
-      "Statistiques de base (distance, D+, durée, vitesse)",
-      "Classement et défis de lancement",
-      "Jusqu'à 3 photos par rando",
-    ],
-    cta: "Commencer gratuitement",
-  },
-  {
     name: "Premium",
     nickname: "Le MUL",
     tagline: "L'obsédé de l'optimisation et de la performance.",
     hook: "🔓 Randos et génération de tracé ILLIMITÉES",
-    price: { monthly: 6.99, yearly: 59 },
+    price: PREMIUM_PRICE,
     paidTier: "premium",
     highlight: true,
+    quickStats: [
+      { label: "Randos", value: "Illimitées" },
+      { label: "Tracés", value: "Illimités" },
+      { label: "Photos", value: "Illimitées" },
+    ],
     features: [
-      "Tout Freemium, plus :",
-      "Randos illimitées (GPS direct et import)",
-      "Génération de tracé illimitée selon distance et niveau",
-      "Statistiques avancées et comparaisons",
-      "Photos illimitées + fiche rando complète",
-      "Visuel de partage HD personnalisable",
-      "Badges et défis Premium exclusifs",
+      "Enregistrement GPS en direct et import GPX",
+      "Fiche de partage automatique",
+      "Randos, tracés et photos illimités",
+      "Historique complet",
+      "Classement national et régional en entier",
+      "Badge « Le MUL » sur le classement",
+      "Accès anticipé et support prioritaire",
     ],
     cta: "Devenir Le MUL",
   },
-  {
-    name: "VIP",
-    nickname: "Le Thru-Hiker",
-    tagline: "Le puriste qui vit l'expérience à 100%.",
-    hook: "🔓 Comparaison nationale détaillée + itinéraires multi-jours",
-    price: { monthly: 12.99, yearly: 109 },
-    paidTier: "vip",
-    dark: true,
-    features: [
-      "Tout Premium, plus :",
-      "Comparaison avancée par région, département et pays",
-      "Génération d'itinéraires multi-jours",
-      "Défis VIP avec récompenses et titres exclusifs",
-      "Accès anticipé aux nouvelles fonctionnalités",
-      "Support prioritaire",
-    ],
-    cta: "Devenir Thru-Hiker",
-  },
 ];
+
+// Derived from Premium's own numbers rather than hardcoded, so the badge
+// can't drift out of sync if the price ever changes.
+const premiumTier = tiers.find((t) => t.price !== "free");
+const yearlySavingsPercent =
+  premiumTier && premiumTier.price !== "free"
+    ? Math.round((1 - premiumTier.price.yearly / (premiumTier.price.monthly * 12)) * 100)
+    : 0;
 
 export default function PricingSection() {
   const [period, setPeriod] = useState<Period>("monthly");
@@ -100,12 +81,12 @@ export default function PricingSection() {
             }`}
           >
             Annuel
-            <span className="ml-1 text-summit-500">-2 mois</span>
+            <span className="ml-1 text-summit-500">-{yearlySavingsPercent}%</span>
           </button>
         </div>
       </div>
 
-      <div className="mt-10 grid gap-6 lg:grid-cols-3">
+      <div className="mx-auto mt-10 grid max-w-md gap-6">
         {tiers.map((tier) => (
           <div
             key={tier.name}
@@ -172,35 +153,40 @@ export default function PricingSection() {
                 Facturé {tier.price.yearly}€ / an
               </p>
             )}
-            {tier.price !== "free" && (
-              <p
-                className={`mt-1 text-xs font-semibold ${
-                  tier.dark ? "text-summit-400" : "text-summit-600"
-                }`}
-              >
-                5 jours d&apos;essai gratuit, sans engagement
-              </p>
-            )}
 
-            <ul className="mt-6 flex-1 space-y-3 text-sm">
-              {tier.features.map((feature) => (
-                <li key={feature} className="flex items-start gap-2">
-                  <span
-                    className={`mt-0.5 ${tier.dark ? "text-summit-400" : "text-summit-500"}`}
-                    aria-hidden="true"
+            {tier.quickStats && (
+              <div className="mt-6 grid grid-cols-3 gap-2">
+                {tier.quickStats.map((stat) => (
+                  <div
+                    key={stat.label}
+                    className={`rounded-xl px-2 py-3 text-center ${
+                      tier.dark ? "bg-white/10" : "bg-trail-50"
+                    }`}
                   >
-                    ✓
-                  </span>
-                  <span className={tier.dark ? "text-white/80" : "text-trail-700"}>{feature}</span>
-                </li>
-              ))}
-            </ul>
+                    <p
+                      className={`text-[0.65rem] font-semibold uppercase tracking-wide ${
+                        tier.dark ? "text-white/50" : "text-trail-400"
+                      }`}
+                    >
+                      {stat.label}
+                    </p>
+                    <p
+                      className={`mt-0.5 text-sm font-semibold ${
+                        tier.dark ? "text-white" : "text-trail-900"
+                      }`}
+                    >
+                      {stat.value}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
 
             {tier.paidTier ? (
               <form action={createCheckoutSessionAction.bind(null, tier.paidTier, period)}>
                 <button
                   type="submit"
-                  className={`mt-8 w-full rounded-xl px-6 py-3 text-center text-sm font-semibold transition ${
+                  className={`mt-6 w-full rounded-xl px-6 py-3 text-center text-sm font-semibold transition ${
                     tier.dark
                       ? "bg-white text-trail-900 hover:bg-white/90"
                       : tier.highlight
@@ -214,18 +200,46 @@ export default function PricingSection() {
             ) : (
               <Link
                 href="/auth"
-                className="mt-8 rounded-xl border-2 border-trail-900 px-6 py-3 text-center text-sm font-semibold text-trail-900 transition hover:bg-trail-900 hover:text-white"
+                className="mt-6 rounded-xl border-2 border-trail-900 px-6 py-3 text-center text-sm font-semibold text-trail-900 transition hover:bg-trail-900 hover:text-white"
               >
                 {tier.cta}
               </Link>
             )}
+
+            {tier.price !== "free" && (
+              <p
+                className={`mt-3 flex items-center justify-center gap-1.5 text-xs ${
+                  tier.dark ? "text-white/50" : "text-trail-400"
+                }`}
+              >
+                <span aria-hidden="true">🔒</span>
+                Paiement sécurisé par Stripe, résiliable à tout moment
+              </p>
+            )}
+
+            <p
+              className={`mt-6 text-[0.65rem] font-semibold uppercase tracking-widest ${
+                tier.dark ? "text-white/40" : "text-trail-400"
+              }`}
+            >
+              Inclus dans {tier.nickname}
+            </p>
+            <ul className="mt-3 flex-1 space-y-3 text-sm">
+              {tier.features.map((feature) => (
+                <li key={feature} className="flex items-start gap-2">
+                  <span
+                    className={`mt-0.5 ${tier.dark ? "text-summit-400" : "text-summit-500"}`}
+                    aria-hidden="true"
+                  >
+                    ✓
+                  </span>
+                  <span className={tier.dark ? "text-white/80" : "text-trail-700"}>{feature}</span>
+                </li>
+              ))}
+            </ul>
           </div>
         ))}
       </div>
-
-      <p className="mx-auto mt-8 max-w-2xl text-center text-xs text-trail-400">
-        Paiement sécurisé par Stripe. Résiliable à tout moment depuis ton profil.
-      </p>
     </div>
   );
 }
