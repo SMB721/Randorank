@@ -7,6 +7,7 @@ import { createCheckoutSessionAction } from "@/app/actions/subscription";
 import {
   PREMIUM_FEATURES,
   PREMIUM_PRICE,
+  PREMIUM_TRIAL_DAYS,
   PREMIUM_YEARLY_SAVINGS_PERCENT,
 } from "@/lib/pricing";
 
@@ -59,6 +60,10 @@ export default function PaywallScreen({
   const pitch = goal && GOAL_PITCH[goal] ? GOAL_PITCH[goal](region) : null;
   const price =
     period === "monthly" ? PREMIUM_PRICE.monthly : PREMIUM_PRICE.yearly / 12;
+  const chargeAfterTrial =
+    period === "monthly"
+      ? `${PREMIUM_PRICE.monthly.toFixed(2).replace(".", ",")} € par mois`
+      : `${PREMIUM_PRICE.yearly} € par an`;
 
   const recap = [
     level && { k: "Niveau", v: experience ? `${level} · ${experience}` : level },
@@ -102,12 +107,12 @@ export default function PaywallScreen({
 
         {activating && (
           <p className="mt-4 rounded-lg bg-summit-500/15 px-3 py-2 text-sm text-summit-300">
-            Paiement reçu 🎉 On active votre compte, ça ne prend que quelques secondes…
+            Essai lancé 🎉 On active votre compte, ça ne prend que quelques secondes…
           </p>
         )}
         {checkoutStatus === "canceled" && (
           <p className="mt-4 rounded-lg bg-white/10 px-3 py-2 text-sm text-white/70">
-            Paiement annulé — rien n&apos;a été débité. Vous pouvez réessayer quand vous voulez.
+            Inscription à l&apos;essai annulée — rien n&apos;a été débité. Vous pouvez réessayer quand vous voulez.
           </p>
         )}
         {checkoutStatus === "error" && (
@@ -144,13 +149,16 @@ export default function PaywallScreen({
             </button>
           </div>
 
-          <div className="mt-4 flex items-baseline gap-1">
+          <p className="mt-4 inline-block rounded-full bg-summit-500/15 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-summit-300">
+            {PREMIUM_TRIAL_DAYS} jours offerts
+          </p>
+          <div className="mt-3 flex items-baseline gap-1">
             <span className="font-display text-5xl tracking-wide">{price.toFixed(2)}€</span>
             <span className="text-white/50">/mois</span>
           </div>
-          {period === "yearly" && (
-            <p className="text-xs text-white/50">Facturé {PREMIUM_PRICE.yearly}€ / an</p>
-          )}
+          <p className="text-xs text-white/50">
+            Puis {chargeAfterTrial}, débité à la fin de l&apos;essai.
+          </p>
 
           <ul className="mt-5 space-y-2 text-sm">
             {PREMIUM_FEATURES.map((f) => (
@@ -168,12 +176,15 @@ export default function PaywallScreen({
               type="submit"
               className="mt-6 w-full rounded-xl bg-summit-500 py-3 text-sm font-semibold text-white shadow-lg shadow-summit-500/30 transition hover:bg-summit-600"
             >
-              Devenir Le MUL
+              Essayer {PREMIUM_TRIAL_DAYS} jours gratuitement
             </button>
           </form>
-          <p className="mt-3 flex items-center justify-center gap-1.5 text-xs text-white/40">
+          <p className="mt-3 text-center text-xs text-white/50">
+            Carte bancaire requise. Résiliable à tout moment avant la fin de l&apos;essai : rien n&apos;est débité.
+          </p>
+          <p className="mt-2 flex items-center justify-center gap-1.5 text-xs text-white/40">
             <span aria-hidden="true">🔒</span>
-            Paiement sécurisé par Stripe, résiliable à tout moment
+            Paiement sécurisé par Stripe
           </p>
         </div>
       </div>
