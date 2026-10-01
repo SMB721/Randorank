@@ -30,9 +30,11 @@ function buildWeeklySeries(weekly: CommunityWeeklyKm[]): number[] {
 export default function CommunityStatsSection({
   stats,
   weekly,
+  labels,
 }: {
   stats: CommunityStats;
   weekly: CommunityWeeklyKm[];
+  labels: { km: string; elevation: string; chart: string };
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -76,7 +78,7 @@ export default function CommunityStatsSection({
             />
           </p>
           <p className="mt-2 text-sm uppercase tracking-widest text-white/50">
-            Parcourus par la communauté
+            {labels.km}
           </p>
         </div>
         <div>
@@ -89,7 +91,7 @@ export default function CommunityStatsSection({
             />
           </p>
           <p className="mt-2 text-sm uppercase tracking-widest text-white/50">
-            De dénivelé cumulé
+            {labels.elevation}
           </p>
         </div>
       </div>
@@ -129,7 +131,7 @@ export default function CommunityStatsSection({
         </svg>
       </div>
       <p className="mt-2 text-center text-xs uppercase tracking-widest text-white/40">
-        Kilomètres cumulés par semaine, communauté entière
+        {labels.chart}
       </p>
     </div>
   );

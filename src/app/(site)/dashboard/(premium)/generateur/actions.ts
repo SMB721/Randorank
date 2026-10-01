@@ -98,7 +98,7 @@ export async function generateRouteAction(
   if (fallback) {
     return { success: true, route: fallback };
   }
-  return { success: false, error: "Impossible de générer un tracé, réessaie." };
+  return { success: false, error: "Impossible de générer un tracé, réessayez." };
 }
 
 export type SaveRouteResponse =

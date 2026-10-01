@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { computeStats, haversineKm, type TrackPoint } from "@/lib/gpx";
 import { useWakeLock } from "@/hooks/useWakeLock";
 import { formatDuration } from "@/lib/format";
-import { saveLiveHikeAction } from "@/app/dashboard/(premium)/randos/live/actions";
+import { saveLiveHikeAction } from "@/app/(site)/dashboard/(premium)/randos/live/actions";
 
 const LiveMap = dynamic(() => import("./LiveMap"), {
   ssr: false,

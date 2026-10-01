@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import FriendsSearch from "@/components/dashboard/FriendsSearch";
-import { unfollowUserAction } from "@/app/dashboard/(premium)/classement/actions";
+import { unfollowUserAction } from "@/app/(site)/dashboard/(premium)/classement/actions";
 import { createClient } from "@/lib/supabase/server";
 import {
   FRENCH_REGIONS,

@@ -7,6 +7,8 @@ import CommunityStatsSection from "@/components/home/CommunityStatsSection";
 import PhoneMockup from "@/components/home/PhoneMockup";
 import FloatingStatCard from "@/components/home/FloatingStatCard";
 import { createClient } from "@/lib/supabase/server";
+import type { Locale } from "@/lib/i18n/config";
+import { getLandingDict } from "@/lib/i18n/landing";
 import type { CommunityStats, CommunityWeeklyKm } from "@/lib/supabase/types";
 
 const heroImage =
@@ -32,7 +34,12 @@ const routeMapBg = "/images/route-map-bg-v3.jpg";
 const COMMUNITY_STATS_MIN_KM = 500;
 const COMMUNITY_STATS_MIN_HIKERS = 15;
 
-export default async function Home() {
+export default async function LandingPage({ locale }: { locale: Locale }) {
+  const t = getLandingDict(locale);
+  const spotItems = [forestSpot, lakeSpot, groupSpot].map((src, i) => ({
+    src,
+    ...t.spots.items[i],
+  }));
   const supabase = await createClient();
   const [{ data: stats }, { data: weekly }] = await Promise.all([
     supabase.from("community_stats").select("*").single<CommunityStats>(),
@@ -48,14 +55,14 @@ export default async function Home() {
 
   return (
     <>
-      <Header />
+      <Header locale={locale} dict={t.header} />
 
       <main>
         {/* Hero */}
         <section className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 text-center">
           <Image
             src={heroImage}
-            alt="Randonneur au sommet d'une crête face aux montagnes"
+            alt={t.hero.imageAlt}
             fill
             priority
             sizes="100vw"
@@ -65,16 +72,21 @@ export default async function Home() {
 
           <div className="relative z-10 space-y-6 pt-16">
             <span className="inline-block rounded-full border border-white/30 bg-white/10 px-4 py-1 text-sm font-semibold text-white backdrop-blur">
-              🥾 Rejoignez la communauté RandoRank
+              {t.hero.badge}
             </span>
-            <h1 className="font-display text-6xl leading-[0.95] tracking-wide text-white sm:text-8xl">
-              Chaque sentier
+            <h1
+              className={`font-display leading-[0.95] tracking-wide text-white hyphens-auto break-words sm:text-8xl ${
+                // German compounds ("Herausforderung") overflow a 375px
+                // screen at the default size.
+                locale === "de" ? "text-5xl" : "text-6xl"
+              }`}
+            >
+              {t.hero.titleLine1}
               <br />
-              <span className="text-summit-400">devient un défi.</span>
+              <span className="text-summit-400">{t.hero.titleLine2}</span>
             </h1>
             <p className="mx-auto max-w-xl text-lg text-white/85">
-              Suivez vos randos, débloquez de nouveaux badges, grimpez au classement et
-              partagez vos plus belles sorties.
+              {t.hero.subtitle}
             </p>
 
             <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:justify-center">
@@ -82,13 +94,13 @@ export default async function Home() {
                 href="/auth"
                 className="rounded-xl bg-summit-500 px-8 py-3 text-base font-semibold text-white shadow-lg shadow-summit-500/30 transition hover:bg-summit-600"
               >
-                Créer mon profil
+                {t.hero.ctaPrimary}
               </Link>
               <Link
                 href="/auth?mode=login"
                 className="rounded-xl border-2 border-white/40 bg-white/5 px-8 py-3 text-base font-semibold text-white backdrop-blur transition hover:border-white/70"
               >
-                J&apos;ai déjà un compte
+                {t.hero.ctaSecondary}
               </Link>
             </div>
           </div>
@@ -99,39 +111,18 @@ export default async function Home() {
           <div className="mx-auto max-w-6xl">
             <div className="mx-auto max-w-2xl text-center">
               <span className="text-xs font-semibold uppercase tracking-[0.2em] text-summit-400">
-                Spots &amp; communauté
+                {t.spots.eyebrow}
               </span>
               <h2 className="mt-3 font-display text-4xl tracking-wide sm:text-5xl">
-                Vos spots. Vos repères.
+                {t.spots.title}
               </h2>
               <p className="mt-4 text-white/70">
-                Forêt, lac d&apos;altitude ou ascension entre amis : découvrez les spots
-                partagés par la communauté et retrouvez les randonneurs qui vivent les
-                mêmes levers de soleil que vous.
+                {t.spots.text}
               </p>
             </div>
 
             <div className="mt-12 grid gap-6 sm:grid-cols-3">
-              {[
-                {
-                  src: forestSpot,
-                  alt: "Randonneur sur un sentier forestier face aux montagnes",
-                  title: "Sous-bois",
-                  caption: "Sentiers ombragés",
-                },
-                {
-                  src: lakeSpot,
-                  alt: "Randonneur face à un lac d'altitude entouré de sommets enneigés",
-                  title: "Lac d'altitude",
-                  caption: "Eaux turquoise",
-                },
-                {
-                  src: groupSpot,
-                  alt: "Groupe de randonneurs sur un sentier menant à un sommet rocheux",
-                  title: "Cimes en vue",
-                  caption: "Entre randonneurs",
-                },
-              ].map((spot) => (
+              {spotItems.map((spot) => (
                 <div
                   key={spot.title}
                   className="group relative aspect-[3/4] overflow-hidden rounded-2xl"
@@ -164,15 +155,15 @@ export default async function Home() {
               <div className="relative flex justify-center py-6">
                 <FloatingStatCard
                   icon="📸"
-                  label="En un tap"
-                  value="Prêt à partager"
+                  label={t.share.floatingTap.label}
+                  value={t.share.floatingTap.value}
                   className="left-0 top-0 sm:left-4"
                   delay="0.3s"
                 />
                 <FloatingStatCard
                   icon="🏅"
-                  label="Débloqué"
-                  value="Sommet du Diable"
+                  label={t.share.floatingUnlocked.label}
+                  value={t.share.floatingUnlocked.value}
                   className="bottom-0 right-0 sm:right-2"
                   delay="1.3s"
                 />
@@ -181,7 +172,7 @@ export default async function Home() {
                   <div className="relative h-full w-full">
                     <Image
                       src={groupSpot}
-                      alt="Fiche rando générée par RandoRank, prête à partager"
+                      alt={t.share.imageAlt}
                       fill
                       sizes="280px"
                       className="object-cover"
@@ -191,18 +182,14 @@ export default async function Home() {
                       <span className="font-display text-xs tracking-wide text-white">
                         RandoRank
                       </span>
-                      <span className="text-[0.6rem] text-white/70">12.06.26</span>
+                      <span className="text-[0.6rem] text-white/70">{t.share.date}</span>
                     </div>
                     <div className="absolute inset-x-3 bottom-3 space-y-2">
                       <p className="font-display text-lg leading-tight text-white">
-                        Crête des Trois Sommets
+                        {t.share.routeName}
                       </p>
                       <div className="grid grid-cols-3 gap-1.5">
-                        {[
-                          { v: "14,2", u: "km" },
-                          { v: "+680", u: "m D+" },
-                          { v: "4h05", u: "durée" },
-                        ].map((s) => (
+                        {t.share.stats.map((s) => (
                           <div
                             key={s.u}
                             className="rounded-lg bg-white/15 px-1 py-1.5 text-center backdrop-blur"
@@ -222,23 +209,20 @@ export default async function Home() {
 
             <div className="order-1 lg:order-2">
               <span className="text-xs font-semibold uppercase tracking-[0.2em] text-summit-600">
-                Partagez vos exploits
+                {t.share.eyebrow}
               </span>
               <h2 className="mt-3 font-display text-4xl tracking-wide text-trail-900 sm:text-5xl">
-                Une fiche stylée.
+                {t.share.titleLine1}
                 <br />
-                Prête pour vos stories.
+                {t.share.titleLine2}
               </h2>
               <p className="mt-4 text-trail-700">
-                À la fin de chaque rando, RandoRank génère automatiquement une fiche
-                visuelle avec votre tracé, vos stats et vos plus belles photos —
-                pensée pour Instagram, TikTok et Facebook, pas pour dormir dans un
-                tiroir.
+                {t.share.text}
               </p>
 
               <div className="mt-4 flex items-center gap-3">
                 <span className="text-xs font-semibold uppercase tracking-widest text-trail-400">
-                  Partagez sur
+                  {t.share.shareOn}
                 </span>
                 <div className="flex gap-2">
                   <span
@@ -266,7 +250,7 @@ export default async function Home() {
                 href="/auth"
                 className="mt-6 inline-block rounded-xl bg-summit-500 px-8 py-3 text-base font-semibold text-white shadow-lg shadow-summit-500/30 transition hover:bg-summit-600"
               >
-                Créer ma première fiche
+                {t.share.cta}
               </Link>
             </div>
           </div>
@@ -277,40 +261,36 @@ export default async function Home() {
           <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2">
             <div>
               <span className="text-xs font-semibold uppercase tracking-[0.2em] text-summit-600">
-                Générez votre parcours
+                {t.route.eyebrow}
               </span>
               <h2 className="mt-3 font-display text-4xl tracking-wide text-trail-900 sm:text-5xl">
-                Indiquez votre distance.
+                {t.route.titleLine1}
                 <br />
-                RandoRank prépare la suite.
+                {t.route.titleLine2}
               </h2>
               <p className="mt-4 text-trail-700">
-                Renseignez la distance que vous êtes prêt·e à réaliser — et votre
-                objectif si vous en avez un. RandoRank vous propose un parcours
-                réellement praticable, puis l&apos;ajuste selon votre niveau et les
-                informations de santé de votre profil, pour vous suggérer un tracé
-                adapté plutôt qu&apos;un itinéraire générique.
+                {t.route.text}
               </p>
               <Link
                 href="/auth"
                 className="mt-6 inline-block rounded-xl bg-trail-900 px-8 py-3 text-base font-semibold text-white shadow-lg shadow-trail-900/20 transition hover:bg-trail-800"
               >
-                Préparer mon itinéraire
+                {t.route.cta}
               </Link>
             </div>
 
             <div className="relative flex justify-center py-6">
               <FloatingStatCard
                 icon="🧭"
-                label="Itinéraire généré"
-                value="12 km"
+                label={t.route.floatingRoute.label}
+                value={t.route.floatingRoute.value}
                 className="left-0 top-2 sm:left-4"
                 delay="0.2s"
               />
               <FloatingStatCard
                 icon="⛰️"
-                label="Dénivelé max"
-                value="+450 m"
+                label={t.route.floatingElevation.label}
+                value={t.route.floatingElevation.value}
                 className="bottom-4 right-0 sm:right-2"
                 delay="1.1s"
               />
@@ -330,7 +310,7 @@ export default async function Home() {
                         contour lines. */}
                     <Image
                       src={routeMapBg}
-                      alt="Extrait de carte, secteur de Chamonix"
+                      alt={t.route.mapAlt}
                       fill
                       sizes="280px"
                       className="object-cover"
@@ -380,13 +360,13 @@ export default async function Home() {
                     </svg>
 
                     <span className="absolute left-3 top-3 rounded-full bg-black/40 px-2 py-1 text-[0.6rem] font-semibold uppercase tracking-widest text-white backdrop-blur">
-                      Niveau amateur
+                      {t.route.level}
                     </span>
                     <span className="absolute bottom-2 left-[30%] -translate-x-1/2 rounded-full bg-black/40 px-2 py-1 text-[0.6rem] font-semibold uppercase tracking-widest text-white backdrop-blur">
-                      Départ
+                      {t.route.start}
                     </span>
                     <span className="absolute left-[72%] top-2 -translate-x-1/2 rounded-full bg-black/40 px-2 py-1 text-[0.6rem] font-semibold uppercase tracking-widest text-white backdrop-blur">
-                      Arrivée
+                      {t.route.end}
                     </span>
                     <span className="absolute bottom-1 left-1.5 rounded bg-black/30 px-1 text-[0.4rem] leading-tight text-white/80">
                       © OpenStreetMap contributors
@@ -395,19 +375,19 @@ export default async function Home() {
 
                   <div className="space-y-2 p-3">
                     <div className="flex items-center justify-between rounded-xl bg-white px-3 py-2 shadow-sm">
-                      <span className="text-xs font-medium text-trail-600">Distance</span>
+                      <span className="text-xs font-medium text-trail-600">{t.route.distance}</span>
                       <span className="font-display text-base tracking-wide text-trail-900">
-                        12 km
+                        {t.route.distanceValue}
                       </span>
                     </div>
                     <div className="flex items-center justify-between rounded-xl bg-white px-3 py-2 shadow-sm">
-                      <span className="text-xs font-medium text-trail-600">Durée estimée</span>
+                      <span className="text-xs font-medium text-trail-600">{t.route.duration}</span>
                       <span className="font-display text-base tracking-wide text-trail-900">
-                        3h15
+                        {t.route.durationValue}
                       </span>
                     </div>
                     <button className="mt-1 w-full rounded-xl bg-summit-500 py-2.5 text-sm font-semibold text-white shadow-lg shadow-summit-500/30">
-                      Démarrer la sortie
+                      {t.route.startCta}
                     </button>
                   </div>
                 </div>
@@ -421,33 +401,31 @@ export default async function Home() {
           <div className="mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-2">
             <div>
               <span className="text-xs font-semibold uppercase tracking-[0.2em] text-summit-400">
-                Classement
+                {t.ranking.eyebrow}
               </span>
               <h2 className="mt-3 font-display text-4xl tracking-wide sm:text-5xl">
-                Chaque kilomètre
+                {t.ranking.titleLine1}
                 <br />
-                compte.
+                {t.ranking.titleLine2}
               </h2>
               <p className="mt-4 text-white/70">
-                Les kilomètres réellement parcourus vous font grimper. Suivez votre
-                position au classement, débloquez des badges et battez vos propres
-                objectifs, ou ceux de vos amis.
+                {t.ranking.text}
               </p>
             </div>
 
             <div className="relative flex justify-center py-6">
               <FloatingStatCard
                 icon="🏆"
-                label="Votre position"
-                value="#3"
+                label={t.ranking.floatingPosition.label}
+                value={t.ranking.floatingPosition.value}
                 className="left-0 top-0 sm:left-6"
                 delay="0.4s"
                 dark
               />
               <FloatingStatCard
                 icon="🔥"
-                label="Pour passer #2"
-                value="6,4 km"
+                label={t.ranking.floatingNext.label}
+                value={t.ranking.floatingNext.value}
                 className="bottom-2 right-0 sm:right-4"
                 delay="1.4s"
                 dark
@@ -457,27 +435,27 @@ export default async function Home() {
                 <div className="flex h-full flex-col bg-trail-950 text-white">
                   <div className="px-4 pb-3 pt-4">
                     <p className="text-[0.6rem] font-semibold uppercase tracking-widest text-white/40">
-                      Classement · Septembre 2026
+                      {t.ranking.month}
                     </p>
                     <div className="mt-2 flex gap-2 text-[0.65rem] font-semibold">
                       <span className="rounded-full bg-summit-500 px-3 py-1 text-white">
-                        National
+                        {t.ranking.tabs.national}
                       </span>
                       <span className="rounded-full bg-white/10 px-3 py-1 text-white/60">
-                        Région
+                        {t.ranking.tabs.region}
                       </span>
                       <span className="rounded-full bg-white/10 px-3 py-1 text-white/60">
-                        Amis
+                        {t.ranking.tabs.friends}
                       </span>
                     </div>
                   </div>
 
                   <div className="flex-1 space-y-2 px-3 pb-3">
                     {[
-                      { rank: "1", name: "Le Monchu", km: "58,1 km", highlight: false },
-                      { rank: "2", name: "Cimes&Co", km: "48,5 km", highlight: false },
-                      { rank: "3", name: "Vous", km: "42,0 km", highlight: true },
-                      { rank: "4", name: "TrailSeeker", km: "39,7 km", highlight: false },
+                      { rank: "1", name: "Le Monchu", km: t.ranking.kms[0], highlight: false },
+                      { rank: "2", name: "Cimes&Co", km: t.ranking.kms[1], highlight: false },
+                      { rank: "3", name: t.ranking.you, km: t.ranking.kms[2], highlight: true },
+                      { rank: "4", name: "TrailSeeker", km: t.ranking.kms[3], highlight: false },
                     ].map((row) => (
                       <div
                         key={row.rank}
@@ -510,19 +488,22 @@ export default async function Home() {
           <section className="bg-trail-950 px-6 py-24 text-white">
             <div className="mx-auto max-w-3xl text-center">
               <span className="text-xs font-semibold uppercase tracking-[0.2em] text-summit-400">
-                Communauté en mouvement
+                {t.community.eyebrow}
               </span>
               <h2 className="mt-3 font-display text-4xl tracking-wide sm:text-5xl">
-                Ce n&apos;est pas que des chiffres.
+                {t.community.title}
               </h2>
               <p className="mt-4 text-white/70">
-                C&apos;est l&apos;ensemble des kilomètres réellement parcourus, validés,
-                par tous les randonneurs de RandoRank.
+                {t.community.text}
               </p>
             </div>
 
             <div className="mx-auto mt-12 max-w-3xl">
-              <CommunityStatsSection stats={stats} weekly={weekly ?? []} />
+              <CommunityStatsSection
+                stats={stats}
+                weekly={weekly ?? []}
+                labels={{ km: t.community.kmLabel, elevation: t.community.elevationLabel, chart: t.community.chartLabel }}
+              />
             </div>
           </section>
         )}
@@ -532,21 +513,19 @@ export default async function Home() {
         <section id="offres" className="bg-white px-6 py-24">
           <div className="mx-auto max-w-2xl text-center">
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-summit-600">
-              Offres
+              {t.offers.eyebrow}
             </span>
             <h2 className="mt-3 font-display text-4xl tracking-wide text-trail-900 sm:text-5xl">
-              Le MUL. Point.
+              {t.offers.title}
             </h2>
             <p className="mt-4 text-trail-600">
-              Une seule offre, tout inclus : randos, tracés et photos illimités, classement
-              complet. Le détail des tarifs s&apos;affiche dès la création de votre
-              profil.
+              {t.offers.text}
             </p>
             <Link
               href="/auth"
               className="mt-6 inline-block rounded-xl bg-summit-500 px-8 py-3 text-base font-semibold text-white shadow-lg shadow-summit-500/30 transition hover:bg-summit-600"
             >
-              Créer mon profil
+              {t.offers.cta}
             </Link>
           </div>
         </section>
@@ -555,14 +534,10 @@ export default async function Home() {
         <section id="apropos" className="bg-trail-50 px-6 py-24">
           <div className="mx-auto max-w-3xl text-center">
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-summit-600">
-              RandoRank en quelques mots
+              {t.about.eyebrow}
             </span>
             <p className="mt-4 text-xl leading-relaxed text-trail-800">
-              RandoRank vous aide à préparer des itinéraires de randonnée selon votre
-              niveau, à partager votre passion et à découvrir de nouveaux spots.
-              Enregistrez chaque parcours, analysez vos randos et comparez-vous à vos
-              amis comme à l&apos;ensemble des randonneurs du site — par région, par
-              département, jusqu&apos;à l&apos;échelle du pays.
+              {t.about.text}
             </p>
           </div>
         </section>
@@ -571,21 +546,19 @@ export default async function Home() {
         <section id="faq" className="bg-white px-6 py-24">
           <div className="mx-auto max-w-2xl text-center">
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-summit-600">
-              Tout est clair
+              {t.faq.eyebrow}
             </span>
             <h2 className="mt-3 font-display text-4xl tracking-wide text-trail-900 sm:text-5xl">
-              Questions fréquentes
+              {t.faq.title}
             </h2>
           </div>
 
           <div className="mt-12">
-            <FaqAccordion />
+            <FaqAccordion items={t.faq.items} />
           </div>
 
           <p className="mx-auto mt-8 max-w-xl text-center text-sm text-trail-500">
-            RandoRank vous donne des repères, pas des consignes de sécurité en
-            montagne : vérifiez toujours la météo et vos propres capacités avant de
-            partir.
+            {t.faq.disclaimer}
           </p>
         </section>
 
@@ -593,7 +566,7 @@ export default async function Home() {
         <section className="relative overflow-hidden px-6 py-24 text-center">
           <Image
             src={forestSpot}
-            alt="Sentier forestier menant vers les montagnes"
+            alt={t.finalCta.imageAlt}
             fill
             sizes="100vw"
             className="object-cover"
@@ -601,22 +574,22 @@ export default async function Home() {
           <div className="absolute inset-0 bg-trail-950/80" />
           <div className="relative z-10 mx-auto max-w-2xl">
             <h2 className="font-display text-4xl tracking-wide text-white sm:text-5xl">
-              Prêt·e à relever le premier défi ?
+              {t.finalCta.title}
             </h2>
             <p className="mt-4 text-white/80">
-              Rejoignez les randonneurs qui suivent, partagent et progressent ensemble.
+              {t.finalCta.text}
             </p>
             <Link
               href="/auth"
               className="mt-6 inline-block rounded-xl bg-summit-500 px-8 py-3 text-base font-semibold text-white shadow-lg shadow-summit-500/30 transition hover:bg-summit-600"
             >
-              Créer mon profil
+              {t.finalCta.cta}
             </Link>
           </div>
         </section>
       </main>
 
-      <Footer />
+      <Footer locale={locale} dict={t.footer} />
     </>
   );
 }

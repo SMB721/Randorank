@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { completeOnboardingAction } from "@/app/bienvenue/actions";
+import { completeOnboardingAction } from "@/app/(site)/bienvenue/actions";
 import { FRENCH_REGIONS } from "@/lib/supabase/types";
 import {
   DISTANCE_OPTIONS,

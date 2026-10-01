@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { uploadAvatarAction } from "@/app/dashboard/profil/actions";
+import { uploadAvatarAction } from "@/app/(site)/dashboard/profil/actions";
 
 export default function AvatarUploadForm({
   initialAvatarUrl,

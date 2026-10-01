@@ -1,19 +1,6 @@
 import Link from "next/link";
-
-const navigationLinks = [
-  { label: "Itinéraires", href: "/#navigation" },
-  { label: "Analyses", href: "/#apropos" },
-  { label: "Classements", href: "/#classement" },
-  { label: "Offres", href: "/#offres" },
-  { label: "FAQ", href: "/#faq" },
-];
-
-const legalLinks = [
-  { label: "Mentions légales", href: "/mentions-legales" },
-  { label: "Confidentialité", href: "/mentions-legales#confidentialite" },
-  { label: "Cookies", href: "/mentions-legales#cookies" },
-  { label: "Conditions", href: "/mentions-legales#conditions" },
-];
+import { LOCALES, LOCALE_LABELS, landingPath, type Locale } from "@/lib/i18n/config";
+import type { LandingDict } from "@/lib/i18n/landing";
 
 const socialLinks = [
   { label: "Instagram", href: "#" },
@@ -21,7 +8,31 @@ const socialLinks = [
   { label: "Facebook", href: "#" },
 ];
 
-export default function Footer() {
+export default function Footer({
+  locale,
+  dict,
+}: {
+  locale: Locale;
+  dict: LandingDict["footer"];
+}) {
+  const navigationLinks = [
+    { label: dict.nav.routes, href: landingPath(locale, "navigation") },
+    { label: dict.nav.analyses, href: landingPath(locale, "apropos") },
+    { label: dict.nav.rankings, href: landingPath(locale, "classement") },
+    { label: dict.nav.offers, href: landingPath(locale, "offres") },
+    { label: dict.nav.faq, href: landingPath(locale, "faq") },
+  ];
+
+  // The legal documents exist in French only: other locales link to them
+  // with a "(FR)" suffix (see dictionaries) rather than pretending they are
+  // translated.
+  const legalLinks = [
+    { label: dict.legal.notice, href: "/mentions-legales" },
+    { label: dict.legal.privacy, href: "/mentions-legales#confidentialite" },
+    { label: dict.legal.cookies, href: "/mentions-legales#cookies" },
+    { label: dict.legal.terms, href: "/mentions-legales#conditions" },
+  ];
+
   return (
     <footer id="suivez-nous" className="bg-trail-950 text-white">
       <div className="mx-auto max-w-6xl px-6 py-16">
@@ -30,19 +41,16 @@ export default function Footer() {
             <span className="font-display text-2xl tracking-wide">
               RANDO<span className="text-summit-400">RANK</span>
             </span>
-            <p className="max-w-xs text-sm text-white/60">
-              Le carnet de route des randonneurs : sorties, défis et classements entre
-              passionnés.
-            </p>
+            <p className="max-w-xs text-sm text-white/60">{dict.tagline}</p>
           </div>
 
           <div className="space-y-4">
             <h3 className="text-xs font-semibold uppercase tracking-widest text-white/40">
-              Navigation
+              {dict.navTitle}
             </h3>
             <ul className="space-y-2 text-sm text-white/70">
               {navigationLinks.map((link) => (
-                <li key={link.label}>
+                <li key={link.href}>
                   <Link href={link.href} className="transition hover:text-white">
                     {link.label}
                   </Link>
@@ -53,11 +61,11 @@ export default function Footer() {
 
           <div className="space-y-4">
             <h3 className="text-xs font-semibold uppercase tracking-widest text-white/40">
-              Légal
+              {dict.legalTitle}
             </h3>
             <ul className="space-y-2 text-sm text-white/70">
               {legalLinks.map((link) => (
-                <li key={link.label}>
+                <li key={link.href}>
                   <Link href={link.href} className="transition hover:text-white">
                     {link.label}
                   </Link>
@@ -68,7 +76,7 @@ export default function Footer() {
 
           <div className="space-y-4">
             <h3 className="text-xs font-semibold uppercase tracking-widest text-white/40">
-              Suivez-nous
+              {dict.followTitle}
             </h3>
             <ul className="space-y-2 text-sm text-white/70">
               {socialLinks.map((link) => (
@@ -82,8 +90,25 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 border-t border-white/10 pt-6 text-xs text-white/40">
-          © {new Date().getFullYear()} RandoRank. Tous droits réservés.
+        <div className="mt-12 flex flex-col gap-4 border-t border-white/10 pt-6 text-xs text-white/40 sm:flex-row sm:items-center sm:justify-between">
+          <span>
+            © {new Date().getFullYear()} RandoRank. {dict.rights}
+          </span>
+          <ul className="flex flex-wrap gap-x-4 gap-y-1">
+            {LOCALES.map((l) => (
+              <li key={l}>
+                <Link
+                  href={landingPath(l)}
+                  hrefLang={l}
+                  lang={l}
+                  aria-current={l === locale ? "true" : undefined}
+                  className={`transition hover:text-white ${l === locale ? "text-white" : ""}`}
+                >
+                  {LOCALE_LABELS[l]}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </footer>

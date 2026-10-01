@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import HikeMapLoader from "@/components/dashboard/HikeMapLoader";
-import { generateRouteAction, saveRouteAction, type GeneratedRouteResult } from "@/app/dashboard/(premium)/generateur/actions";
+import { generateRouteAction, saveRouteAction, type GeneratedRouteResult } from "@/app/(site)/dashboard/(premium)/generateur/actions";
 import { USER_LEVEL_LABELS, type UserLevel } from "@/lib/supabase/types";
 
 type GeoStatus = "idle" | "loading" | "ready" | "error";

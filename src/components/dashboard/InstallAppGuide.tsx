@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { dismissInstallPromptAction } from "@/app/dashboard/installer/actions";
+import { dismissInstallPromptAction } from "@/app/(site)/dashboard/installer/actions";
 
 type Platform = "iphone" | "android";
 

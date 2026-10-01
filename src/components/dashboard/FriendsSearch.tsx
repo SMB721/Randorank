@@ -6,7 +6,7 @@ import {
   followUserAction,
   searchProfilesAction,
   type SearchResult,
-} from "@/app/dashboard/(premium)/classement/actions";
+} from "@/app/(site)/dashboard/(premium)/classement/actions";
 import { USER_LEVEL_LABELS } from "@/lib/supabase/types";
 
 export default function FriendsSearch({ followingIds }: { followingIds: string[] }) {

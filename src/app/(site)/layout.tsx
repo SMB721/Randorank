@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Bebas_Neue } from "next/font/google";
 import PwaServiceWorker from "@/components/PwaServiceWorker";
-import "./globals.css";
+import "../globals.css";
 
 const displayFont = Bebas_Neue({
   weight: "400",

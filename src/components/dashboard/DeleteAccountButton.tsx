@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { deleteAccountAction } from "@/app/dashboard/profil/actions";
+import { deleteAccountAction } from "@/app/(site)/dashboard/profil/actions";
 
 const CONFIRM_WORD = "SUPPRIMER";
 

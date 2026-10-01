@@ -1,6 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // French is served at "/", so "/fr" would be a duplicate of the home page.
+  async redirects() {
+    return [{ source: "/fr", destination: "/", permanent: true }];
+  },
   images: {
     remotePatterns: [
       {
