@@ -4,16 +4,17 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import type { FunnelDict } from "@/lib/i18n/funnel";
 
 type Mode = "signup" | "login";
 
 const passwordChecks = [
-  { label: "6 caractères", test: (v: string) => v.length >= 6 },
-  { label: "1 majuscule", test: (v: string) => /[A-Z]/.test(v) },
-  { label: "1 chiffre", test: (v: string) => /[0-9]/.test(v) },
-];
+  { key: "chars", test: (v: string) => v.length >= 6 },
+  { key: "upper", test: (v: string) => /[A-Z]/.test(v) },
+  { key: "digit", test: (v: string) => /[0-9]/.test(v) },
+] as const;
 
-export default function AuthForm() {
+export default function AuthForm({ dict: t }: { dict: FunnelDict["auth"] }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialMode: Mode = searchParams.get("mode") === "login" ? "login" : "signup";
@@ -34,12 +35,12 @@ export default function AuthForm() {
   );
   const strengthLabel =
     password.length === 0
-      ? "À compléter"
+      ? t.strength.empty
       : passedChecks <= 1
-      ? "Faible"
+      ? t.strength.weak
       : passedChecks === 2
-      ? "Moyen"
-      : "Fort";
+      ? t.strength.medium
+      : t.strength.strong;
   const strengthColor =
     passedChecks <= 1 ? "bg-red-400" : passedChecks === 2 ? "bg-summit-400" : "bg-trail-400";
 
@@ -60,7 +61,7 @@ export default function AuthForm() {
           router.push("/bienvenue");
           router.refresh();
         } else {
-          setInfo("Compte créé ! Vérifiez vos emails pour confirmer votre inscription. 🥾");
+          setInfo(t.accountCreated);
         }
       } else {
         const { error } = await supabase.auth.signInWithPassword({
@@ -72,7 +73,7 @@ export default function AuthForm() {
         router.refresh();
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Une erreur est survenue.");
+      setError(err instanceof Error ? err.message : t.genericError);
     } finally {
       setLoading(false);
     }
@@ -93,12 +94,10 @@ export default function AuthForm() {
     <div className="mx-auto w-full max-w-md space-y-6 rounded-2xl border border-white/10 bg-trail-950/70 p-8 text-white shadow-2xl backdrop-blur-xl">
       <div className="space-y-1 text-center">
         <h1 className="font-display text-3xl tracking-wide">
-          {mode === "signup" ? "Créez votre compte." : "Content de vous revoir 👋"}
+          {mode === "signup" ? t.signupTitle : t.loginTitle}
         </h1>
         <p className="text-sm text-white/60">
-          {mode === "signup"
-            ? "Créez votre profil en 2 minutes."
-            : "Connectez-vous pour retrouver vos randos."}
+          {mode === "signup" ? t.signupSubtitle : t.loginSubtitle}
         </p>
       </div>
 
@@ -110,7 +109,7 @@ export default function AuthForm() {
             mode === "signup" ? "bg-white text-trail-900 shadow" : "text-white/60"
           }`}
         >
-          Inscription
+          {t.tabSignup}
         </button>
         <button
           type="button"
@@ -119,7 +118,7 @@ export default function AuthForm() {
             mode === "login" ? "bg-white text-trail-900 shadow" : "text-white/60"
           }`}
         >
-          Connexion
+          {t.tabLogin}
         </button>
       </div>
 
@@ -130,7 +129,7 @@ export default function AuthForm() {
           className="flex w-full items-center justify-center gap-3 rounded-xl border border-white/20 bg-white/5 py-2.5 text-sm font-semibold text-white transition hover:border-white/40 hover:bg-white/10"
         >
           <GoogleIcon />
-          Continuer avec Google
+          {t.google}
         </button>
         <button
           type="button"
@@ -138,20 +137,20 @@ export default function AuthForm() {
           className="flex w-full items-center justify-center gap-3 rounded-xl border border-white/20 bg-white/5 py-2.5 text-sm font-semibold text-white transition hover:border-white/40 hover:bg-white/10"
         >
           <FacebookIcon />
-          Continuer avec Facebook
+          {t.facebook}
         </button>
       </div>
 
       <div className="flex items-center gap-3">
         <div className="h-px flex-1 bg-white/10" />
-        <span className="text-xs font-medium uppercase text-white/40">ou</span>
+        <span className="text-xs font-medium uppercase text-white/40">{t.or}</span>
         <div className="h-px flex-1 bg-white/10" />
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-1.5">
           <label htmlFor="email" className="text-sm font-medium text-white/80">
-            Email
+            {t.email}
           </label>
           <input
             id="email"
@@ -159,14 +158,14 @@ export default function AuthForm() {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="vous@exemple.com"
+            placeholder={t.emailPlaceholder}
             className="w-full rounded-xl border border-white/15 bg-white/5 px-4 py-2.5 text-sm text-white placeholder-white/30 outline-none focus:border-summit-400 focus:ring-2 focus:ring-summit-400/20"
           />
         </div>
 
         <div className="space-y-1.5">
           <label htmlFor="password" className="text-sm font-medium text-white/80">
-            Mot de passe
+            {t.password}
           </label>
           <div className="relative">
             <input
@@ -182,7 +181,7 @@ export default function AuthForm() {
             <button
               type="button"
               onClick={() => setShowPassword((v) => !v)}
-              aria-label={showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"}
+              aria-label={showPassword ? t.hidePassword : t.showPassword}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-white/50 hover:text-white"
             >
               <EyeIcon open={showPassword} />
@@ -194,7 +193,7 @@ export default function AuthForm() {
           <div className="space-y-2">
             <div className="flex items-center justify-between text-xs">
               <span className="font-semibold uppercase tracking-widest text-white/40">
-                Niveau de sécurité
+                {t.strengthTitle}
               </span>
               <span className="font-semibold text-white/70">{strengthLabel}</span>
             </div>
@@ -212,11 +211,11 @@ export default function AuthForm() {
                 const ok = check.test(password);
                 return (
                   <span
-                    key={check.label}
+                    key={check.key}
                     className={`flex items-center gap-1 ${ok ? "text-trail-300" : ""}`}
                   >
                     <span aria-hidden="true">{ok ? "✓" : "○"}</span>
-                    {check.label}
+                    {t.checks[check.key]}
                   </span>
                 );
               })}
@@ -233,13 +232,13 @@ export default function AuthForm() {
 
         {mode === "signup" && (
           <p className="text-xs text-white/40">
-            En continuant, vous acceptez nos{" "}
+            {t.termsBefore}{" "}
             <Link href="/mentions-legales#conditions" className="underline hover:text-white/70">
-              Conditions d&apos;utilisation
+              {t.termsConditions}
             </Link>{" "}
-            et notre{" "}
+            {t.termsMiddle}{" "}
             <Link href="/mentions-legales#confidentialite" className="underline hover:text-white/70">
-              Politique de confidentialité
+              {t.termsPrivacy}
             </Link>
             .
           </p>
@@ -250,11 +249,7 @@ export default function AuthForm() {
           disabled={loading}
           className="w-full rounded-xl bg-summit-500 py-3 text-sm font-semibold text-white shadow-lg shadow-summit-500/30 transition hover:bg-summit-600 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {loading
-            ? "Un instant..."
-            : mode === "signup"
-            ? "Créer mon compte"
-            : "Se connecter"}
+          {loading ? t.submitLoading : mode === "signup" ? t.submitSignup : t.submitLogin}
         </button>
       </form>
     </div>

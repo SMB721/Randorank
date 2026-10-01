@@ -10,12 +10,3 @@ export const PREMIUM_TRIAL_DAYS = 7;
 export const PREMIUM_YEARLY_SAVINGS_PERCENT = Math.round(
   (1 - PREMIUM_PRICE.yearly / (PREMIUM_PRICE.monthly * 12)) * 100
 );
-
-export const PREMIUM_FEATURES = [
-  "Randos illimitées : GPS en direct et import GPX",
-  "Générateur de tracé illimité",
-  "Photos illimitées et fiche de partage automatique",
-  "Classement national et régional en entier",
-  "Badges, défis et niveaux",
-  "Historique complet de vos sorties",
-];

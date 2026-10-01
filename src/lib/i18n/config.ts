@@ -39,3 +39,29 @@ export function landingAlternates(): Record<string, string> {
   languages["x-default"] = landingPath(DEFAULT_LOCALE);
   return languages;
 }
+
+/**
+ * The visitor's language is remembered in a cookie set when they view a
+ * landing page, so the (unprefixed) sign-up funnel and checkout can follow
+ * it. It is a UI preference only, not personal data.
+ */
+export const LOCALE_COOKIE = "rr_locale";
+
+/** Stripe Checkout supports these UI locales; ours are a subset. */
+export const STRIPE_LOCALES: Record<Locale, "fr" | "en" | "it" | "es" | "de"> = {
+  fr: "fr",
+  en: "en",
+  it: "it",
+  es: "es",
+  de: "de",
+};
+
+/** Formats an amount in euros the way the locale writes it (6,99 € / €6.99). */
+export function formatEuro(locale: Locale, amount: number): string {
+  return new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency: "EUR",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  }).format(amount);
+}

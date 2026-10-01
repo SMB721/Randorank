@@ -3,21 +3,31 @@
 import { createClient } from "@/lib/supabase/server";
 import { FRENCH_REGIONS } from "@/lib/supabase/types";
 import { validateAnswers, type OnboardingAnswers } from "@/lib/onboarding";
+import { getFunnelDict } from "@/lib/i18n/funnel";
+import { getRequestLocale } from "@/lib/i18n/server";
 
 export async function completeOnboardingAction(
   answers: OnboardingAnswers
-): Promise<{ success: true } | { success: false; error: string }> {
+): Promise<{ success: true } | { success: false; error: string; step?: number }> {
+  // The visitor's language comes from the cookie set on the landing page.
+  const { errors } = getFunnelDict(await getRequestLocale()).onboarding;
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) {
-    return { success: false, error: "Vous devez être connecté·e." };
+    return { success: false, error: errors.notLoggedIn };
   }
 
   const invalid = validateAnswers(answers, FRENCH_REGIONS);
   if (invalid) {
-    return { success: false, error: invalid };
+    // Only the username error is fixed on the first screen; the client
+    // sends the user back there.
+    return {
+      success: false,
+      error: errors[invalid],
+      step: invalid === "nameRequired" || invalid === "nameTooLong" || invalid === "usernameLength" ? 0 : undefined,
+    };
   }
 
   const { error } = await supabase
@@ -42,13 +52,10 @@ export async function completeOnboardingAction(
 
   if (error) {
     console.error("completeOnboardingAction failed:", error.code, error.message);
-    return {
-      success: false,
-      error:
-        error.code === "23505"
-          ? "Ce pseudo est déjà pris, essayez-en un autre."
-          : "Impossible d'enregistrer vos réponses, réessayez.",
-    };
+    // 23505 = unique violation: the username is taken (fixed on screen 1).
+    return error.code === "23505"
+      ? { success: false, error: errors.usernameTaken, step: 0 }
+      : { success: false, error: errors.saveFailed };
   }
 
   return { success: true };

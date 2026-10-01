@@ -4,6 +4,8 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { stripe, PRICE_IDS, type BillingPeriod, type PaidTier } from "@/lib/stripe";
 import { PREMIUM_TRIAL_DAYS } from "@/lib/pricing";
+import { STRIPE_LOCALES } from "@/lib/i18n/config";
+import { getRequestLocale } from "@/lib/i18n/server";
 
 export async function createCheckoutSessionAction(tier: PaidTier, period: BillingPeriod) {
   const supabase = await createClient();
@@ -40,11 +42,14 @@ export async function createCheckoutSessionAction(tier: PaidTier, period: Billin
   }
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  // Stripe's hosted page follows the language the visitor was reading.
+  const locale = STRIPE_LOCALES[await getRequestLocale()];
 
   let checkoutUrl: string | null = null;
   try {
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
+      locale,
       line_items: [{ price: priceId, quantity: 1 }],
       customer: profile?.stripe_customer_id ?? undefined,
       customer_email: profile?.stripe_customer_id ? undefined : (user!.email ?? undefined),

@@ -2,10 +2,15 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import OnboardingFlow from "@/components/onboarding/OnboardingFlow";
 import { EMPTY_ANSWERS } from "@/lib/onboarding";
+import { getFunnelDict } from "@/lib/i18n/funnel";
+import { getRequestLocale } from "@/lib/i18n/server";
 
-export const metadata = { title: "Bienvenue — RandoRank" };
+export async function generateMetadata() {
+  return { title: getFunnelDict(await getRequestLocale()).onboarding.metaTitle };
+}
 
 export default async function BienvenuePage() {
+  const locale = await getRequestLocale();
   const supabase = await createClient();
   const {
     data: { user },
@@ -27,6 +32,8 @@ export default async function BienvenuePage() {
 
   return (
     <OnboardingFlow
+      locale={locale}
+      dict={getFunnelDict(locale).onboarding}
       initial={{
         ...EMPTY_ANSWERS,
         username: profile?.username ?? "",

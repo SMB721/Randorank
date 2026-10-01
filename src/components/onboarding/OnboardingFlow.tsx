@@ -13,59 +13,48 @@ import {
   GOAL_OPTIONS,
   LEVEL_OPTIONS,
   REFERRAL_OPTIONS,
+  localizeOptions,
   type Option,
   type OnboardingAnswers,
 } from "@/lib/onboarding";
+import HtmlLang from "@/components/HtmlLang";
+import { landingPath, type Locale } from "@/lib/i18n/config";
+import type { FunnelDict } from "@/lib/i18n/funnel";
 
-type Step = {
-  title: string;
-  subtitle: string;
-  isValid: (a: OnboardingAnswers) => boolean;
-};
-
-const STEPS: Step[] = [
-  {
-    title: "On fait connaissance ?",
-    subtitle: "Votre prénom, votre nom, et le pseudo qui s'affichera sur le classement.",
-    isValid: (a) =>
-      !!a.firstName.trim() && !!a.lastName.trim() && a.username.trim().length >= 2,
-  },
-  {
-    title: "Votre niveau, en toute honnêteté.",
-    subtitle: "Pas de jugement — le classement, lui, tranchera avec vos vrais kilomètres.",
-    isValid: (a) => !!a.declaredLevel && !!a.experience,
-  },
-  {
-    title: "Votre rythme de croisière.",
-    subtitle: "Soyez sincère, personne ne compte. Enfin si, le classement.",
-    isValid: (a) => !!a.frequency && !!a.typicalDistance,
-  },
-  {
-    title: "Où marchez-vous d'habitude ?",
-    subtitle: "Votre région alimente le classement régional. Le lieu précis est facultatif.",
-    isValid: (a) => !!a.region,
-  },
-  {
-    title: "Ce qui vous fait sortir.",
-    subtitle: "Votre moteur, et de quoi on peut se servir pour suivre vos sorties.",
-    isValid: (a) => !!a.goal && !!a.gear,
-  },
-  {
-    title: "Comment nous avez-vous trouvés ?",
-    subtitle: "Dernière question sur nous, promis.",
-    isValid: (a) => !!a.referral,
-  },
-  {
-    title: "Vos traces, votre vie privée.",
-    subtitle: "Un tracé GPS peut révéler votre domicile. À vous de décider.",
-    isValid: (a) => a.consent,
-  },
+// Per-screen validation (the matching titles live in the dictionary, in the
+// same order).
+const STEP_VALIDATORS: ((a: OnboardingAnswers) => boolean)[] = [
+  (a) => !!a.firstName.trim() && !!a.lastName.trim() && a.username.trim().length >= 2,
+  (a) => !!a.declaredLevel && !!a.experience,
+  (a) => !!a.frequency && !!a.typicalDistance,
+  (a) => !!a.region,
+  (a) => !!a.goal && !!a.gear,
+  (a) => !!a.referral,
+  (a) => a.consent,
 ];
 
 const inputClass =
   "w-full rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-base text-white placeholder-white/30 outline-none focus:border-summit-400 focus:ring-2 focus:ring-summit-400/20";
 
-export default function OnboardingFlow({ initial }: { initial: OnboardingAnswers }) {
+export default function OnboardingFlow({
+  initial,
+  locale,
+  dict: t,
+}: {
+  initial: OnboardingAnswers;
+  locale: Locale;
+  dict: FunnelDict["onboarding"];
+}) {
+  const STEPS = t.steps;
+  const opt = {
+    level: localizeOptions(LEVEL_OPTIONS, t.options.level),
+    experience: localizeOptions(EXPERIENCE_OPTIONS, t.options.experience),
+    frequency: localizeOptions(FREQUENCY_OPTIONS, t.options.frequency),
+    distance: localizeOptions(DISTANCE_OPTIONS, t.options.distance),
+    goal: localizeOptions(GOAL_OPTIONS, t.options.goal),
+    gear: localizeOptions(GEAR_OPTIONS, t.options.gear),
+    referral: localizeOptions(REFERRAL_OPTIONS, t.options.referral),
+  };
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<OnboardingAnswers>(initial);
@@ -74,7 +63,7 @@ export default function OnboardingFlow({ initial }: { initial: OnboardingAnswers
 
   const isLast = step === STEPS.length - 1;
   const current = STEPS[step];
-  const canContinue = current.isValid(answers);
+  const canContinue = STEP_VALIDATORS[step](answers);
 
   function set<K extends keyof OnboardingAnswers>(key: K, value: OnboardingAnswers[K]) {
     setAnswers((prev) => ({ ...prev, [key]: value }));
@@ -92,8 +81,8 @@ export default function OnboardingFlow({ initial }: { initial: OnboardingAnswers
     if (!result.success) {
       setLoading(false);
       setError(result.error);
-      // A taken username is the one error the user fixes on the first screen.
-      if (result.error.includes("pseudo")) setStep(0);
+      // Name and username errors are fixed on the first screen.
+      if (result.step !== undefined) setStep(result.step);
       return;
     }
     router.push("/bienvenue/paywall");
@@ -111,8 +100,9 @@ export default function OnboardingFlow({ initial }: { initial: OnboardingAnswers
 
   return (
     <main className="flex min-h-screen flex-col bg-trail-950 px-6 pb-8 pt-6 text-white">
+      <HtmlLang locale={locale} />
       <header className="mx-auto flex w-full max-w-md items-center justify-between">
-        <Link href="/" className="font-display text-2xl tracking-wide">
+        <Link href={landingPath(locale)} className="font-display text-2xl tracking-wide">
           RANDO<span className="text-summit-400">RANK</span>
         </Link>
         <span className="text-xs font-semibold uppercase tracking-widest text-white/40">
@@ -136,7 +126,7 @@ export default function OnboardingFlow({ initial }: { initial: OnboardingAnswers
             <>
               <input
                 className={inputClass}
-                placeholder="Prénom"
+                placeholder={t.firstName}
                 autoComplete="given-name"
                 maxLength={50}
                 value={answers.firstName}
@@ -144,7 +134,7 @@ export default function OnboardingFlow({ initial }: { initial: OnboardingAnswers
               />
               <input
                 className={inputClass}
-                placeholder="Nom"
+                placeholder={t.lastName}
                 autoComplete="family-name"
                 maxLength={50}
                 value={answers.lastName}
@@ -152,35 +142,35 @@ export default function OnboardingFlow({ initial }: { initial: OnboardingAnswers
               />
               <input
                 className={inputClass}
-                placeholder="Pseudo (classement)"
+                placeholder={t.username}
                 maxLength={30}
                 value={answers.username}
                 onChange={(e) => set("username", e.target.value)}
               />
               <p className="text-xs text-white/40">
-                Seul le pseudo est visible des autres. Prénom et nom restent privés.
+                {t.usernameHint}
               </p>
             </>
           )}
 
           {step === 1 && (
             <>
-              <Group label="Votre niveau">
-                <Choices compact options={LEVEL_OPTIONS} value={answers.declaredLevel} onPick={(v) => pick("declaredLevel", v)} />
+              <Group label={t.groupLevel}>
+                <Choices compact options={opt.level} value={answers.declaredLevel} onPick={(v) => pick("declaredLevel", v)} />
               </Group>
-              <Group label="Vous randonnez depuis">
-                <Choices compact options={EXPERIENCE_OPTIONS} value={answers.experience} onPick={(v) => pick("experience", v)} />
+              <Group label={t.groupExperience}>
+                <Choices compact options={opt.experience} value={answers.experience} onPick={(v) => pick("experience", v)} />
               </Group>
             </>
           )}
 
           {step === 2 && (
             <>
-              <Group label="Vos sorties">
-                <Choices compact options={FREQUENCY_OPTIONS} value={answers.frequency} onPick={(v) => pick("frequency", v)} />
+              <Group label={t.groupFrequency}>
+                <Choices compact options={opt.frequency} value={answers.frequency} onPick={(v) => pick("frequency", v)} />
               </Group>
-              <Group label="Votre sortie type">
-                <Choices compact options={DISTANCE_OPTIONS} value={answers.typicalDistance} onPick={(v) => pick("typicalDistance", v)} />
+              <Group label={t.groupDistance}>
+                <Choices compact options={opt.distance} value={answers.typicalDistance} onPick={(v) => pick("typicalDistance", v)} />
               </Group>
             </>
           )}
@@ -193,7 +183,7 @@ export default function OnboardingFlow({ initial }: { initial: OnboardingAnswers
                 onChange={(e) => set("region", e.target.value)}
               >
                 <option value="" className="text-trail-900">
-                  Choisissez votre région
+                  {t.regionPlaceholder}
                 </option>
                 {FRENCH_REGIONS.map((r) => (
                   <option key={r} value={r} className="text-trail-900">
@@ -203,7 +193,7 @@ export default function OnboardingFlow({ initial }: { initial: OnboardingAnswers
               </select>
               <input
                 className={inputClass}
-                placeholder="Massif, ville ou spot habituel (facultatif)"
+                placeholder={t.areaPlaceholder}
                 maxLength={80}
                 value={answers.usualArea}
                 onChange={(e) => set("usualArea", e.target.value)}
@@ -213,16 +203,16 @@ export default function OnboardingFlow({ initial }: { initial: OnboardingAnswers
 
           {step === 4 && (
             <>
-              <Group label="Votre moteur">
-                <Choices compact options={GOAL_OPTIONS} value={answers.goal} onPick={(v) => pick("goal", v)} />
+              <Group label={t.groupGoal}>
+                <Choices compact options={opt.goal} value={answers.goal} onPick={(v) => pick("goal", v)} />
               </Group>
-              <Group label="Vous enregistrez vos sorties avec">
-                <Choices compact options={GEAR_OPTIONS} value={answers.gear} onPick={(v) => pick("gear", v)} />
+              <Group label={t.groupGear}>
+                <Choices compact options={opt.gear} value={answers.gear} onPick={(v) => pick("gear", v)} />
               </Group>
             </>
           )}
 
-          {step === 5 && <Choices compact options={REFERRAL_OPTIONS} value={answers.referral} onPick={(v) => pick("referral", v, true)} />}
+          {step === 5 && <Choices compact options={opt.referral} value={answers.referral} onPick={(v) => pick("referral", v, true)} />}
 
           {step === 6 && (
             <>
@@ -234,10 +224,9 @@ export default function OnboardingFlow({ initial }: { initial: OnboardingAnswers
                   onChange={(e) => set("blurEndpoints", e.target.checked)}
                 />
                 <span className="text-sm">
-                  <span className="font-semibold">Flouter mon départ et mon arrivée</span>
+                  <span className="font-semibold">{t.blurTitle}</span>
                   <span className="block text-white/50">
-                    Recommandé : les premiers et derniers points de vos tracés ne sont pas
-                    montrés. Modifiable à tout moment dans votre profil.
+                    {t.blurText}
                   </span>
                 </span>
               </label>
@@ -249,12 +238,11 @@ export default function OnboardingFlow({ initial }: { initial: OnboardingAnswers
                   onChange={(e) => set("consent", e.target.checked)}
                 />
                 <span className="text-sm text-white/80">
-                  J&apos;accepte que RandoRank traite mes traces GPS pour calculer mes stats,
-                  mes défis et mon classement, conformément à la{" "}
+                  {t.consentBefore}{" "}
                   <Link href="/mentions-legales#confidentialite" className="underline">
-                    politique de confidentialité
+                    {t.consentLink}
                   </Link>
-                  .
+                  {t.consentAfter}
                 </span>
               </label>
             </>
@@ -273,7 +261,7 @@ export default function OnboardingFlow({ initial }: { initial: OnboardingAnswers
             onClick={() => setStep((s) => s - 1)}
             className="rounded-xl border border-white/20 px-5 py-3 text-sm font-semibold text-white/80 transition hover:border-white/40"
           >
-            Retour
+            {t.back}
           </button>
         )}
         <button
@@ -282,7 +270,7 @@ export default function OnboardingFlow({ initial }: { initial: OnboardingAnswers
           disabled={!canContinue || loading}
           className="flex-1 rounded-xl bg-summit-500 py-3 text-sm font-semibold text-white shadow-lg shadow-summit-500/30 transition hover:bg-summit-600 disabled:cursor-not-allowed disabled:opacity-40"
         >
-          {loading ? "Un instant..." : isLast ? "Terminer" : "Continuer"}
+          {loading ? t.loading : isLast ? t.finish : t.next}
         </button>
       </footer>
     </main>

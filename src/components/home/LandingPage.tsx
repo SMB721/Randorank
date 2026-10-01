@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import LocaleCookie from "@/components/LocaleCookie";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import FaqAccordion from "@/components/home/FaqAccordion";
@@ -55,6 +56,7 @@ export default async function LandingPage({ locale }: { locale: Locale }) {
 
   return (
     <>
+      <LocaleCookie locale={locale} />
       <Header locale={locale} dict={t.header} />
 
       <main>

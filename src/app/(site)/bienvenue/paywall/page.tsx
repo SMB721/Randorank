@@ -2,10 +2,19 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { isPaidTier } from "@/lib/gating";
 import PaywallScreen from "@/components/onboarding/PaywallScreen";
-import { EXPERIENCE_OPTIONS, GOAL_OPTIONS, LEVEL_OPTIONS } from "@/lib/onboarding";
+import {
+  EXPERIENCE_OPTIONS,
+  GOAL_OPTIONS,
+  LEVEL_OPTIONS,
+  localizeOptions,
+} from "@/lib/onboarding";
+import { getFunnelDict } from "@/lib/i18n/funnel";
+import { getRequestLocale } from "@/lib/i18n/server";
 import type { Profile } from "@/lib/supabase/types";
 
-export const metadata = { title: "Votre profil est prêt — RandoRank" };
+export async function generateMetadata() {
+  return { title: getFunnelDict(await getRequestLocale()).paywall.metaTitle };
+}
 
 type Recap = Pick<
   Profile,
@@ -55,16 +64,24 @@ export default async function PaywallPage({
   }
 
   const { checkout } = await searchParams;
+  const locale = await getRequestLocale();
+  const dict = getFunnelDict(locale);
+  const { options } = dict.onboarding;
 
   return (
     <PaywallScreen
+      locale={locale}
+      dict={dict.paywall}
       firstName={profile.first_name}
-      level={label(LEVEL_OPTIONS, profile.declared_level)}
-      experience={label(EXPERIENCE_OPTIONS, profile.hiking_experience)}
+      level={label(localizeOptions(LEVEL_OPTIONS, options.level), profile.declared_level)}
+      experience={label(
+        localizeOptions(EXPERIENCE_OPTIONS, options.experience),
+        profile.hiking_experience
+      )}
       region={profile.region}
       area={profile.usual_area}
       goal={profile.goal}
-      goalLabel={label(GOAL_OPTIONS, profile.goal)}
+      goalLabel={label(localizeOptions(GOAL_OPTIONS, options.goal), profile.goal)}
       checkoutStatus={checkout ?? null}
     />
   );
