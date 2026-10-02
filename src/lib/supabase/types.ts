@@ -186,6 +186,8 @@ export const FRENCH_REGIONS = [
   "Autre / étranger",
 ] as const;
 
+export const USER_LEVELS: UserLevel[] = ["debutant", "amateur", "avance"];
+
 export const USER_LEVEL_LABELS: Record<UserLevel, string> = {
   debutant: "Débutant",
   amateur: "Amateur",

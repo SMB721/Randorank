@@ -2,6 +2,7 @@ import { ImageResponse } from "next/og";
 import { createClient } from "@/lib/supabase/server";
 import { formatDate, formatDuration } from "@/lib/format";
 import type { Hike } from "@/lib/supabase/types";
+import { getT } from "@/lib/i18n/app/server";
 
 export const runtime = "nodejs";
 
@@ -15,6 +16,9 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
+  // The card is generated in the language the user is browsing in.
+  const tr = await getT();
+  const { t, locale } = tr;
   const supabase = await createClient();
   const {
     data: { user },
@@ -58,10 +62,10 @@ export async function GET(
   }
 
   const stats = [
-    { label: "DISTANCE", value: `${hike.distance_km} km` },
-    { label: "DÉNIVELÉ +", value: `${hike.elevation_gain_m} m` },
-    { label: "DURÉE", value: formatDuration(hike.duration_seconds) },
-    { label: "VITESSE MOY.", value: `${hike.avg_speed_kmh} km/h` },
+    { label: t("hike.stat.distance").toLocaleUpperCase(locale), value: `${hike.distance_km} km` },
+    { label: t("hike.stat.elevation").toLocaleUpperCase(locale), value: `${hike.elevation_gain_m} m` },
+    { label: t("hike.stat.duration").toLocaleUpperCase(locale), value: formatDuration(hike.duration_seconds) },
+    { label: t("hike.stat.speed").toLocaleUpperCase(locale), value: `${hike.avg_speed_kmh} km/h` },
   ];
 
   return new ImageResponse(
@@ -127,7 +131,7 @@ export async function GET(
 
           <div style={{ display: "flex", flexDirection: "column" }}>
             <div style={{ display: "flex", fontSize: 20, color: "rgba(255,255,255,0.6)" }}>
-              {formatDate(hike.started_at)}
+              {formatDate(hike.started_at, tr)}
             </div>
             <div
               style={{
@@ -164,7 +168,7 @@ export async function GET(
 
           {showTagline && (
             <div style={{ display: "flex", fontSize: 18, color: "rgba(255,255,255,0.5)" }}>
-              Chaque sentier devient un défi.
+              {t("shareImage.tagline")}
             </div>
           )}
         </div>

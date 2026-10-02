@@ -4,11 +4,14 @@ import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import FriendsSearch from "@/components/dashboard/FriendsSearch";
 import SpotCarousel from "@/components/dashboard/SpotCarousel";
 import { createClient } from "@/lib/supabase/server";
-import { USER_LEVEL_LABELS, type PublicProfile, type Spot } from "@/lib/supabase/types";
+import type { PublicProfile, Spot } from "@/lib/supabase/types";
+import { getT } from "@/lib/i18n/app/server";
+import { levelKey } from "@/lib/i18n/app/labels";
 
 const FRIENDS_PREVIEW_COUNT = 3;
 
 export default async function CommunautePage() {
+  const { t } = await getT();
   const supabase = await createClient();
   const {
     data: { user },
@@ -41,26 +44,23 @@ export default async function CommunautePage() {
       <DashboardHeader />
 
       <div className="mx-auto mt-10 max-w-3xl">
-        <h1 className="font-display text-4xl tracking-wide text-trail-900">Communauté</h1>
-        <p className="mt-1 text-trail-600">
-          Vos amis, les spots partagés et ce qui se passe autour de vous.
-        </p>
+        <h1 className="font-display text-4xl tracking-wide text-trail-900">{t("comm.title")}</h1>
+        <p className="mt-1 text-trail-600">{t("comm.subtitle")}</p>
 
         <section className="mt-8">
           <div className="flex items-center justify-between">
-            <h2 className="font-display text-2xl tracking-wide text-trail-900">Vos amis</h2>
+            <h2 className="font-display text-2xl tracking-wide text-trail-900">{t("comm.friends")}</h2>
             <Link
               href="/dashboard/classement?scope=amis"
               className="text-sm font-semibold text-summit-600 hover:underline"
             >
-              Classement entre amis →
+              {t("comm.friendsRanking")}
             </Link>
           </div>
 
           {topFriends.length === 0 ? (
             <p className="mt-3 rounded-2xl border border-dashed border-trail-300 bg-white p-6 text-center text-sm text-trail-500">
-              Vous ne suivez personne pour l&apos;instant — cherchez un pseudo ci-dessous pour
-              commencer.
+              {t("comm.noFriends")}
             </p>
           ) : (
             <div className="mt-3 space-y-2">
@@ -84,11 +84,11 @@ export default async function CommunautePage() {
                     )}
                     <div className="min-w-0">
                       <p className="truncate font-semibold text-trail-900">
-                        {friend.username || "Randonneur anonyme"}
+                        {friend.username || t("rank.anonymous")}
                       </p>
                       <p className="truncate text-xs text-trail-500">
-                        {friend.region || "Région non renseignée"} ·{" "}
-                        {USER_LEVEL_LABELS[friend.user_level]}
+                        {friend.region || t("rank.regionMissing")} ·{" "}
+                        {t(levelKey(friend.user_level))}
                       </p>
                     </div>
                   </div>
@@ -107,11 +107,9 @@ export default async function CommunautePage() {
 
         <section className="mt-10">
           <h2 className="font-display text-2xl tracking-wide text-trail-900">
-            Spots partagés
+            {t("comm.spots")}
           </h2>
-          <p className="mt-1 text-sm text-trail-500">
-            Découvrez les spots partagés par la communauté RandoRank.
-          </p>
+          <p className="mt-1 text-sm text-trail-500">{t("comm.spotsText")}</p>
           <div className="overflow-hidden rounded-2xl bg-trail-950 px-4 pb-4">
             <SpotCarousel spots={spots ?? []} />
           </div>

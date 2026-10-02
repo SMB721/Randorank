@@ -6,11 +6,12 @@ import { unfollowUserAction } from "@/app/(site)/dashboard/(premium)/classement/
 import { createClient } from "@/lib/supabase/server";
 import {
   FRENCH_REGIONS,
-  USER_LEVEL_LABELS,
+  USER_LEVELS,
   type PublicProfile,
   type SubscriptionTier,
-  type UserLevel,
 } from "@/lib/supabase/types";
+import { getT } from "@/lib/i18n/app/server";
+import { levelKey } from "@/lib/i18n/app/labels";
 
 const TOP_N = 50;
 
@@ -27,6 +28,7 @@ export default async function ClassementPage({
   searchParams: Promise<{ scope?: string; region?: string; niveau?: string }>;
 }) {
   const params = await searchParams;
+  const { t } = await getT();
   const scope: Scope =
     params.scope === "regional" ? "regional" : params.scope === "amis" ? "amis" : "national";
   const niveau = params.niveau || undefined;
@@ -101,23 +103,23 @@ export default async function ClassementPage({
 
       <div className="mx-auto mt-10 max-w-3xl">
         <h1 className="font-display text-4xl tracking-wide text-trail-900">
-          Classement
+          {t("rank.title")}
         </h1>
         <p className="mt-1 text-trail-600">
-          Les kilomètres réellement parcourus vous font grimper.
+          {t("rank.subtitle")}
         </p>
 
         {me && (
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
             <div className="rounded-2xl border border-summit-300 bg-summit-50 p-5">
               <p className="text-xs font-semibold uppercase tracking-widest text-summit-600">
-                Position nationale
+                {t("rank.myNational")}
               </p>
               <p className="mt-1 font-display text-3xl text-trail-900">#{me.national_rank}</p>
             </div>
             <div className="rounded-2xl border border-trail-200 bg-white p-5">
               <p className="text-xs font-semibold uppercase tracking-widest text-trail-500">
-                Position en {me.region || "votre région"}
+                {t("rank.myRegional", { region: me.region || t("rank.yourRegion") })}
               </p>
               <p className="mt-1 font-display text-3xl text-trail-900">#{me.regional_rank}</p>
             </div>
@@ -132,7 +134,7 @@ export default async function ClassementPage({
               scope === "national" ? "bg-trail-900 text-white" : "text-trail-600"
             }`}
           >
-            National
+            {t("rank.tab.national")}
           </Link>
           <Link
             href={hrefFor({ scope: "regional" })}
@@ -140,7 +142,7 @@ export default async function ClassementPage({
               scope === "regional" ? "bg-trail-900 text-white" : "text-trail-600"
             }`}
           >
-            Par région
+            {t("rank.tab.regional")}
           </Link>
           <Link
             href={hrefFor({ scope: "amis" })}
@@ -148,7 +150,7 @@ export default async function ClassementPage({
               scope === "amis" ? "bg-trail-900 text-white" : "text-trail-600"
             }`}
           >
-            Entre amis
+            {t("rank.tab.friends")}
           </Link>
         </div>
 
@@ -179,10 +181,10 @@ export default async function ClassementPage({
               defaultValue={niveau ?? ""}
               className="rounded-xl border border-trail-200 bg-white px-4 py-2 text-sm text-trail-700"
             >
-              <option value="">Tous les niveaux</option>
-              {(Object.keys(USER_LEVEL_LABELS) as UserLevel[]).map((lvl) => (
+              <option value="">{t("rank.allLevels")}</option>
+              {USER_LEVELS.map((lvl) => (
                 <option key={lvl} value={lvl}>
-                  {USER_LEVEL_LABELS[lvl]}
+                  {t(levelKey(lvl))}
                 </option>
               ))}
             </select>
@@ -191,7 +193,7 @@ export default async function ClassementPage({
               type="submit"
               className="rounded-xl bg-trail-900 px-5 py-2 text-sm font-semibold text-white transition hover:bg-trail-800"
             >
-              Filtrer
+              {t("rank.filter")}
             </button>
           </form>
         )}
@@ -200,16 +202,13 @@ export default async function ClassementPage({
         <div className="mt-6 space-y-2">
           {rows.length === 0 ? (
             <p className="rounded-2xl border border-dashed border-trail-300 bg-white p-6 text-center text-sm text-trail-500">
-              {scope === "amis"
-                ? "Vous ne suivez personne pour l'instant — cherchez un pseudo ci-dessus pour commencer."
-                : "Personne dans ce filtre pour l'instant — élargissez votre recherche ou revenez bientôt, la communauté grandit vite."}
+              {scope === "amis" ? t("rank.empty.friends") : t("rank.empty.other")}
             </p>
           ) : (
             <>
               {scope !== "amis" && rows.length < 5 && (
                 <p className="rounded-xl bg-trail-100 px-4 py-2 text-xs text-trail-600">
-                  Encore peu de randonneurs dans ce filtre — élargissez la recherche pour un
-                  classement plus complet.
+                  {t("rank.fewNotice")}
                 </p>
               )}
               {rows.map((row) => (
@@ -239,7 +238,7 @@ export default async function ClassementPage({
                     )}
                     <div className="min-w-0">
                       <p className="flex items-center gap-2 font-semibold text-trail-900">
-                        <span className="truncate">{row.username || "Randonneur anonyme"}</span>
+                        <span className="truncate">{row.username || t("rank.anonymous")}</span>
                         {TIER_BADGE[row.subscription_tier] && (
                           <span className="shrink-0 rounded-full bg-summit-100 px-2 py-0.5 text-[10px] font-semibold uppercase text-summit-700">
                             {TIER_BADGE[row.subscription_tier]}
@@ -247,8 +246,8 @@ export default async function ClassementPage({
                         )}
                       </p>
                       <p className="truncate text-xs text-trail-500">
-                        {row.region || "Région non renseignée"} ·{" "}
-                        {USER_LEVEL_LABELS[row.user_level]}
+                        {row.region || t("rank.regionMissing")} ·{" "}
+                        {t(levelKey(row.user_level))}
                       </p>
                     </div>
                   </div>
@@ -262,7 +261,7 @@ export default async function ClassementPage({
                           type="submit"
                           className="whitespace-nowrap text-xs font-semibold text-trail-400 hover:text-red-600 hover:underline"
                         >
-                          Ne plus suivre
+                          {t("rank.unfollow")}
                         </button>
                       </form>
                     )}
@@ -271,8 +270,7 @@ export default async function ClassementPage({
               ))}
               {scope !== "amis" && !meVisible && me && (
                 <p className="pt-2 text-center text-xs text-trail-400">
-                  Vous n&apos;apparaissez pas dans ce top {TOP_N} filtré — voyez votre
-                  position ci-dessus.
+                  {t("rank.notVisible", { n: TOP_N })}
                 </p>
               )}
             </>

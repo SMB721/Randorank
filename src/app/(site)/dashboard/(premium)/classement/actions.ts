@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import type { PublicProfile } from "@/lib/supabase/types";
+import { getT } from "@/lib/i18n/app/server";
 
 const SEARCH_LIMIT = 8;
 
@@ -27,11 +28,12 @@ export async function searchProfilesAction(query: string): Promise<SearchResult[
 }
 
 export async function followUserAction(followedId: string): Promise<{ error?: string }> {
+  const { t } = await getT();
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  if (!user) return { error: "Vous devez être connecté·e." };
+  if (!user) return { error: t("action.notLoggedIn") };
 
   const { error } = await supabase
     .from("follows")

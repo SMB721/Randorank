@@ -8,7 +8,18 @@ export type GeneratedRoute = {
   elevationGainM: number;
 };
 
-export class GraphHopperError extends Error {}
+// Errors carry a code (translated where shown); "serviceFailed" may also
+// carry the provider's own message in `detail`.
+export type GraphHopperErrorCode = "keyMissing" | "serviceFailed" | "noRoute";
+export class GraphHopperError extends Error {
+  constructor(
+    public code: GraphHopperErrorCode,
+    public detail?: string
+  ) {
+    super(detail ?? code);
+    this.name = "GraphHopperError";
+  }
+}
 
 // GraphHopper's round_trip algorithm builds a walking loop of roughly the
 // requested distance from a single starting point — it already covers the
@@ -22,9 +33,7 @@ export async function generateRoundTripRoute(params: {
 }): Promise<GeneratedRoute> {
   const apiKey = process.env.GRAPHHOPPER_API_KEY;
   if (!apiKey) {
-    throw new GraphHopperError(
-      "Génération de tracé indisponible : clé GraphHopper manquante côté serveur."
-    );
+    throw new GraphHopperError("keyMissing");
   }
 
   const url = new URL(GRAPHHOPPER_URL);
@@ -41,13 +50,12 @@ export async function generateRoundTripRoute(params: {
   const body = await res.json();
 
   if (!res.ok) {
-    const message = body?.message || "Le service de génération de tracé a échoué.";
-    throw new GraphHopperError(message);
+    throw new GraphHopperError("serviceFailed", body?.message || undefined);
   }
 
   const path = body?.paths?.[0];
   if (!path?.points?.coordinates?.length) {
-    throw new GraphHopperError("Aucun tracé trouvé autour de ce point de départ.");
+    throw new GraphHopperError("noRoute");
   }
 
   return {

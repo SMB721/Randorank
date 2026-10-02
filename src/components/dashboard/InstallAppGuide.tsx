@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { dismissInstallPromptAction } from "@/app/(site)/dashboard/installer/actions";
+import { useT } from "@/lib/i18n/app/client";
+import type { DictKey } from "@/lib/i18n/app";
 
 type Platform = "iphone" | "android";
 
@@ -18,19 +20,20 @@ function detectDefaultPlatform(): Platform {
   return /iphone|ipad|ipod/i.test(navigator.userAgent) ? "iphone" : "android";
 }
 
-const androidSteps = [
-  { icon: "⋮", text: "Ouvrez le menu de votre navigateur (en haut à droite)." },
-  { icon: "⬇️", text: "Choisissez « Installer l'application » (ou « Ajouter à l'écran d'accueil »)." },
-  { icon: "✓", text: "Validez avec « Installer »." },
+const androidSteps: { icon: string; text: DictKey }[] = [
+  { icon: "⋮", text: "guide.android.1" },
+  { icon: "⬇️", text: "guide.android.2" },
+  { icon: "✓", text: "guide.android.3" },
 ];
 
-const iphoneSteps = [
-  { icon: "⬆️", text: "Appuyez sur le bouton Partager, en bas de Safari." },
-  { icon: "➕", text: "Faites défiler et choisissez « Sur l'écran d'accueil »." },
-  { icon: "✓", text: "Appuyez sur « Ajouter », en haut à droite." },
+const iphoneSteps: { icon: string; text: DictKey }[] = [
+  { icon: "⬆️", text: "guide.iphone.1" },
+  { icon: "➕", text: "guide.iphone.2" },
+  { icon: "✓", text: "guide.iphone.3" },
 ];
 
 export default function InstallAppGuide() {
+  const { t } = useT();
   const [platform, setPlatform] = useState<Platform>("android");
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [installed, setInstalled] = useState(false);
@@ -71,17 +74,17 @@ export default function InstallAppGuide() {
     return (
       <div className="rounded-2xl border border-trail-200 bg-trail-50 p-6 text-center">
         <p className="font-display text-2xl tracking-wide text-trail-900">
-          RandoRank est installé 🎉
+          {t("guide.installed")}
         </p>
         <p className="mt-2 text-sm text-trail-600">
-          Retrouvez l&apos;icône sur votre écran d&apos;accueil.
+          {t("guide.installedText")}
         </p>
         <form action={dismissInstallPromptAction}>
           <button
             type="submit"
             className="mt-4 w-full rounded-xl bg-summit-500 py-3 text-sm font-semibold text-white shadow-lg shadow-summit-500/30 transition hover:bg-summit-600"
           >
-            Continuer
+            {t("guide.continue")}
           </button>
         </form>
       </div>
@@ -125,7 +128,7 @@ export default function InstallAppGuide() {
             <span aria-hidden="true" className="text-lg">
               {step.icon}
             </span>
-            <span className="text-sm text-trail-700">{step.text}</span>
+            <span className="text-sm text-trail-700">{t(step.text)}</span>
           </div>
         ))}
       </div>
@@ -136,7 +139,7 @@ export default function InstallAppGuide() {
           onClick={handleInstallClick}
           className="mt-6 w-full rounded-xl bg-summit-500 py-3 text-sm font-semibold text-white shadow-lg shadow-summit-500/30 transition hover:bg-summit-600"
         >
-          Installer RandoRank maintenant
+          {t("guide.installNow")}
         </button>
       )}
 
@@ -145,7 +148,7 @@ export default function InstallAppGuide() {
           type="submit"
           className="mt-4 w-full rounded-xl border-2 border-trail-200 py-3 text-center text-sm font-semibold text-trail-700 transition hover:border-trail-400"
         >
-          Plus tard, continuer
+          {t("guide.later")}
         </button>
       </form>
     </div>

@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useT } from "@/lib/i18n/app/client";
 import { describeWeatherCode, fetchWeather, isGoodHikingDay, type WeatherNow } from "@/lib/weather";
 
 type Status = "loading" | "ready" | "denied" | "error";
 
-const DAY_LABELS = ["Aujourd'hui", "Demain", "", ""];
-
 export default function WeatherWidget() {
+  const { t, locale } = useT();
   const [status, setStatus] = useState<Status>(() =>
     typeof navigator === "undefined" || !("geolocation" in navigator) ? "error" : "loading"
   );
@@ -35,8 +35,8 @@ export default function WeatherWidget() {
   if (status === "loading") {
     return (
       <div className="mt-6 animate-fade-in-up rounded-2xl border border-white/15 bg-white/10 p-6 text-white backdrop-blur-md">
-        <p className="text-xs font-semibold uppercase tracking-widest text-white/50">Météo</p>
-        <p className="mt-2 text-sm text-white/60">Localisation en cours...</p>
+        <p className="text-xs font-semibold uppercase tracking-widest text-white/50">{t("weather.title")}</p>
+        <p className="mt-2 text-sm text-white/60">{t("weather.locating")}</p>
       </div>
     );
   }
@@ -44,11 +44,9 @@ export default function WeatherWidget() {
   if (status === "denied" || status === "error" || !weather) {
     return (
       <div className="mt-6 animate-fade-in-up rounded-2xl border border-white/15 bg-white/10 p-6 text-white backdrop-blur-md">
-        <p className="text-xs font-semibold uppercase tracking-widest text-white/50">Météo</p>
+        <p className="text-xs font-semibold uppercase tracking-widest text-white/50">{t("weather.title")}</p>
         <p className="mt-2 text-sm text-white/60">
-          {status === "denied"
-            ? "Autorisez la géolocalisation pour voir la météo de votre position."
-            : "Météo indisponible pour le moment."}
+          {status === "denied" ? t("weather.denied") : t("weather.unavailable")}
         </p>
       </div>
     );
@@ -60,7 +58,7 @@ export default function WeatherWidget() {
     <div className="mt-6 animate-fade-in-up rounded-2xl border border-white/15 bg-white/10 p-6 text-white backdrop-blur-md">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-widest text-white/50">Météo</p>
+          <p className="text-xs font-semibold uppercase tracking-widest text-white/50">{t("weather.title")}</p>
           <div className="mt-1 flex items-center gap-2">
             <span className="text-3xl" aria-hidden="true">
               {now.emoji}
@@ -68,7 +66,7 @@ export default function WeatherWidget() {
             <span className="font-display text-3xl tracking-wide">{weather.tempC}°C</span>
           </div>
           <p className="mt-1 text-sm text-white/60">
-            {now.label} · vent {weather.windKmh} km/h
+            {t("weather.summary", { label: t(now.label), kmh: weather.windKmh })}
           </p>
         </div>
 
@@ -86,8 +84,9 @@ export default function WeatherWidget() {
                 }`}
               >
                 <p className="truncate text-[10px] uppercase tracking-widest text-white/50">
-                  {DAY_LABELS[i + 1] ||
-                    new Date(day.date).toLocaleDateString("fr-FR", { weekday: "short" })}
+                  {i === 0
+                    ? t("weather.tomorrow")
+                    : new Date(day.date).toLocaleDateString(locale, { weekday: "short" })}
                 </p>
                 <p className="mt-1 text-lg" aria-hidden="true">
                   {desc.emoji}
@@ -102,7 +101,7 @@ export default function WeatherWidget() {
       </div>
 
       <p className="mt-3 text-xs text-white/40">
-        Indicatif — vérifiez toujours un bulletin météo officiel avant de partir en montagne.
+        {t("weather.disclaimer")}
       </p>
     </div>
   );

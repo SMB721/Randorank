@@ -3,8 +3,10 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { importGpxAction } from "@/app/(site)/dashboard/(premium)/randos/actions";
+import { useT } from "@/lib/i18n/app/client";
 
 export default function ImportGpxForm() {
+  const { t } = useT();
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
   const [loading, setLoading] = useState(false);
@@ -39,7 +41,7 @@ export default function ImportGpxForm() {
     <form ref={formRef} onSubmit={handleSubmit} className="space-y-4">
       <div className="space-y-1.5">
         <label htmlFor="gpx" className="text-sm font-medium text-trail-800">
-          Fichier GPX
+          {t("gpxForm.label")}
         </label>
         <input
           id="gpx"
@@ -54,13 +56,12 @@ export default function ImportGpxForm() {
       {error && <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
       {success && !warning && (
         <p className="rounded-lg bg-trail-50 px-3 py-2 text-sm text-trail-700">
-          Rando importée et comptabilisée dans vos stats ✓
+          {t("gpxForm.success")}
         </p>
       )}
       {success && warning && (
         <p className="rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-800">
-          Rando enregistrée, mais une anomalie a été détectée et elle n&apos;est pas
-          comptabilisée dans vos stats : {warning}
+          {t("gpxForm.warning", { warning })}
         </p>
       )}
 
@@ -69,7 +70,7 @@ export default function ImportGpxForm() {
         disabled={loading}
         className="rounded-xl bg-summit-500 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-summit-500/30 transition hover:bg-summit-600 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {loading ? "Import en cours..." : "Importer"}
+        {loading ? t("gpxForm.loading") : t("gpxForm.submit")}
       </button>
     </form>
   );

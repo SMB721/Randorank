@@ -2,10 +2,12 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useT } from "@/lib/i18n/app/client";
 
 const DISMISS_KEY = "randorank-install-banner-dismissed";
 
 export default function InstallBanner() {
+  const { t } = useT();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -42,19 +44,19 @@ export default function InstallBanner() {
         📲
       </span>
       <div className="flex-1">
-        <p className="text-sm font-semibold">Installez RandoRank</p>
-        <p className="text-xs text-white/60">Accès plus rapide · plein écran</p>
+        <p className="text-sm font-semibold">{t("installBanner.title")}</p>
+        <p className="text-xs text-white/60">{t("installBanner.subtitle")}</p>
       </div>
       <Link
         href="/dashboard/installer"
         className="rounded-lg bg-summit-500 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-summit-600"
       >
-        Installer
+        {t("installBanner.cta")}
       </Link>
       <button
         type="button"
         onClick={handleDismiss}
-        aria-label="Ignorer"
+        aria-label={t("installBanner.dismiss")}
         className="text-white/40 transition hover:text-white/70"
       >
         ✕

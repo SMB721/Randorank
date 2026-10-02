@@ -3,11 +3,14 @@
 import { useState } from "react";
 import HikeMapLoader from "@/components/dashboard/HikeMapLoader";
 import { generateRouteAction, saveRouteAction, type GeneratedRouteResult } from "@/app/(site)/dashboard/(premium)/generateur/actions";
-import { USER_LEVEL_LABELS, type UserLevel } from "@/lib/supabase/types";
+import { USER_LEVELS, type UserLevel } from "@/lib/supabase/types";
+import { useT } from "@/lib/i18n/app/client";
+import { levelKey } from "@/lib/i18n/app/labels";
 
 type GeoStatus = "idle" | "loading" | "ready" | "error";
 
 export default function GenerateurForm() {
+  const { t } = useT();
   const [position, setPosition] = useState<{ lat: number; lon: number } | null>(null);
   const [geoStatus, setGeoStatus] = useState<GeoStatus>("idle");
 
@@ -62,7 +65,7 @@ export default function GenerateurForm() {
     }
 
     setRoute(result.route);
-    setRouteName(`Boucle de ${result.route.distanceKm} km`);
+    setRouteName(t("gen.defaultName", { km: result.route.distanceKm }));
   }
 
   async function handleSave() {
@@ -86,30 +89,27 @@ export default function GenerateurForm() {
     <div className="space-y-6">
       <div className="space-y-4 rounded-2xl border border-trail-200 bg-white p-6">
         <div className="space-y-1.5">
-          <p className="text-sm font-medium text-trail-800">Point de départ</p>
+          <p className="text-sm font-medium text-trail-800">{t("gen.start")}</p>
           <button
             type="button"
             onClick={handleLocate}
             disabled={geoStatus === "loading"}
             className="rounded-xl border border-trail-200 bg-trail-50 px-4 py-2 text-sm font-semibold text-trail-700 transition hover:border-summit-400 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {geoStatus === "loading" ? "Localisation..." : "📍 Utiliser ma position"}
+            {geoStatus === "loading" ? t("gen.locating") : t("gen.locate")}
           </button>
           {geoStatus === "ready" && (
-            <p className="text-sm text-summit-700">Point de départ géolocalisé ✓</p>
+            <p className="text-sm text-summit-700">{t("gen.located")}</p>
           )}
           {geoStatus === "error" && (
-            <p className="text-sm text-red-600">
-              Localisation refusée ou indisponible — autorisez l&apos;accès à votre
-              position pour générer un tracé.
-            </p>
+            <p className="text-sm text-red-600">{t("gen.locError")}</p>
           )}
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-1.5">
             <label htmlFor="distance" className="text-sm font-medium text-trail-800">
-              Distance souhaitée (km)
+              {t("gen.distance")}
             </label>
             <input
               id="distance"
@@ -124,7 +124,7 @@ export default function GenerateurForm() {
 
           <div className="space-y-1.5">
             <label htmlFor="niveau" className="text-sm font-medium text-trail-800">
-              Niveau souhaité
+              {t("gen.level")}
             </label>
             <select
               id="niveau"
@@ -132,10 +132,10 @@ export default function GenerateurForm() {
               onChange={(e) => setNiveau(e.target.value as UserLevel | "")}
               className="w-full rounded-xl border border-trail-200 bg-white px-4 py-2.5 text-sm text-trail-700 outline-none focus:border-summit-400 focus:ring-2 focus:ring-summit-100"
             >
-              <option value="">Peu importe</option>
-              {(Object.keys(USER_LEVEL_LABELS) as UserLevel[]).map((lvl) => (
+              <option value="">{t("gen.anyLevel")}</option>
+              {USER_LEVELS.map((lvl) => (
                 <option key={lvl} value={lvl}>
-                  {USER_LEVEL_LABELS[lvl]}
+                  {t(levelKey(lvl))}
                 </option>
               ))}
             </select>
@@ -150,7 +150,7 @@ export default function GenerateurForm() {
           disabled={!position || loading}
           className="rounded-xl bg-summit-500 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-summit-500/30 transition hover:bg-summit-600 disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {loading ? "Génération en cours..." : route ? "Régénérer" : "Générer un tracé"}
+          {loading ? t("gen.generating") : route ? t("gen.regenerate") : t("gen.generate")}
         </button>
       </div>
 
@@ -163,17 +163,17 @@ export default function GenerateurForm() {
           <div className="grid grid-cols-3 gap-3 text-center">
             <div className="rounded-xl bg-trail-50 p-3">
               <p className="font-display text-xl text-trail-900">{route.distanceKm} km</p>
-              <p className="text-xs uppercase tracking-widest text-trail-500">Distance</p>
+              <p className="text-xs uppercase tracking-widest text-trail-500">{t("gen.statDistance")}</p>
             </div>
             <div className="rounded-xl bg-trail-50 p-3">
               <p className="font-display text-xl text-trail-900">{route.elevationGainM} m</p>
-              <p className="text-xs uppercase tracking-widest text-trail-500">D+</p>
+              <p className="text-xs uppercase tracking-widest text-trail-500">{t("gen.statElevation")}</p>
             </div>
             <div className="rounded-xl bg-trail-50 p-3">
               <p className="font-display text-xl text-trail-900">
-                {USER_LEVEL_LABELS[route.niveau]}
+                {t(levelKey(route.niveau))}
               </p>
-              <p className="text-xs uppercase tracking-widest text-trail-500">Niveau</p>
+              <p className="text-xs uppercase tracking-widest text-trail-500">{t("gen.statLevel")}</p>
             </div>
           </div>
 
@@ -182,7 +182,7 @@ export default function GenerateurForm() {
               type="text"
               value={routeName}
               onChange={(e) => setRouteName(e.target.value)}
-              placeholder="Nom du tracé"
+              placeholder={t("gen.namePlaceholder")}
               className="flex-1 rounded-xl border border-trail-200 bg-white px-4 py-2 text-sm text-trail-700 outline-none focus:border-summit-400 focus:ring-2 focus:ring-summit-100"
             />
             <button
@@ -191,14 +191,11 @@ export default function GenerateurForm() {
               disabled={saving || Boolean(savedRouteId)}
               className="rounded-xl border border-trail-900 px-5 py-2 text-sm font-semibold text-trail-900 transition hover:bg-trail-900 hover:text-white disabled:cursor-not-allowed disabled:opacity-60"
             >
-              {savedRouteId ? "Enregistré ✓" : saving ? "Enregistrement..." : "Enregistrer ce tracé"}
+              {savedRouteId ? t("gen.saved") : saving ? t("gen.saving") : t("gen.save")}
             </button>
           </div>
           {saveError && <p className="text-sm text-red-600">{saveError}</p>}
-          <p className="text-xs text-trail-400">
-            ⚠️ Vérifiez la météo et votre niveau avant de partir — cet itinéraire est
-            indicatif.
-          </p>
+          <p className="text-xs text-trail-400">{t("gen.footnote")}</p>
         </div>
       )}
     </div>

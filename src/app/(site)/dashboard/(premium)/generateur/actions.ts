@@ -4,9 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { classifyRouteLevel, generateRoundTripRoute, GraphHopperError } from "@/lib/graphhopper";
 import { isPaidTier } from "@/lib/gating";
 import type { SubscriptionTier, UserLevel } from "@/lib/supabase/types";
-
-const PAYWALL_ERROR =
-  "La génération de tracé est réservée à Premium. Un abonnement Premium actif est nécessaire.";
+import { getT } from "@/lib/i18n/app/server";
 
 const MAX_ATTEMPTS = 3;
 const MIN_DISTANCE_KM = 2;
@@ -37,12 +35,13 @@ export type GenerateRouteResponse =
 export async function generateRouteAction(
   input: GenerateRouteInput
 ): Promise<GenerateRouteResponse> {
+  const { t } = await getT();
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) {
-    return { success: false, error: "Vous devez être connecté·e." };
+    return { success: false, error: t("action.notLoggedIn") };
   }
 
   const { data: profile } = await supabase
@@ -52,11 +51,11 @@ export async function generateRouteAction(
     .single<{ subscription_tier: SubscriptionTier }>();
 
   if (!isPaidTier(profile?.subscription_tier ?? "freemium")) {
-    return { success: false, error: PAYWALL_ERROR };
+    return { success: false, error: t("gen.err.premium") };
   }
 
   if (!Number.isFinite(input.lat) || !Number.isFinite(input.lon)) {
-    return { success: false, error: "Point de départ invalide." };
+    return { success: false, error: t("gen.err.badStart") };
   }
   if (
     !Number.isFinite(input.distanceKm) ||
@@ -65,7 +64,7 @@ export async function generateRouteAction(
   ) {
     return {
       success: false,
-      error: `Choisissez une distance entre ${MIN_DISTANCE_KM} et ${MAX_DISTANCE_KM} km.`,
+      error: t("gen.err.distance", { min: MIN_DISTANCE_KM, max: MAX_DISTANCE_KM }),
     };
   }
 
@@ -84,9 +83,15 @@ export async function generateRouteAction(
       candidate = { ...generated, niveau: classifyRouteLevel(generated.distanceKm, generated.elevationGainM) };
     } catch (err) {
       if (err instanceof GraphHopperError) {
-        return { success: false, error: err.message };
+        const error =
+          err.code === "keyMissing"
+            ? t("gen.err.keyMissing")
+            : err.code === "noRoute"
+              ? t("gen.err.noRoute")
+              : (err.detail ?? t("gen.err.serviceFailed"));
+        return { success: false, error };
       }
-      return { success: false, error: "Erreur inattendue lors de la génération." };
+      return { success: false, error: t("gen.err.unexpected") };
     }
 
     if (!input.niveau || candidate.niveau === input.niveau) {
@@ -98,7 +103,7 @@ export async function generateRouteAction(
   if (fallback) {
     return { success: true, route: fallback };
   }
-  return { success: false, error: "Impossible de générer un tracé, réessayez." };
+  return { success: false, error: t("gen.err.failed") };
 }
 
 export type SaveRouteResponse =
@@ -109,12 +114,13 @@ export async function saveRouteAction(
   route: GeneratedRouteResult,
   name: string
 ): Promise<SaveRouteResponse> {
+  const { t } = await getT();
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) {
-    return { success: false, error: "Vous devez être connecté·e." };
+    return { success: false, error: t("action.notLoggedIn") };
   }
 
   const { data: profile } = await supabase
@@ -124,12 +130,12 @@ export async function saveRouteAction(
     .single<{ subscription_tier: SubscriptionTier }>();
 
   if (!isPaidTier(profile?.subscription_tier ?? "freemium")) {
-    return { success: false, error: PAYWALL_ERROR };
+    return { success: false, error: t("gen.err.premium") };
   }
 
   const { data, error } = await supabase
     .rpc("create_route", {
-      p_name: name.trim() || "Tracé généré",
+      p_name: name.trim() || t("gen.savedName"),
       p_coordinates: route.coordinates,
       p_distance_km: route.distanceKm,
       p_elevation_gain_m: route.elevationGainM,
@@ -139,7 +145,7 @@ export async function saveRouteAction(
     .single<{ id: string }>();
 
   if (error || !data) {
-    return { success: false, error: error?.message ?? "Échec de l'enregistrement." };
+    return { success: false, error: error?.message ?? t("gen.err.saveFailed") };
   }
 
   return { success: true, routeId: data.id };

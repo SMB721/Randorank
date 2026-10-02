@@ -11,15 +11,17 @@ import AnimatedNumber from "@/components/ui/AnimatedNumber";
 import {
   LEVEL_THRESHOLDS_KM,
   NEXT_LEVEL,
-  USER_LEVEL_LABELS,
   type Profile,
   type Spot,
 } from "@/lib/supabase/types";
+import { getT } from "@/lib/i18n/app/server";
+import { levelKey } from "@/lib/i18n/app/labels";
 
 const dashboardBg =
   "https://images.unsplash.com/photo-1674085678761-5472e776e4c8?auto=format&fit=crop&w=2000&q=80";
 
 export default async function DashboardPage() {
+  const { t, tn } = await getT();
   const supabase = await createClient();
   const {
     data: { user },
@@ -39,12 +41,9 @@ export default async function DashboardPage() {
     return (
       <main className="flex min-h-screen flex-col items-center justify-center gap-4 px-6 text-center">
         <h1 className="font-display text-3xl tracking-wide text-trail-900">
-          Un instant...
+          {t("home.creating.title")}
         </h1>
-        <p className="text-trail-600">
-          Votre profil est en cours de création, rechargez la page dans quelques
-          secondes.
-        </p>
+        <p className="text-trail-600">{t("home.creating.text")}</p>
       </main>
     );
   }
@@ -59,7 +58,7 @@ export default async function DashboardPage() {
   const { data: spots } = await supabase.from("spots").select("*").returns<Spot[]>();
   const shuffledSpots = shuffle(spots ?? []);
 
-  const displayName = profile.username || user.email?.split("@")[0] || "Randonneur";
+  const displayName = profile.username || user.email?.split("@")[0] || t("home.defaultName");
   const initial = displayName.charAt(0).toUpperCase();
   const celebrateBirthday = isBirthdayToday(profile.birth_date);
   const age = computeAge(profile.birth_date);
@@ -75,21 +74,21 @@ export default async function DashboardPage() {
 
   const stats = [
     {
-      label: "Sorties",
+      label: t("home.stat.hikes"),
       value: profile.hike_count,
       decimals: 0,
       suffix: "",
       icon: <BootIcon />,
     },
     {
-      label: "Distance cumulée",
+      label: t("home.stat.distance"),
       value: profile.total_distance_km,
       decimals: 1,
       suffix: " km",
       icon: <RouteIcon />,
     },
     {
-      label: "Dénivelé cumulé",
+      label: t("home.stat.elevation"),
       value: profile.total_elevation_m,
       decimals: 0,
       suffix: " m",
@@ -135,16 +134,16 @@ export default async function DashboardPage() {
                 </div>
               )}
               <div>
-                <p className="text-sm text-white/50">Bienvenue</p>
+                <p className="text-sm text-white/50">{t("home.welcome")}</p>
                 <h1 className="font-display text-3xl tracking-wide sm:text-4xl">
                   {displayName} 🥾
                 </h1>
                 <div className="mt-2 flex flex-wrap gap-2">
                   <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-medium text-white/80 backdrop-blur">
-                    {profile.region || "Région non renseignée"}
+                    {profile.region || t("home.regionMissing")}
                   </span>
                   <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-medium text-white/80 backdrop-blur">
-                    {USER_LEVEL_LABELS[profile.user_level]}
+                    {t(levelKey(profile.user_level))}
                   </span>
                 </div>
               </div>
@@ -153,12 +152,10 @@ export default async function DashboardPage() {
             {celebrateBirthday && (
               <div className="mt-6 rounded-2xl border border-summit-400/40 bg-summit-500/15 p-4 text-center">
                 <p className="font-display text-xl tracking-wide text-white">
-                  🎂 Joyeux anniversaire, {displayName} !
+                  {t("home.birthday.title", { name: displayName })}
                 </p>
                 <p className="mt-1 text-sm text-white/70">
-                  {age} ans, et déjà {profile.hike_count} rando
-                  {profile.hike_count > 1 ? "s" : ""} au compteur — une bougie de plus, un
-                  sommet de plus à viser.
+                  {tn("home.birthday.text", profile.hike_count, { age: age ?? "" })}
                 </p>
               </div>
             )}
@@ -173,7 +170,7 @@ export default async function DashboardPage() {
                   <span className="text-2xl" aria-hidden="true">
                     🥾
                   </span>
-                  Commencer une rando
+                  {t("home.startHike")}
                 </span>
                 <span aria-hidden="true">→</span>
               </Link>
@@ -185,7 +182,7 @@ export default async function DashboardPage() {
                   <span className="text-2xl" aria-hidden="true">
                     🧭
                   </span>
-                  Générer un tracé
+                  {t("home.generate")}
                 </span>
                 <span aria-hidden="true">→</span>
               </Link>
@@ -223,17 +220,18 @@ export default async function DashboardPage() {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-xs font-semibold uppercase tracking-widest text-white/50">
-                Progression
+                {t("home.progress")}
               </p>
               <p className="mt-1 font-display text-2xl tracking-wide">
-                {USER_LEVEL_LABELS[profile.user_level]}
+                {t(levelKey(profile.user_level))}
               </p>
             </div>
             {nextLevel && (
               <p className="text-right text-sm text-white/70">
-                Encore <span className="font-semibold text-summit-400">{kmRemaining} km</span>
+                {t("home.remainingBefore")}{" "}
+                <span className="font-semibold text-summit-400">{kmRemaining} km</span>
                 <br />
-                pour passer {USER_LEVEL_LABELS[nextLevel]}
+                {t("home.remainingAfter", { level: t(levelKey(nextLevel)) })}
               </p>
             )}
           </div>
@@ -245,7 +243,7 @@ export default async function DashboardPage() {
           </div>
           {!nextLevel && (
             <p className="mt-2 text-sm text-white/70">
-              Niveau maximum atteint — la référence de la communauté 🏔️
+              {t("home.maxLevel")}
             </p>
           )}
         </div>

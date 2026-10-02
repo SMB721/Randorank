@@ -6,6 +6,8 @@ import AnimatedNumber from "@/components/ui/AnimatedNumber";
 import PhotoUploadForm from "@/components/dashboard/PhotoUploadForm";
 import PhotoGallery, { type GalleryPhoto } from "@/components/dashboard/PhotoGallery";
 import { formatDate, formatDuration } from "@/lib/format";
+import { formatValidationNotes } from "@/lib/gpx";
+import { getT } from "@/lib/i18n/app/server";
 import type { HikeWithTrack, Photo, SubscriptionTier } from "@/lib/supabase/types";
 
 export default async function HikeDetailPage({
@@ -14,6 +16,8 @@ export default async function HikeDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  const tr = await getT();
+  const { t } = tr;
   const supabase = await createClient();
   const {
     data: { user },
@@ -57,10 +61,10 @@ export default async function HikeDetailPage({
   }
 
   const stats = [
-    { label: "Distance", value: hike.distance_km, decimals: 2, suffix: " km" },
-    { label: "Dénivelé positif", value: hike.elevation_gain_m, decimals: 0, suffix: " m" },
-    { label: "Durée", value: null, display: formatDuration(hike.duration_seconds) },
-    { label: "Vitesse moyenne", value: hike.avg_speed_kmh, decimals: 1, suffix: " km/h" },
+    { label: t("hike.stat.distance"), value: hike.distance_km, decimals: 2, suffix: " km" },
+    { label: t("hike.stat.elevation"), value: hike.elevation_gain_m, decimals: 0, suffix: " m" },
+    { label: t("hike.stat.duration"), value: null, display: formatDuration(hike.duration_seconds) },
+    { label: t("hike.stat.speed"), value: hike.avg_speed_kmh, decimals: 1, suffix: " km/h" },
   ];
 
   return (
@@ -70,17 +74,17 @@ export default async function HikeDetailPage({
           href="/dashboard/randos"
           className="text-sm font-semibold text-summit-600 hover:underline"
         >
-          ← Mes randos
+          {t("hike.back")}
         </Link>
 
         <h1 className="mt-4 font-display text-4xl tracking-wide text-trail-900">
           {hike.name}
         </h1>
-        <p className="mt-1 text-trail-600">{formatDate(hike.started_at)}</p>
+        <p className="mt-1 text-trail-600">{formatDate(hike.started_at, tr)}</p>
 
         {!hike.is_valid && (
           <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-            ⚠ Cette rando n&apos;est pas comptabilisée dans vos stats : {hike.validation_notes}
+            {t("hike.invalid", { notes: formatValidationNotes(hike.validation_notes, tr) ?? "" })}
           </div>
         )}
 
@@ -92,11 +96,11 @@ export default async function HikeDetailPage({
         </div>
         {profile?.blur_endpoints && (
           <p className="mt-2 text-xs text-trail-400">
-            🔒 Départ et arrivée floutés — activable/désactivable dans votre{" "}
+            {t("hike.blurBefore")}{" "}
             <Link href="/dashboard/profil" className="underline hover:text-trail-600">
-              compte
+              {t("hike.blurLink")}
             </Link>
-            .
+            {t("hike.blurAfter")}
           </p>
         )}
 
@@ -127,13 +131,13 @@ export default async function HikeDetailPage({
             target="_blank"
             className="rounded-xl bg-trail-900 px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-trail-800"
           >
-            Générer l&apos;image de partage →
+            {t("hike.share")}
           </Link>
         </div>
 
         <div className="mt-6 rounded-2xl border border-trail-200 bg-white p-6">
           <div className="flex flex-wrap items-center justify-between gap-2">
-            <h2 className="font-display text-2xl tracking-wide text-trail-900">Photos</h2>
+            <h2 className="font-display text-2xl tracking-wide text-trail-900">{t("hike.photos")}</h2>
           </div>
 
           <div className="mt-4">

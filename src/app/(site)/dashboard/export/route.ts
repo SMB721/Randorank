@@ -1,17 +1,19 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { getT } from "@/lib/i18n/app/server";
 
 // RGPD export: every piece of personal data tied to this account, as a
 // single JSON file — profile, hikes (with track geometry), photos (with a
 // short-lived download link each), generated routes, badges, follows.
 export async function GET() {
+  const { t } = await getT();
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return NextResponse.json({ error: "Vous devez être connecté·e." }, { status: 401 });
+    return NextResponse.json({ error: t("action.notLoggedIn") }, { status: 401 });
   }
 
   const [
@@ -48,7 +50,7 @@ export async function GET() {
     generated_routes: routes,
     badges_earned: badges,
     following,
-    note: "Les liens de téléchargement des photos expirent 1h après cet export.",
+    note: t("export.note"),
   };
 
   return new NextResponse(JSON.stringify(exportPayload, null, 2), {

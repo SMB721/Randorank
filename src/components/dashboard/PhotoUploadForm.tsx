@@ -2,9 +2,11 @@
 
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useT } from "@/lib/i18n/app/client";
 import { uploadPhotosAction } from "@/app/(site)/dashboard/(premium)/randos/[id]/photo-actions";
 
 export default function PhotoUploadForm({ hikeId }: { hikeId: string }) {
+  const { t } = useT();
   const router = useRouter();
   const formRef = useRef<HTMLFormElement>(null);
   const [loading, setLoading] = useState(false);
@@ -29,8 +31,8 @@ export default function PhotoUploadForm({ hikeId }: { hikeId: string }) {
 
     setInfo(
       result.skipped > 0
-        ? `${result.uploaded} photo(s) ajoutée(s), ${result.skipped} ignorée(s) (limite atteinte ou fichier invalide).`
-        : `${result.uploaded} photo(s) ajoutée(s) ✓`
+        ? t("photos.addedSkipped", { uploaded: result.uploaded, skipped: result.skipped })
+        : t("photos.added", { uploaded: result.uploaded })
     );
     formRef.current?.reset();
     router.refresh();
@@ -53,7 +55,7 @@ export default function PhotoUploadForm({ hikeId }: { hikeId: string }) {
         disabled={loading}
         className="rounded-xl bg-summit-500 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-summit-500/30 transition hover:bg-summit-600 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        {loading ? "Import en cours..." : "Ajouter des photos"}
+        {loading ? t("photos.loading") : t("photos.submit")}
       </button>
     </form>
   );

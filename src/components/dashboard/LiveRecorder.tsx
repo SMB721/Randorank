@@ -6,15 +6,21 @@ import { useRouter } from "next/navigation";
 import { computeStats, haversineKm, type TrackPoint } from "@/lib/gpx";
 import { useWakeLock } from "@/hooks/useWakeLock";
 import { formatDuration } from "@/lib/format";
+import { useT } from "@/lib/i18n/app/client";
 import { saveLiveHikeAction } from "@/app/(site)/dashboard/(premium)/randos/live/actions";
+
+function MapLoading() {
+  const { t } = useT();
+  return (
+    <div className="flex h-full w-full items-center justify-center bg-trail-950 text-sm text-white/50">
+      {t("live.mapLoading")}
+    </div>
+  );
+}
 
 const LiveMap = dynamic(() => import("./LiveMap"), {
   ssr: false,
-  loading: () => (
-    <div className="flex h-full w-full items-center justify-center bg-trail-950 text-sm text-white/50">
-      Chargement de la carte...
-    </div>
-  ),
+  loading: () => <MapLoading />,
 });
 
 // Fixes worse than this (meters, 1-sigma) are dropped rather than plotted —
@@ -28,6 +34,7 @@ type Status = "idle" | "requesting" | "recording" | "finishing" | "error";
 
 export default function LiveRecorder() {
   const router = useRouter();
+  const { t, locale } = useT();
   const wakeLock = useWakeLock();
 
   const [status, setStatus] = useState<Status>("idle");
@@ -84,7 +91,7 @@ export default function LiveRecorder() {
     setGpsWarning(null);
 
     if (!("geolocation" in navigator)) {
-      setError("Votre navigateur ne supporte pas la géolocalisation.");
+      setError(t("live.noGeo"));
       setStatus("error");
       return;
     }
@@ -103,7 +110,7 @@ export default function LiveRecorder() {
         const { latitude, longitude, altitude, accuracy } = position.coords;
 
         if (accuracy !== null && accuracy > MIN_ACCURACY_M) {
-          setGpsWarning("Signal GPS faible — certains points sont ignorés.");
+          setGpsWarning(t("live.weakSignal"));
           return;
         }
 
@@ -130,9 +137,7 @@ export default function LiveRecorder() {
       },
       (geoError) => {
         if (geoError.code === geoError.PERMISSION_DENIED) {
-          setError(
-            "Accès à la position refusé. Autorisez la géolocalisation dans les réglages de votre navigateur pour enregistrer votre rando."
-          );
+          setError(t("live.denied"));
           setStatus("error");
           stopWatching();
         }
@@ -155,16 +160,14 @@ export default function LiveRecorder() {
     await wakeLock.release();
 
     if (points.length < 2) {
-      setError(
-        "Pas assez de points GPS enregistrés pour créer une rando — réessayez avec un meilleur signal."
-      );
+      setError(t("live.tooFewPoints"));
       setStatus("error");
       return;
     }
 
     const stats = computeStats(points);
     const coordinates: [number, number][] = points.map((p) => [p.lon, p.lat]);
-    const name = `Randonnée du ${new Date().toLocaleDateString("fr-FR")}`;
+    const name = t("hike.defaultName", { date: new Date().toLocaleDateString(locale) });
 
     const result = await saveLiveHikeAction({
       name,
@@ -197,9 +200,7 @@ export default function LiveRecorder() {
   return (
     <div className="space-y-4">
       <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-        Gardez cet onglet ouvert et votre téléphone déverrouillé pendant toute la
-        rando : si vous changez d&apos;application ou verrouillez manuellement
-        l&apos;écran, l&apos;enregistrement s&apos;interrompt.
+        {t("live.keepOpen")}
       </div>
 
       {status === "idle" && (
@@ -208,13 +209,13 @@ export default function LiveRecorder() {
           onClick={handleStart}
           className="w-full rounded-xl bg-summit-500 py-3 text-sm font-semibold text-white shadow-lg shadow-summit-500/30 transition hover:bg-summit-600"
         >
-          Démarrer ma rando
+          {t("live.start")}
         </button>
       )}
 
       {status === "requesting" && (
         <p className="rounded-xl border border-trail-200 bg-white p-4 text-center text-sm text-trail-600">
-          Activation du GPS...
+          {t("live.activating")}
         </p>
       )}
 
@@ -225,20 +226,20 @@ export default function LiveRecorder() {
               <p className="font-display text-2xl tracking-wide text-trail-900">
                 {formatDuration(elapsedSeconds)}
               </p>
-              <p className="mt-1 text-xs uppercase tracking-widest text-trail-500">Durée</p>
+              <p className="mt-1 text-xs uppercase tracking-widest text-trail-500">{t("live.duration")}</p>
             </div>
             <div className="rounded-xl border border-trail-200 bg-white p-4 text-center">
               <p className="font-display text-2xl tracking-wide text-trail-900">
                 {distanceKm.toFixed(2)} km
               </p>
-              <p className="mt-1 text-xs uppercase tracking-widest text-trail-500">Distance</p>
+              <p className="mt-1 text-xs uppercase tracking-widest text-trail-500">{t("live.distance")}</p>
             </div>
             <div className="rounded-xl border border-trail-200 bg-white p-4 text-center">
               <p className="font-display text-2xl tracking-wide text-trail-900">
                 {points.length}
               </p>
               <p className="mt-1 text-xs uppercase tracking-widest text-trail-500">
-                Points GPS
+                {t("live.points")}
               </p>
             </div>
           </div>
@@ -250,8 +251,7 @@ export default function LiveRecorder() {
           )}
           {!wakeLock.supported && (
             <p className="text-xs text-trail-500">
-              Votre navigateur ne supporte pas le maintien automatique de l&apos;écran
-              allumé — pensez à désactiver la mise en veille manuellement.
+              {t("live.noWakeLock")}
             </p>
           )}
 
@@ -265,7 +265,7 @@ export default function LiveRecorder() {
             disabled={status === "finishing"}
             className="w-full rounded-xl bg-trail-900 py-3 text-sm font-semibold text-white transition hover:bg-trail-800 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {status === "finishing" ? "Enregistrement..." : "Terminer ma rando"}
+            {status === "finishing" ? t("live.saving") : t("live.finish")}
           </button>
         </>
       )}
@@ -278,7 +278,7 @@ export default function LiveRecorder() {
             onClick={handleRetry}
             className="w-full rounded-xl border-2 border-trail-900 py-3 text-sm font-semibold text-trail-900 transition hover:bg-trail-900 hover:text-white"
           >
-            Réessayer
+            {t("live.retry")}
           </button>
         </div>
       )}

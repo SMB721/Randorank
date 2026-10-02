@@ -1,29 +1,27 @@
 import { redirect } from "next/navigation";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
-import {
-  USER_LEVEL_LABELS,
-  type Badge,
-  type UserBadge,
-  type UserLevel,
-} from "@/lib/supabase/types";
+import { USER_LEVELS, type Badge, type UserBadge } from "@/lib/supabase/types";
 import { createClient } from "@/lib/supabase/server";
+import { getT } from "@/lib/i18n/app/server";
+import { badgeDescription, badgeName, levelKey } from "@/lib/i18n/app/labels";
+import type { Translator } from "@/lib/i18n/app";
 
-const LEVEL_ORDER: UserLevel[] = ["debutant", "amateur", "avance"];
-
-function requirementLabel(badge: Badge): string {
+function requirementLabel(badge: Badge, tr: Translator): string {
   switch (badge.metric) {
     case "hike_count":
-      return `${badge.threshold} sortie${badge.threshold > 1 ? "s" : ""}`;
+      return tr.tn("badges.req.hikes", badge.threshold);
     case "total_distance_km":
-      return `${badge.threshold} km cumulés`;
+      return tr.t("badges.req.distance", { n: badge.threshold });
     case "total_elevation_m":
-      return `${badge.threshold} m de D+ cumulés`;
+      return tr.t("badges.req.elevation", { n: badge.threshold });
     case "user_level":
-      return `Niveau ${USER_LEVEL_LABELS[LEVEL_ORDER[badge.threshold]]}`;
+      return tr.t("badges.req.level", { level: tr.t(levelKey(USER_LEVELS[badge.threshold])) });
   }
 }
 
 export default async function BadgesPage() {
+  const tr = await getT();
+  const { t } = tr;
   const supabase = await createClient();
   const {
     data: { user },
@@ -56,13 +54,11 @@ export default async function BadgesPage() {
       <DashboardHeader />
 
       <div className="mx-auto mt-10 max-w-3xl">
-        <h1 className="font-display text-4xl tracking-wide text-trail-900">Badges</h1>
-        <p className="mt-1 text-trail-600">
-          Débloqués à la sueur des mollets — pas de raccourci possible.
-        </p>
+        <h1 className="font-display text-4xl tracking-wide text-trail-900">{t("badges.title")}</h1>
+        <p className="mt-1 text-trail-600">{t("badges.subtitle")}</p>
 
         <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-summit-300 bg-summit-50 px-4 py-2 text-sm font-semibold text-summit-700">
-          {earnedCount} / {allBadges.length} débloqués
+          {t("badges.count", { earned: earnedCount, total: allBadges.length })}
         </div>
 
         <div className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -88,13 +84,15 @@ export default async function BadgesPage() {
                 </div>
                 <div>
                   <p className="font-display text-xl tracking-wide text-trail-900">
-                    {badge.name}
+                    {badgeName(tr, badge)}
                   </p>
-                  <p className="mt-1 text-sm text-trail-600">{badge.description}</p>
+                  <p className="mt-1 text-sm text-trail-600">{badgeDescription(tr, badge)}</p>
                   <p className="mt-2 text-xs font-semibold uppercase tracking-widest text-trail-400">
                     {isEarned
-                      ? `Débloqué le ${new Date(earnedBadge!.earned_at).toLocaleDateString("fr-FR")}`
-                      : `À débloquer · ${requirementLabel(badge)}`}
+                      ? t("badges.earnedOn", {
+                          date: new Date(earnedBadge!.earned_at).toLocaleDateString(tr.locale),
+                        })
+                      : t("badges.toUnlock", { req: requirementLabel(badge, tr) })}
                   </p>
                 </div>
               </div>

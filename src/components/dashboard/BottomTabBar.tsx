@@ -2,17 +2,20 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useT } from "@/lib/i18n/app/client";
+import type { DictKey } from "@/lib/i18n/app";
 
-const tabs = [
-  { label: "Accueil", href: "/dashboard", icon: "🏠", exact: true },
-  { label: "Explorer", href: "/dashboard/generateur", icon: "🧭", exact: false },
-  { label: "Communauté", href: "/dashboard/communaute", icon: "👥", exact: false },
-  { label: "Classement", href: "/dashboard/classement", icon: "🏆", exact: false },
-  { label: "Compte", href: "/dashboard/profil", icon: "👤", exact: false },
+const tabs: { label: DictKey; href: string; icon: string; exact: boolean }[] = [
+  { label: "nav.home", href: "/dashboard", icon: "🏠", exact: true },
+  { label: "nav.explore", href: "/dashboard/generateur", icon: "🧭", exact: false },
+  { label: "nav.community", href: "/dashboard/communaute", icon: "👥", exact: false },
+  { label: "nav.ranking", href: "/dashboard/classement", icon: "🏆", exact: false },
+  { label: "nav.account", href: "/dashboard/profil", icon: "👤", exact: false },
 ];
 
 export default function BottomTabBar() {
   const pathname = usePathname();
+  const { t } = useT();
 
   // The install screen is a focused, one-time interstitial — a nav bar
   // pointing at other sections would just distract from it.
@@ -22,7 +25,7 @@ export default function BottomTabBar() {
 
   return (
     <nav
-      aria-label="Navigation principale"
+      aria-label={t("nav.aria")}
       className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-trail-950/95 backdrop-blur-lg"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
@@ -42,7 +45,7 @@ export default function BottomTabBar() {
               <span className="text-xl" aria-hidden="true">
                 {tab.icon}
               </span>
-              {tab.label}
+              {t(tab.label)}
             </Link>
           );
         })}

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { useT } from "@/lib/i18n/app/client";
 
 export default function BlurEndpointsToggle({
   initialValue,
@@ -10,6 +11,7 @@ export default function BlurEndpointsToggle({
   initialValue: boolean;
   profileId: string;
 }) {
+  const { t } = useT();
   const [enabled, setEnabled] = useState(initialValue);
   const [saving, setSaving] = useState(false);
   const supabase = createClient();
@@ -29,7 +31,7 @@ export default function BlurEndpointsToggle({
       disabled={saving}
       role="switch"
       aria-checked={enabled}
-      aria-label="Flouter le départ et l'arrivée de mes randos"
+      aria-label={t("profil.blurAria")}
       className={`relative h-7 w-12 shrink-0 rounded-full transition disabled:opacity-60 ${
         enabled ? "bg-summit-500" : "bg-trail-200"
       }`}

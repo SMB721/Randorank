@@ -1,4 +1,14 @@
 import { XMLParser } from "fast-xml-parser";
+import type { Translator } from "@/lib/i18n/app";
+
+// Parsing errors carry a code, translated where they are shown.
+export type GpxErrorCode = "invalid" | "noTrack" | "tooFewPoints";
+export class GpxError extends Error {
+  constructor(public code: GpxErrorCode) {
+    super(code);
+    this.name = "GpxError";
+  }
+}
 
 export type TrackPoint = {
   lat: number;
@@ -34,17 +44,17 @@ export function parseGpx(xml: string): ParsedGpx {
   try {
     doc = parser.parse(xml);
   } catch {
-    throw new Error("Ce fichier n'est pas un GPX valide.");
+    throw new GpxError("invalid");
   }
 
   const gpx = (doc as { gpx?: Record<string, unknown> })?.gpx;
   if (!gpx) {
-    throw new Error("Ce fichier n'est pas un GPX valide.");
+    throw new GpxError("invalid");
   }
 
   const tracks = asArray(gpx.trk as Record<string, unknown> | Record<string, unknown>[]);
   if (tracks.length === 0) {
-    throw new Error("Aucune trace trouvée dans ce fichier GPX.");
+    throw new GpxError("noTrack");
   }
 
   const points: TrackPoint[] = [];
@@ -75,7 +85,7 @@ export function parseGpx(xml: string): ParsedGpx {
   }
 
   if (points.length < 2) {
-    throw new Error("Ce fichier GPX ne contient pas assez de points pour former un tracé.");
+    throw new GpxError("tooFewPoints");
   }
 
   return { points, name };
@@ -148,9 +158,7 @@ export function computeStats(points: TrackPoint[]): GpxStats {
         // or teleported trace needs impossible speed to cover ground.
         hardViolation = true;
         if (notes.length < 5) {
-          notes.push(
-            `Vitesse impossible détectée (${speedKmh.toFixed(1)} km/h sur un segment) — possible téléportation.`
-          );
+          notes.push(`impossible_speed:${speedKmh.toFixed(1)}`);
         }
         reference = curr;
         continue;
@@ -182,9 +190,7 @@ export function computeStats(points: TrackPoint[]): GpxStats {
 
   const noiseRatio = totalSegments > 0 ? noisySegments / totalSegments : 0;
   if (!hardViolation && noiseRatio > MAX_NOISE_RATIO) {
-    notes.push(
-      `Signal GPS trop instable sur cette sortie (${Math.round(noiseRatio * 100)}% de points incohérents).`
-    );
+    notes.push(`unstable_signal:${Math.round(noiseRatio * 100)}`);
   }
 
   const first = points[0];
@@ -206,6 +212,40 @@ export function computeStats(points: TrackPoint[]): GpxStats {
     avgSpeedKmh: Number(avgSpeedKmh.toFixed(2)),
     startedAt: hasTimestamps ? first.time : null,
     isValid: notes.length === 0,
-    validationNotes: notes.length > 0 ? notes.join(" ") : null,
+    validationNotes: notes.length > 0 ? notes.join("|") : null,
   };
+}
+
+/**
+ * Validation notes are stored as codes ("impossible_speed:72.3|unstable_signal:30")
+ * so they can be shown in the reader's language. Notes saved before this
+ * change are plain French sentences and are returned unchanged.
+ */
+export function formatValidationNotes(
+  raw: string | null,
+  tr: Pick<Translator, "t">
+): string | null {
+  if (!raw) return null;
+  return raw
+    .split("|")
+    .map((part) => {
+      const m = /^(impossible_speed|unstable_signal):(.+)$/.exec(part);
+      if (!m) return part;
+      return m[1] === "impossible_speed"
+        ? tr.t("gpx.note.impossibleSpeed", { speed: m[2] })
+        : tr.t("gpx.note.unstableSignal", { percent: m[2] });
+    })
+    .join(" ");
+}
+
+/** Message for a parsing failure, in the reader's language. */
+export function gpxErrorMessage(err: unknown, tr: Pick<Translator, "t">): string {
+  if (err instanceof GpxError) {
+    return err.code === "invalid"
+      ? tr.t("gpx.error.invalid")
+      : err.code === "noTrack"
+        ? tr.t("gpx.error.noTrack")
+        : tr.t("gpx.error.tooFewPoints");
+  }
+  return tr.t("gpx.unreadable");
 }

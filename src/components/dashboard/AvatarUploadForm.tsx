@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { uploadAvatarAction } from "@/app/(site)/dashboard/profil/actions";
+import { useT } from "@/lib/i18n/app/client";
 
 export default function AvatarUploadForm({
   initialAvatarUrl,
@@ -10,6 +11,7 @@ export default function AvatarUploadForm({
   initialAvatarUrl: string | null;
   username: string | null;
 }) {
+  const { t } = useT();
   const inputRef = useRef<HTMLInputElement>(null);
   const [avatarUrl, setAvatarUrl] = useState(initialAvatarUrl);
   const [preview, setPreview] = useState<string | null>(null);
@@ -47,7 +49,7 @@ export default function AvatarUploadForm({
         onClick={() => inputRef.current?.click()}
         disabled={loading}
         className="group relative h-20 w-20 shrink-0 overflow-hidden rounded-full border border-trail-200 disabled:cursor-not-allowed"
-        aria-label="Changer la photo de profil"
+        aria-label={t("avatar.aria")}
       >
         {displayUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -58,13 +60,13 @@ export default function AvatarUploadForm({
           </div>
         )}
         <div className="absolute inset-0 flex items-center justify-center bg-black/40 text-[11px] font-semibold text-white opacity-0 transition group-hover:opacity-100">
-          {loading ? "…" : "Changer"}
+          {loading ? "…" : t("avatar.change")}
         </div>
       </button>
       <div>
-        <p className="text-sm font-medium text-trail-800">Photo de profil</p>
+        <p className="text-sm font-medium text-trail-800">{t("avatar.title")}</p>
         <p className="mt-0.5 text-xs text-trail-500">
-          Visible sur le classement. JPG ou PNG, 8 Mo max.
+          {t("avatar.hint")}
         </p>
         {error && <p className="mt-1 text-xs text-red-600">{error}</p>}
       </div>

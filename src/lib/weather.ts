@@ -1,3 +1,5 @@
+import type { DictKey } from "@/lib/i18n/app";
+
 // Open-Meteo (open-meteo.com) — free, no API key, generous rate limits.
 // Called directly from the client; nothing here touches the server.
 const FORECAST_URL = "https://api.open-meteo.com/v1/forecast";
@@ -53,39 +55,40 @@ export async function fetchWeather(lat: number, lon: number): Promise<WeatherNow
 
 // WMO weather codes (open-meteo.com/en/docs#weathervariables), condensed to
 // the buckets that matter for a hiking summary.
-const WEATHER_CODES: Record<number, { emoji: string; label: string }> = {
-  0: { emoji: "☀️", label: "Ciel dégagé" },
-  1: { emoji: "🌤️", label: "Plutôt dégagé" },
-  2: { emoji: "⛅", label: "Partiellement nuageux" },
-  3: { emoji: "☁️", label: "Couvert" },
-  45: { emoji: "🌫️", label: "Brouillard" },
-  48: { emoji: "🌫️", label: "Brouillard givrant" },
-  51: { emoji: "🌦️", label: "Bruine légère" },
-  53: { emoji: "🌦️", label: "Bruine" },
-  55: { emoji: "🌦️", label: "Bruine dense" },
-  56: { emoji: "🌧️", label: "Bruine verglaçante" },
-  57: { emoji: "🌧️", label: "Bruine verglaçante" },
-  61: { emoji: "🌧️", label: "Pluie légère" },
-  63: { emoji: "🌧️", label: "Pluie" },
-  65: { emoji: "🌧️", label: "Forte pluie" },
-  66: { emoji: "🌧️", label: "Pluie verglaçante" },
-  67: { emoji: "🌧️", label: "Pluie verglaçante" },
-  71: { emoji: "❄️", label: "Neige légère" },
-  73: { emoji: "❄️", label: "Neige" },
-  75: { emoji: "❄️", label: "Forte neige" },
-  77: { emoji: "❄️", label: "Grains de neige" },
-  80: { emoji: "🌦️", label: "Averses" },
-  81: { emoji: "🌦️", label: "Averses" },
-  82: { emoji: "🌧️", label: "Fortes averses" },
-  85: { emoji: "🌨️", label: "Averses de neige" },
-  86: { emoji: "🌨️", label: "Fortes averses de neige" },
-  95: { emoji: "⛈️", label: "Orage" },
-  96: { emoji: "⛈️", label: "Orage avec grêle" },
-  99: { emoji: "⛈️", label: "Orage avec grêle" },
+const WEATHER_CODES: Record<number, { emoji: string; label: DictKey }> = {
+  0: { emoji: "☀️", label: "weather.clear" },
+  1: { emoji: "🌤️", label: "weather.mostlyClear" },
+  2: { emoji: "⛅", label: "weather.partlyCloudy" },
+  3: { emoji: "☁️", label: "weather.overcast" },
+  45: { emoji: "🌫️", label: "weather.fog" },
+  48: { emoji: "🌫️", label: "weather.rimeFog" },
+  51: { emoji: "🌦️", label: "weather.drizzleLight" },
+  53: { emoji: "🌦️", label: "weather.drizzle" },
+  55: { emoji: "🌦️", label: "weather.drizzleDense" },
+  56: { emoji: "🌧️", label: "weather.freezingDrizzle" },
+  57: { emoji: "🌧️", label: "weather.freezingDrizzle" },
+  61: { emoji: "🌧️", label: "weather.rainLight" },
+  63: { emoji: "🌧️", label: "weather.rain" },
+  65: { emoji: "🌧️", label: "weather.rainHeavy" },
+  66: { emoji: "🌧️", label: "weather.freezingRain" },
+  67: { emoji: "🌧️", label: "weather.freezingRain" },
+  71: { emoji: "❄️", label: "weather.snowLight" },
+  73: { emoji: "❄️", label: "weather.snow" },
+  75: { emoji: "❄️", label: "weather.snowHeavy" },
+  77: { emoji: "❄️", label: "weather.snowGrains" },
+  80: { emoji: "🌦️", label: "weather.showers" },
+  81: { emoji: "🌦️", label: "weather.showers" },
+  82: { emoji: "🌧️", label: "weather.showersHeavy" },
+  85: { emoji: "🌨️", label: "weather.snowShowers" },
+  86: { emoji: "🌨️", label: "weather.snowShowersHeavy" },
+  95: { emoji: "⛈️", label: "weather.thunder" },
+  96: { emoji: "⛈️", label: "weather.thunderHail" },
+  99: { emoji: "⛈️", label: "weather.thunderHail" },
 };
 
-export function describeWeatherCode(code: number): { emoji: string; label: string } {
-  return WEATHER_CODES[code] ?? { emoji: "🌡️", label: "Conditions inconnues" };
+/** Emoji plus the dictionary key of the label (translated by the caller). */
+export function describeWeatherCode(code: number): { emoji: string; label: DictKey } {
+  return WEATHER_CODES[code] ?? { emoji: "🌡️", label: "weather.unknown" };
 }
 
 // A rough, non-authoritative "good day to hike" signal — never a safety

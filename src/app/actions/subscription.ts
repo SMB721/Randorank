@@ -104,6 +104,7 @@ export async function createPortalSessionAction() {
   try {
     const portalSession = await stripe.billingPortal.sessions.create({
       customer: profile!.stripe_customer_id!,
+      locale: STRIPE_LOCALES[await getRequestLocale()],
       return_url: `${siteUrl}/dashboard/profil`,
     });
     portalUrl = portalSession.url;

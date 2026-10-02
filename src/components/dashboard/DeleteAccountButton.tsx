@@ -3,11 +3,13 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { deleteAccountAction } from "@/app/(site)/dashboard/profil/actions";
-
-const CONFIRM_WORD = "SUPPRIMER";
+import { useT } from "@/lib/i18n/app/client";
 
 export default function DeleteAccountButton() {
   const router = useRouter();
+  const { t } = useT();
+  // The word to type is shown in the user's language, compared case-insensitively.
+  const CONFIRM_WORD = t("delete.confirmWord");
   const [open, setOpen] = useState(false);
   const [confirmText, setConfirmText] = useState("");
   const [loading, setLoading] = useState(false);
@@ -33,7 +35,7 @@ export default function DeleteAccountButton() {
         onClick={() => setOpen(true)}
         className="text-sm font-semibold text-red-600 hover:underline"
       >
-        Supprimer mon compte
+        {t("delete.open")}
       </button>
     );
   }
@@ -41,12 +43,11 @@ export default function DeleteAccountButton() {
   return (
     <div className="mt-3 space-y-3 rounded-xl border border-red-200 bg-red-50 p-4">
       <p className="text-sm font-semibold text-red-800">
-        Cette action est définitive : votre profil, vos randos, vos photos, vos badges et
-        votre abonnement seront supprimés. Impossible à annuler.
+        {t("delete.warning")}
       </p>
       <div>
         <label htmlFor="confirm-delete" className="text-xs font-medium text-red-700">
-          Tapez {CONFIRM_WORD} pour confirmer
+          {t("delete.prompt", { word: CONFIRM_WORD })}
         </label>
         <input
           id="confirm-delete"
@@ -61,10 +62,10 @@ export default function DeleteAccountButton() {
         <button
           type="button"
           onClick={handleDelete}
-          disabled={confirmText !== CONFIRM_WORD || loading}
+          disabled={confirmText.trim().toLocaleUpperCase() !== CONFIRM_WORD || loading}
           className="rounded-xl bg-red-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {loading ? "Suppression..." : "Supprimer définitivement"}
+          {loading ? t("delete.loading") : t("delete.confirm")}
         </button>
         <button
           type="button"
@@ -75,7 +76,7 @@ export default function DeleteAccountButton() {
           }}
           className="rounded-xl border border-trail-200 px-4 py-2 text-sm font-semibold text-trail-600 transition hover:bg-trail-50"
         >
-          Annuler
+          {t("delete.cancel")}
         </button>
       </div>
     </div>

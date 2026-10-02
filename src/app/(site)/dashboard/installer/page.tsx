@@ -2,8 +2,10 @@ import { redirect } from "next/navigation";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import InstallAppGuide from "@/components/dashboard/InstallAppGuide";
 import { createClient } from "@/lib/supabase/server";
+import { getT } from "@/lib/i18n/app/server";
 
 export default async function InstallerPage() {
+  const { t } = await getT();
   const supabase = await createClient();
   const {
     data: { user },
@@ -19,15 +21,12 @@ export default async function InstallerPage() {
 
       <div className="mx-auto mt-10 max-w-md">
         <span className="text-xs font-semibold uppercase tracking-[0.2em] text-summit-600">
-          Garde-la à portée de main
+          {t("install.eyebrow")}
         </span>
         <h1 className="mt-3 font-display text-4xl tracking-wide text-trail-900">
-          Installez RandoRank comme une vraie app
+          {t("install.title")}
         </h1>
-        <p className="mt-2 text-trail-600">
-          Lancez vos sorties depuis votre écran d&apos;accueil, en plein écran, sans
-          passer par le navigateur.
-        </p>
+        <p className="mt-2 text-trail-600">{t("install.text")}</p>
 
         <div className="mt-8">
           <InstallAppGuide />

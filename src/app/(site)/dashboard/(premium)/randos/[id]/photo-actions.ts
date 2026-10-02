@@ -7,6 +7,7 @@ import * as exifr from "exifr";
 import { createClient } from "@/lib/supabase/server";
 import { isPaidTier } from "@/lib/gating";
 import type { SubscriptionTier } from "@/lib/supabase/types";
+import { getT } from "@/lib/i18n/app/server";
 
 const MAX_FILE_SIZE_BYTES = 15 * 1024 * 1024;
 const MAX_DIMENSION = 1600;
@@ -20,10 +21,11 @@ export async function uploadPhotosAction(
   hikeId: string,
   formData: FormData
 ): Promise<UploadPhotosResult> {
+  const { t } = await getT();
   const files = formData.getAll("photos").filter((f): f is File => f instanceof File && f.size > 0);
 
   if (files.length === 0) {
-    return { success: false, error: "Sélectionnez au moins une photo." };
+    return { success: false, error: t("photos.selectOne") };
   }
 
   const supabase = await createClient();
@@ -31,7 +33,7 @@ export async function uploadPhotosAction(
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) {
-    return { success: false, error: "Vous devez être connecté·e." };
+    return { success: false, error: t("action.notLoggedIn") };
   }
 
   const { data: hike } = await supabase
@@ -41,7 +43,7 @@ export async function uploadPhotosAction(
     .single<{ id: string; user_id: string }>();
 
   if (!hike || hike.user_id !== user.id) {
-    return { success: false, error: "Rando introuvable." };
+    return { success: false, error: t("photos.hikeNotFound") };
   }
 
   const { data: profile } = await supabase
@@ -51,7 +53,7 @@ export async function uploadPhotosAction(
     .single<{ subscription_tier: SubscriptionTier }>();
 
   if (!isPaidTier(profile?.subscription_tier ?? "freemium")) {
-    return { success: false, error: "Un abonnement Premium actif est nécessaire pour ajouter des photos." };
+    return { success: false, error: t("photos.premiumRequired") };
   }
 
   let uploaded = 0;
@@ -128,23 +130,20 @@ export async function uploadPhotosAction(
   }
 
   if (uploaded === 0) {
-    return {
-      success: false,
-      error:
-"Aucune photo n'a pu être importée.",
-    };
+    return { success: false, error: t("photos.noneImported") };
   }
 
   return { success: true, uploaded, skipped };
 }
 
 export async function deletePhotoAction(photoId: string): Promise<{ success: boolean; error?: string }> {
+  const { t } = await getT();
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) {
-    return { success: false, error: "Vous devez être connecté·e." };
+    return { success: false, error: t("action.notLoggedIn") };
   }
 
   const { data: photo } = await supabase
@@ -154,7 +153,7 @@ export async function deletePhotoAction(photoId: string): Promise<{ success: boo
     .single<{ id: string; hike_id: string; user_id: string; storage_path: string }>();
 
   if (!photo || photo.user_id !== user.id) {
-    return { success: false, error: "Photo introuvable." };
+    return { success: false, error: t("photos.notFound") };
   }
 
   await supabase.storage.from("photos").remove([photo.storage_path]);

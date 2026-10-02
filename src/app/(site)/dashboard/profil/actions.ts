@@ -5,6 +5,7 @@ import sharp from "sharp";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { stripe } from "@/lib/stripe";
+import { getT } from "@/lib/i18n/app/server";
 
 const MAX_AVATAR_FILE_SIZE_BYTES = 8 * 1024 * 1024;
 const AVATAR_DIMENSION = 512;
@@ -12,12 +13,13 @@ const AVATAR_DIMENSION = 512;
 export async function uploadAvatarAction(
   formData: FormData
 ): Promise<{ success: true; avatarUrl: string } | { success: false; error: string }> {
+  const { t } = await getT();
   const file = formData.get("avatar");
   if (!(file instanceof File) || file.size === 0) {
-    return { success: false, error: "Sélectionnez une image." };
+    return { success: false, error: t("avatar.err.select") };
   }
   if (file.size > MAX_AVATAR_FILE_SIZE_BYTES) {
-    return { success: false, error: "Image trop lourde (8 Mo max)." };
+    return { success: false, error: t("avatar.err.tooBig") };
   }
 
   const supabase = await createClient();
@@ -25,7 +27,7 @@ export async function uploadAvatarAction(
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) {
-    return { success: false, error: "Vous devez être connecté·e." };
+    return { success: false, error: t("action.notLoggedIn") };
   }
 
   let resized: Buffer;
@@ -36,7 +38,7 @@ export async function uploadAvatarAction(
       .jpeg({ quality: 85 })
       .toBuffer();
   } catch {
-    return { success: false, error: "Ce fichier ne semble pas être une image valide." };
+    return { success: false, error: t("avatar.err.invalid") };
   }
 
   const path = `${user.id}/avatar.jpg`;
@@ -45,7 +47,7 @@ export async function uploadAvatarAction(
     .upload(path, resized, { contentType: "image/jpeg", upsert: true });
 
   if (uploadError) {
-    return { success: false, error: "Échec de l'envoi, réessayez." };
+    return { success: false, error: t("avatar.err.upload") };
   }
 
   const {
@@ -61,7 +63,7 @@ export async function uploadAvatarAction(
     .eq("id", user.id);
 
   if (updateError) {
-    return { success: false, error: "Échec de l'enregistrement, réessayez." };
+    return { success: false, error: t("avatar.err.save") };
   }
 
   revalidatePath("/dashboard/profil");
@@ -75,13 +77,14 @@ export async function uploadAvatarAction(
 // clean up what cascades can't reach — storage files and the Stripe
 // subscription — before deleting the auth user itself.
 export async function deleteAccountAction(): Promise<{ error?: string }> {
+  const { t } = await getT();
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return { error: "Vous devez être connecté·e." };
+    return { error: t("action.notLoggedIn") };
   }
 
   const admin = createAdminClient();

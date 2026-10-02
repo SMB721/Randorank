@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { isPaidTier } from "@/lib/gating";
 import type { SubscriptionTier } from "@/lib/supabase/types";
+import { getT } from "@/lib/i18n/app/server";
 
 export type SaveLiveHikeInput = {
   name: string;
@@ -29,12 +30,13 @@ export type SaveLiveHikeResult =
 export async function saveLiveHikeAction(
   input: SaveLiveHikeInput
 ): Promise<SaveLiveHikeResult> {
+  const { t } = await getT();
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) {
-    return { success: false, error: "Vous devez être connecté·e." };
+    return { success: false, error: t("action.notLoggedIn") };
   }
 
   const { data: profile } = await supabase
@@ -46,7 +48,7 @@ export async function saveLiveHikeAction(
   if (!isPaidTier(profile?.subscription_tier ?? "freemium")) {
     return {
       success: false,
-      error: "Un abonnement Premium actif est nécessaire pour enregistrer une rando.",
+      error: t("action.premiumRequired"),
     };
   }
 
@@ -66,7 +68,7 @@ export async function saveLiveHikeAction(
     .single<{ id: string }>();
 
   if (error || !data) {
-    return { success: false, error: error?.message ?? "Erreur lors de l'enregistrement de votre rando." };
+    return { success: false, error: error?.message ?? t("live.saveError") };
   }
 
   revalidatePath("/dashboard/randos");

@@ -3,10 +3,12 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import type { Spot } from "@/lib/supabase/types";
+import { useT } from "@/lib/i18n/app/client";
 
 const SLIDE_DURATION_MS = 10000;
 
 export default function SpotCarousel({ spots }: { spots: Spot[] }) {
+  const { t } = useT();
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
@@ -42,7 +44,7 @@ export default function SpotCarousel({ spots }: { spots: Spot[] }) {
         </div>
         <div className="p-6">
           <p className="text-xs font-semibold uppercase tracking-widest text-summit-400">
-            Spot à découvrir
+            {t("spots.eyebrow")}
           </p>
           <p className="mt-1 font-display text-2xl tracking-wide">{spot.name}</p>
           <p className="mt-2 text-sm leading-relaxed text-white/70">{spot.short_story}</p>
@@ -56,7 +58,7 @@ export default function SpotCarousel({ spots }: { spots: Spot[] }) {
               key={s.id}
               type="button"
               onClick={() => setIndex(i)}
-              aria-label={`Voir ${s.name}`}
+              aria-label={t("spots.view", { name: s.name })}
               className={`h-1.5 flex-1 rounded-full transition ${
                 i === index ? "bg-summit-400" : "bg-white/20"
               }`}

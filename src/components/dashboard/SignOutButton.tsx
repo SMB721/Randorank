@@ -3,9 +3,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { useT } from "@/lib/i18n/app/client";
 
 export default function SignOutButton() {
   const router = useRouter();
+  const { t } = useT();
   const supabase = createClient();
   const [loading, setLoading] = useState(false);
 
@@ -23,7 +25,7 @@ export default function SignOutButton() {
       disabled={loading}
       className="w-full rounded-xl border-2 border-trail-200 py-3 text-sm font-semibold text-trail-600 transition hover:border-red-300 hover:text-red-600 disabled:opacity-60"
     >
-      {loading ? "Déconnexion..." : "Se déconnecter"}
+      {loading ? t("signout.loading") : t("signout.label")}
     </button>
   );
 }
