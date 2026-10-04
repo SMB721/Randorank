@@ -91,19 +91,16 @@ export default async function LandingPage({ locale }: { locale: Locale }) {
               {t.hero.subtitle}
             </p>
 
-            <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:justify-center">
+            {/* One invitation instead of "sign up" / "log in": /auth shows both
+                tabs, and the line below tells returning members it is for them. */}
+            <div className="flex flex-col items-center gap-3 pt-2">
               <Link
                 href="/auth"
-                className="rounded-xl bg-summit-500 px-8 py-3 text-base font-semibold text-white shadow-lg shadow-summit-500/30 transition hover:bg-summit-600"
+                className="w-full max-w-md rounded-2xl bg-summit-500 px-8 py-4 text-center text-lg font-semibold text-white shadow-xl shadow-summit-500/30 transition hover:bg-summit-600 sm:w-auto sm:min-w-[22rem]"
               >
-                {t.hero.ctaPrimary}
+                {t.hero.cta}
               </Link>
-              <Link
-                href="/auth?mode=login"
-                className="rounded-xl border-2 border-white/40 bg-white/5 px-8 py-3 text-base font-semibold text-white backdrop-blur transition hover:border-white/70"
-              >
-                {t.hero.ctaSecondary}
-              </Link>
+              <p className="max-w-md text-xs text-white/60">{t.hero.ctaNote}</p>
             </div>
           </div>
         </section>

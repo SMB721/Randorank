@@ -23,8 +23,8 @@ export interface LandingDict {
     titleLine1: string;
     titleLine2: string;
     subtitle: string;
-    ctaPrimary: string;
-    ctaSecondary: string;
+    cta: string;
+    ctaNote: string;
     imageAlt: string;
   };
   spots: {

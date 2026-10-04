@@ -28,8 +28,8 @@ export const it: LandingDict = {
     titleLine2: "diventa una sfida.",
     subtitle:
       "Registri le sue escursioni, sblocchi nuovi badge, scali la classifica e condivida le sue uscite più belle.",
-    ctaPrimary: "Crea il mio profilo",
-    ctaSecondary: "Ho già un account",
+    cta: "Iniziare la salita",
+    ctaNote: "Accesso o creazione dell'account in pochi secondi · Google, Facebook o e-mail",
     imageAlt: "Escursionista su una cresta di fronte alle montagne",
   },
   spots: {

@@ -28,8 +28,8 @@ export const en: LandingDict = {
     titleLine2: "becomes a challenge.",
     subtitle:
       "Track your hikes, unlock new badges, climb the leaderboard and share your best outings.",
-    ctaPrimary: "Create my profile",
-    ctaSecondary: "I already have an account",
+    cta: "Start the climb",
+    ctaNote: "Log in or create an account in seconds · Google, Facebook or email",
     imageAlt: "Hiker on a mountain ridge facing the peaks",
   },
   spots: {

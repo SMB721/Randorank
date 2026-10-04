@@ -28,8 +28,8 @@ export const de: LandingDict = {
     titleLine2: "wird zur Herausforderung.",
     subtitle:
       "Zeichnen Sie Ihre Wanderungen auf, schalten Sie neue Badges frei, klettern Sie in der Rangliste und teilen Sie Ihre schönsten Touren.",
-    ctaPrimary: "Mein Profil erstellen",
-    ctaSecondary: "Ich habe schon ein Konto",
+    cta: "Den Aufstieg beginnen",
+    ctaNote: "Anmelden oder Konto erstellen in wenigen Sekunden · Google, Facebook oder E-Mail",
     imageAlt: "Wanderer auf einem Grat vor Bergkulisse",
   },
   spots: {

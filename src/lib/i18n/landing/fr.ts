@@ -29,8 +29,8 @@ export const fr: LandingDict = {
     titleLine2: "devient un défi.",
     subtitle:
       "Suivez vos randos, débloquez de nouveaux badges, grimpez au classement et partagez vos plus belles sorties.",
-    ctaPrimary: "Créer mon profil",
-    ctaSecondary: "J'ai déjà un compte",
+    cta: "Commencer l'ascension",
+    ctaNote: "Connexion ou création de compte en quelques secondes · Google, Facebook ou e-mail",
     imageAlt: "Randonneur au sommet d'une crête face aux montagnes",
   },
   spots: {

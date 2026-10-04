@@ -28,8 +28,8 @@ export const es: LandingDict = {
     titleLine2: "se convierte en un reto.",
     subtitle:
       "Registre sus rutas, desbloquee nuevas insignias, escale en la clasificación y comparta sus mejores salidas.",
-    ctaPrimary: "Crear mi perfil",
-    ctaSecondary: "Ya tengo una cuenta",
+    cta: "Comenzar el ascenso",
+    ctaNote: "Inicie sesión o cree su cuenta en unos segundos · Google, Facebook o correo",
     imageAlt: "Senderista en una cresta frente a las montañas",
   },
   spots: {
