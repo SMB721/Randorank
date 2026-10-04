@@ -114,7 +114,7 @@ export const it: LandingDict = {
     eyebrow: "Offerte",
     title: "Le MUL. Punto.",
     text: "Una sola offerta, tutto incluso: escursioni, percorsi e foto illimitati, classifica completa. I dettagli dei prezzi compaiono appena crea il suo profilo.",
-    cta: "Crea il mio profilo",
+    cta: "Iniziare la salita",
   },
   about: {
     eyebrow: "RandoRank in poche parole",

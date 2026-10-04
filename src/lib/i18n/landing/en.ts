@@ -114,7 +114,7 @@ export const en: LandingDict = {
     eyebrow: "Plans",
     title: "Le MUL. Period.",
     text: "One plan, everything included: unlimited hikes, routes and photos, the full leaderboard. Pricing details appear as soon as you create your profile.",
-    cta: "Create my profile",
+    cta: "Start the climb",
   },
   about: {
     eyebrow: "RandoRank in a few words",
