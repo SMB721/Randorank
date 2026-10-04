@@ -151,7 +151,7 @@ export const it: LandingDict = {
   finalCta: {
     title: "La sua prima sfida la aspetta.",
     text: "Si unisca agli escursionisti che registrano, condividono e migliorano insieme.",
-    cta: "Crea il mio profilo",
+    cta: "Iniziare la salita",
     imageAlt: "Sentiero nel bosco che porta verso le montagne",
   },
   footer: {

@@ -152,7 +152,7 @@ export const fr: LandingDict = {
   finalCta: {
     title: "Prêt·e à relever le premier défi ?",
     text: "Rejoignez les randonneurs qui suivent, partagent et progressent ensemble.",
-    cta: "Créer mon profil",
+    cta: "Commencer l'ascension",
     imageAlt: "Sentier forestier menant vers les montagnes",
   },
   footer: {

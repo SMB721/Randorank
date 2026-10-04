@@ -151,7 +151,7 @@ export const en: LandingDict = {
   finalCta: {
     title: "Ready for your first challenge?",
     text: "Join the hikers who track, share and progress together.",
-    cta: "Create my profile",
+    cta: "Start the climb",
     imageAlt: "Forest trail leading towards the mountains",
   },
   footer: {

@@ -151,7 +151,7 @@ export const de: LandingDict = {
   finalCta: {
     title: "Bereit für Ihre erste Herausforderung?",
     text: "Schließen Sie sich den Wanderern an, die gemeinsam aufzeichnen, teilen und besser werden.",
-    cta: "Mein Profil erstellen",
+    cta: "Den Aufstieg beginnen",
     imageAlt: "Waldweg, der zu den Bergen führt",
   },
   footer: {
