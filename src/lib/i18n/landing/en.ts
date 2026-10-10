@@ -31,6 +31,8 @@ export const en: LandingDict = {
     cta: "Start the climb",
     ctaNote: "No account, no credit card · Pick a nickname and go",
     imageAlt: "Hiker on a mountain ridge facing the peaks",
+    liveBadge: "{km} km hiked by the community",
+    stickyCta: "Let's go, just a nickname",
   },
   spots: {
     eyebrow: "Spots & community",

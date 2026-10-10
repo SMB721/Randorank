@@ -7,6 +7,7 @@ import FaqAccordion from "@/components/home/FaqAccordion";
 import CommunityStatsSection from "@/components/home/CommunityStatsSection";
 import PhoneMockup from "@/components/home/PhoneMockup";
 import FloatingStatCard from "@/components/home/FloatingStatCard";
+import StickyCta from "@/components/home/StickyCta";
 import { createClient } from "@/lib/supabase/server";
 import { formatEuro, type Locale } from "@/lib/i18n/config";
 import { getLandingDict } from "@/lib/i18n/landing";
@@ -76,7 +77,11 @@ export default async function LandingPage({ locale }: { locale: Locale }) {
 
           <div className="relative z-10 space-y-6 pt-16">
             <span className="inline-block rounded-full border border-white/30 bg-white/10 px-4 py-1 text-sm font-semibold text-white backdrop-blur">
-              {t.hero.badge}
+              {showCommunityStats
+                ? fill(t.hero.liveBadge, {
+                    km: Math.round(stats?.total_km ?? 0).toLocaleString(locale),
+                  })
+                : t.hero.badge}
             </span>
             <h1
               className={`font-display leading-[0.95] tracking-wide text-white hyphens-auto break-words sm:text-8xl ${
@@ -642,6 +647,8 @@ export default async function LandingPage({ locale }: { locale: Locale }) {
           </div>
         </section>
       </main>
+
+      <StickyCta label={t.hero.stickyCta} note={t.hero.ctaNote} />
 
       <Footer locale={locale} dict={t.footer} />
     </>

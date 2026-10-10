@@ -31,6 +31,8 @@ export const es: LandingDict = {
     cta: "Comenzar el ascenso",
     ctaNote: "Sin cuenta, sin tarjeta · Elija un apodo y listo",
     imageAlt: "Senderista en una cresta frente a las montañas",
+    liveBadge: "{km} km recorridos por la comunidad",
+    stickyCta: "Vamos, solo un apodo",
   },
   spots: {
     eyebrow: "Spots y comunidad",
