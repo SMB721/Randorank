@@ -19,7 +19,7 @@ export default function Footer({
     { label: dict.nav.routes, href: landingPath(locale, "navigation") },
     { label: dict.nav.analyses, href: landingPath(locale, "apropos") },
     { label: dict.nav.rankings, href: landingPath(locale, "classement") },
-    { label: dict.nav.offers, href: landingPath(locale, "offres") },
+    { label: dict.nav.how, href: landingPath(locale, "comment") },
     { label: dict.nav.faq, href: landingPath(locale, "faq") },
   ];
 

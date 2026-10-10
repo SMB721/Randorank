@@ -99,8 +99,9 @@ export default function MentionsLegalesPage() {
           d&apos;un compte n&apos;est demandée que pour conserver ses données ou accéder à
           certaines fonctionnalités. Une offre Premium, mensuelle ou annuelle, débloque les
           fonctionnalités avancées ; elle est résiliable à tout moment depuis l&apos;espace
-          compte, et la résiliation prend effet à la fin de la période déjà payée. Le détail des offres et de leurs tarifs est disponible sur la page
-          d&apos;accueil.
+          compte, et la résiliation prend effet à la fin de la période déjà payée. Le détail
+          des offres et de leurs tarifs est présenté dans l&apos;espace compte et lors de la
+          souscription.
         </p>
 
         <h3 className="text-lg font-semibold text-trail-900">

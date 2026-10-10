@@ -12,7 +12,7 @@ export interface LandingDict {
     links: {
       ranking: string;
       navigation: string;
-      offers: string;
+      how: string;
       faq: string;
       spots: string;
       follow: string;
@@ -87,21 +87,14 @@ export interface LandingDict {
     elevationLabel: string;
     chartLabel: string;
   };
-  offers: {
+  howItWorks: { eyebrow: string; title: string; steps: { title: string; text: string }[] };
+  badges: { eyebrow: string; title: string; text: string; locked: string };
+  challenge: {
     eyebrow: string;
     title: string;
     text: string;
-    cta: string;
-    freeName: string;
-    freeTagline: string;
-    freePrice: string;
-    freeFeatures: string[];
-    premiumName: string;
-    premiumTagline: string;
-    premiumFeatures: string[];
-    perMonth: string;
-    orYearly: string; // "{amount}" is replaced
-    trial: string; // "{days}" is replaced
+    example: string;
+    progress: string; // "{done}" and "{goal}" are replaced
   };
   about: { eyebrow: string; text: string };
   faq: {
@@ -114,7 +107,7 @@ export interface LandingDict {
   footer: {
     tagline: string;
     navTitle: string;
-    nav: { routes: string; analyses: string; rankings: string; offers: string; faq: string };
+    nav: { routes: string; analyses: string; rankings: string; how: string; faq: string };
     legalTitle: string;
     legal: { notice: string; privacy: string; cookies: string; terms: string };
     followTitle: string;
