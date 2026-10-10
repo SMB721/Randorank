@@ -76,7 +76,7 @@ export const de: LandingDict = {
     eyebrow: "Erstellen Sie Ihre Route",
     titleLine1: "Geben Sie Ihre Distanz an.",
     titleLine2: "RandoRank erledigt den Rest.",
-    text: "Geben Sie an, wie weit Sie gehen möchten — und Ihr Ziel, falls Sie eines haben. RandoRank schlägt Ihnen eine wirklich begehbare Route vor und passt sie dann an Ihr Niveau und die Gesundheitsangaben in Ihrem Profil an, damit Sie eine passende Strecke erhalten statt einer generischen Tour.",
+    text: "Geben Sie an, wie weit Sie gehen möchten — und Ihr Ziel, falls Sie eines haben. RandoRank schlägt Ihnen eine wirklich begehbare Route vor und bewertet dann ihren Schwierigkeitsgrad (Anfänger, Amateur oder Fortgeschritten) anhand von Distanz und Höhenunterschied, damit Sie wissen, was Sie erwartet.",
     cta: "Meine Route planen",
     floatingRoute: { label: "Route erstellt", value: "12 km" },
     floatingElevation: { label: "Max. Höhenunterschied", value: "+450 m" },
@@ -142,7 +142,7 @@ export const de: LandingDict = {
       {
         question: "Wie funktioniert die Routenerstellung?",
         answer:
-          "Sie geben die gewünschte Distanz an (und optional einen Startpunkt oder einen maximalen Höhenunterschied). RandoRank schlägt Ihnen eine wirklich begehbare Route vor und verfeinert den Vorschlag anhand Ihres Niveaus und der Gesundheitsangaben in Ihrem Profil, damit Sie eine passende Strecke erhalten statt einer einfachen, generischen Route.",
+          "Sie geben die gewünschte Distanz an (und optional einen Startpunkt oder einen maximalen Höhenunterschied). RandoRank schlägt Ihnen eine wirklich begehbare Route vor und bewertet dann ihren Schwierigkeitsgrad (Anfänger, Amateur oder Fortgeschritten) anhand von Distanz und Höhenunterschied, damit Sie wissen, was Sie erwartet. Es werden keine Gesundheitsdaten abgefragt.",
       },
       {
         question: "Sind meine Statistiken öffentlich?",

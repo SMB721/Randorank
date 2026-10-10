@@ -76,7 +76,7 @@ export const en: LandingDict = {
     eyebrow: "Generate your route",
     titleLine1: "Tell us your distance.",
     titleLine2: "RandoRank handles the rest.",
-    text: "Enter the distance you're up for — and your goal, if you have one. RandoRank suggests a route you can actually walk, then adjusts it to your level and the health information in your profile, so you get a trail that fits you rather than a generic itinerary.",
+    text: "Enter the distance you're up for — and your goal, if you have one. RandoRank suggests a route you can actually walk, then rates its difficulty (beginner, amateur or advanced) from the distance and elevation gain, so you know what to expect.",
     cta: "Plan my route",
     floatingRoute: { label: "Route generated", value: "12 km" },
     floatingElevation: { label: "Max elevation gain", value: "+450 m" },
@@ -142,7 +142,7 @@ export const en: LandingDict = {
       {
         question: "How does route generation work?",
         answer:
-          "You tell us the distance you want to cover (and optionally a starting point or a maximum elevation gain). RandoRank suggests a route you can actually walk, then refines it to your level and the health information you enter in your profile, so you get a trail that fits you rather than a plain generic itinerary.",
+          "You tell us the distance you want to cover (and optionally a starting point or a maximum elevation gain). RandoRank suggests a route you can actually walk, then rates its difficulty (beginner, amateur or advanced) from the distance and elevation gain, so you know what to expect. No health data is asked for.",
       },
       {
         question: "Are my stats public?",

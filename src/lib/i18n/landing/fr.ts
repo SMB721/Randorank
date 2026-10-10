@@ -77,7 +77,7 @@ export const fr: LandingDict = {
     eyebrow: "Générez votre parcours",
     titleLine1: "Indiquez votre distance.",
     titleLine2: "RandoRank prépare la suite.",
-    text: "Renseignez la distance que vous êtes prêt·e à réaliser — et votre objectif si vous en avez un. RandoRank vous propose un parcours réellement praticable, puis l'ajuste selon votre niveau et les informations de santé de votre profil, pour vous suggérer un tracé adapté plutôt qu'un itinéraire générique.",
+    text: "Renseignez la distance que vous êtes prêt·e à réaliser — et votre objectif si vous en avez un. RandoRank vous propose un parcours réellement praticable, puis en indique la difficulté (débutant, amateur ou avancé) d'après la distance et le dénivelé, pour que vous sachiez à quoi vous attendre.",
     cta: "Préparer mon itinéraire",
     floatingRoute: { label: "Itinéraire généré", value: "12 km" },
     floatingElevation: { label: "Dénivelé max", value: "+450 m" },
@@ -143,7 +143,7 @@ export const fr: LandingDict = {
       {
         question: "Comment fonctionne la génération d'itinéraire ?",
         answer:
-          "Vous indiquez la distance que vous voulez réaliser (et éventuellement un point de départ ou un dénivelé max). RandoRank vous propose un parcours réellement praticable, puis affine la proposition selon votre niveau et les infos de santé que vous renseignez dans votre profil, pour vous suggérer un tracé adapté plutôt qu'un simple itinéraire générique.",
+          "Vous indiquez la distance que vous voulez réaliser (et éventuellement un point de départ ou un dénivelé max). RandoRank vous propose un parcours réellement praticable, puis en indique la difficulté (débutant, amateur ou avancé) d'après la distance et le dénivelé, pour que vous sachiez à quoi vous attendre. Aucune donnée de santé n'est demandée.",
       },
       {
         question: "Est-ce que mes statistiques sont publiques ?",

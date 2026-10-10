@@ -76,7 +76,7 @@ export const es: LandingDict = {
     eyebrow: "Genere su ruta",
     titleLine1: "Indique su distancia.",
     titleLine2: "RandoRank se ocupa del resto.",
-    text: "Indique la distancia que se ve capaz de recorrer — y su objetivo, si lo tiene. RandoRank le propone una ruta realmente transitable y luego la ajusta a su nivel y a la información de salud de su perfil, para sugerirle un trazado adaptado en lugar de un itinerario genérico.",
+    text: "Indique la distancia que se ve capaz de recorrer — y su objetivo, si lo tiene. RandoRank le propone una ruta realmente transitable y luego indica su dificultad (principiante, aficionado o avanzado) según la distancia y el desnivel, para que sepa qué le espera.",
     cta: "Preparar mi itinerario",
     floatingRoute: { label: "Itinerario generado", value: "12 km" },
     floatingElevation: { label: "Desnivel máx.", value: "+450 m" },
@@ -142,7 +142,7 @@ export const es: LandingDict = {
       {
         question: "¿Cómo funciona la generación de itinerarios?",
         answer:
-          "Usted indica la distancia que quiere recorrer (y, si lo desea, un punto de partida o un desnivel máximo). RandoRank le propone una ruta realmente transitable y luego afina la propuesta según su nivel y la información de salud que indica en su perfil, para sugerirle un trazado adaptado en lugar de un simple itinerario genérico.",
+          "Usted indica la distancia que quiere recorrer (y, si lo desea, un punto de partida o un desnivel máximo). RandoRank le propone una ruta realmente transitable y luego indica su dificultad (principiante, aficionado o avanzado) según la distancia y el desnivel, para que sepa qué le espera. No se solicita ningún dato de salud.",
       },
       {
         question: "¿Mis estadísticas son públicas?",
