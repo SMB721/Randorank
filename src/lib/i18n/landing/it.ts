@@ -116,9 +116,9 @@ export const it: LandingDict = {
     eyebrow: "Come funziona",
     title: "Tre passi. Zero complicazioni.",
     steps: [
-      { title: "Importi la sua escursione", text: "Carichi un file GPX: il tracciato appare sulla mappa con distanza, dislivello e durata." },
-      { title: "Salga in classifica", text: "I suoi chilometri la collocano nella classifica nazionale e in quella della sua regione." },
-      { title: "Sblocchi e condivida", text: "Badge, titoli e una scheda curata da pubblicare nelle storie." },
+      { title: "Parta per un'escursione", text: "Scelga la sua uscita o lasci che RandoRank le proponga un anello su misura." },
+      { title: "Salga in classifica", text: "Ogni chilometro conta: salga nella classifica della sua regione e del paese, in versione divertente." },
+      { title: "Punti più in alto", text: "Generi un percorso su misura per nuove sfide, ottenga badge e condivida le sue imprese." },
     ],
   },
   badges: {

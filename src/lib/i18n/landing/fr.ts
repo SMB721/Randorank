@@ -117,9 +117,9 @@ export const fr: LandingDict = {
     eyebrow: "Comment ça marche",
     title: "Trois étapes. Zéro prise de tête.",
     steps: [
-      { title: "Importez votre rando", text: "Déposez un fichier GPX : votre tracé s'affiche sur la carte avec distance, dénivelé et durée." },
-      { title: "Montez au classement", text: "Vos kilomètres vous placent au classement national et dans celui de votre région." },
-      { title: "Débloquez et partagez", text: "Badges, titres et une fiche stylée à poster en story." },
+      { title: "Partez en rando", text: "Choisissez votre sortie, ou laissez RandoRank vous proposer une boucle à votre mesure." },
+      { title: "Grimpez au classement", text: "Chaque kilomètre compte : montez dans le classement de votre région et du pays, version fun." },
+      { title: "Visez plus haut", text: "Générez un tracé sur mesure pour de nouveaux défis, décrochez des badges et partagez vos exploits." },
     ],
   },
   badges: {

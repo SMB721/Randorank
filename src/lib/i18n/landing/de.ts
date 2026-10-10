@@ -116,9 +116,9 @@ export const de: LandingDict = {
     eyebrow: "So funktioniert's",
     title: "Drei Schritte. Null Aufwand.",
     steps: [
-      { title: "Wanderung importieren", text: "GPX-Datei hochladen: Ihre Strecke erscheint auf der Karte mit Distanz, Höhenmetern und Dauer." },
-      { title: "In der Rangliste aufsteigen", text: "Ihre Kilometer bringen Sie in die nationale und die regionale Rangliste." },
-      { title: "Freischalten und teilen", text: "Abzeichen, Titel und eine stylische Karte für Ihre Story." },
+      { title: "Ab auf den Weg", text: "Wählen Sie Ihre Tour oder lassen Sie sich von RandoRank eine passende Runde vorschlagen." },
+      { title: "In der Rangliste aufsteigen", text: "Jeder Kilometer zählt: Steigen Sie in der Rangliste Ihrer Region und des Landes auf, mit Spaß." },
+      { title: "Höher hinaus", text: "Erstellen Sie eine Strecke nach Maß für neue Challenges, sammeln Sie Abzeichen und teilen Sie Ihre Erfolge." },
     ],
   },
   badges: {
