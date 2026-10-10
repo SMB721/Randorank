@@ -14,9 +14,11 @@ const HikeMap = dynamic(() => import("./HikeMap"), {
 export default function HikeMapLoader({
   coordinates,
   blurred,
+  others,
 }: {
   coordinates: [number, number][];
   blurred?: boolean;
+  others?: [number, number][][];
 }) {
-  return <HikeMap coordinates={coordinates} blurred={blurred} />;
+  return <HikeMap coordinates={coordinates} blurred={blurred} others={others} />;
 }

@@ -6,7 +6,7 @@ import {
   followUserAction,
   searchProfilesAction,
   type SearchResult,
-} from "@/app/(site)/dashboard/(premium)/classement/actions";
+} from "@/app/(site)/dashboard/(app)/classement/actions";
 import { useT } from "@/lib/i18n/app/client";
 import { levelKey } from "@/lib/i18n/app/labels";
 

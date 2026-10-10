@@ -17,3 +17,10 @@ export function formatDate(isoDate: string | null, tr: Pick<Translator, "t" | "l
     year: "numeric",
   });
 }
+
+/** Pace as "m:ss" from minutes per km (16.67 -> "16:40"). */
+export function formatPace(minPerKm: number): string {
+  const whole = Math.floor(minPerKm);
+  const seconds = Math.round((minPerKm - whole) * 60);
+  return seconds === 60 ? `${whole + 1}:00` : `${whole}:${String(seconds).padStart(2, "0")}`;
+}

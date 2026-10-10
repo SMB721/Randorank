@@ -178,12 +178,12 @@ export const en: FunnelDict = {
     thenMonthly: "Then {amount} per month, charged when the trial ends.",
     thenYearly: "Then {amount} per year, charged when the trial ends.",
     features: [
-      "Unlimited hikes: live GPS and GPX import",
-      "Unlimited route generator",
-      "Unlimited photos and automatic share card",
-      "Full national and regional leaderboard",
-      "Badges, challenges and levels",
-      "Complete history of your outings",
+      "Unlimited route generator (2 a month on the free plan)",
+      "Route library: save your loops",
+      "Unlimited photos on every hike",
+      "Share card without the watermark, ready to post",
+      "Every challenge of the month, not just one",
+      "Premium badge on the leaderboard",
     ],
     cta: "Try free for {days} days",
     cardNote:

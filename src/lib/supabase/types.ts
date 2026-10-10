@@ -51,6 +51,8 @@ export type Hike = {
 
 export type HikeWithTrack = Hike & {
   track_geojson: { type: "LineString"; coordinates: [number, number][] };
+  /** Thinned altitudes in metres (see lib/elevationProfile); null for older hikes. */
+  elevation_profile?: number[] | null;
 };
 
 export type Photo = {

@@ -14,10 +14,34 @@ const passwordChecks = [
   { key: "digit", test: (v: string) => /[0-9]/.test(v) },
 ] as const;
 
-export default function AuthForm({ dict: t }: { dict: FunnelDict["auth"] }) {
+type GuestCopy = {
+  /** Shown on the sign-up tab: "your progress is kept". */
+  upgradeNote: string;
+  /** Shown on the login tab: signing in to another account drops the guest data. */
+  loginWarning: string;
+  /** Replaces the generic "account created" when a confirmation email is needed. */
+  confirmEmail: string;
+};
+
+// Only same-site paths are accepted as a post-auth destination.
+function safeNext(value: string | null): string | null {
+  return value && value.startsWith("/") && !value.startsWith("//") ? value : null;
+}
+
+export default function AuthForm({
+  dict: t,
+  isAnonymous = false,
+  guestCopy,
+}: {
+  dict: FunnelDict["auth"];
+  /** True when the visitor is a guest: sign-up then upgrades that account. */
+  isAnonymous?: boolean;
+  guestCopy?: GuestCopy;
+}) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialMode: Mode = searchParams.get("mode") === "login" ? "login" : "signup";
+  const next = safeNext(searchParams.get("next"));
 
   const [mode, setMode] = useState<Mode>(initialMode);
   const [email, setEmail] = useState("");
@@ -51,14 +75,25 @@ export default function AuthForm({ dict: t }: { dict: FunnelDict["auth"] }) {
     setLoading(true);
 
     try {
-      if (mode === "signup") {
+      if (mode === "signup" && isAnonymous) {
+        // Guest -> real account: same user id, so every hike, photo and
+        // quota the guest accumulated is kept.
+        const { data, error } = await supabase.auth.updateUser({ email, password });
+        if (error) throw error;
+        if (data.user.new_email) {
+          setInfo(guestCopy?.confirmEmail ?? t.accountCreated);
+        } else {
+          router.push(next ?? "/dashboard");
+          router.refresh();
+        }
+      } else if (mode === "signup") {
         const { data, error } = await supabase.auth.signUp({ email, password });
         if (error) throw error;
         // With "Confirm email" disabled in Supabase, signUp returns a live
         // session and the user goes straight in. No session means the
         // dashboard setting is still on — fall back to asking for the email.
         if (data.session) {
-          router.push("/bienvenue");
+          router.push(next ?? "/bienvenue");
           router.refresh();
         } else {
           setInfo(t.accountCreated);
@@ -69,7 +104,7 @@ export default function AuthForm({ dict: t }: { dict: FunnelDict["auth"] }) {
           password,
         });
         if (error) throw error;
-        router.push("/dashboard");
+        router.push(next ?? "/dashboard");
         router.refresh();
       }
     } catch (err) {
@@ -81,12 +116,15 @@ export default function AuthForm({ dict: t }: { dict: FunnelDict["auth"] }) {
 
   async function handleOAuth(provider: "google" | "facebook") {
     setError(null);
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider,
-      options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
-      },
-    });
+    const callback = new URL("/auth/callback", window.location.origin);
+    if (next) callback.searchParams.set("next", next);
+    // A guest links the provider to the existing account (keeps their data);
+    // anyone else signs in normally.
+    const options = { redirectTo: callback.toString() };
+    const { error } =
+      mode === "signup" && isAnonymous
+        ? await supabase.auth.linkIdentity({ provider, options })
+        : await supabase.auth.signInWithOAuth({ provider, options });
     if (error) setError(error.message);
   }
 
@@ -100,6 +138,12 @@ export default function AuthForm({ dict: t }: { dict: FunnelDict["auth"] }) {
           {mode === "signup" ? t.signupSubtitle : t.loginSubtitle}
         </p>
       </div>
+
+      {isAnonymous && guestCopy && (
+        <p className="rounded-lg bg-summit-500/15 px-3 py-2 text-center text-xs text-summit-200">
+          {mode === "signup" ? guestCopy.upgradeNote : guestCopy.loginWarning}
+        </p>
+      )}
 
       <div className="flex rounded-xl bg-white/5 p-1 text-sm font-semibold">
         <button

@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { importGpxAction } from "@/app/(site)/dashboard/(premium)/randos/actions";
+import { importGpxAction } from "@/app/(site)/dashboard/(app)/randos/actions";
 import { useT } from "@/lib/i18n/app/client";
 
 export default function ImportGpxForm() {

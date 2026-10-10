@@ -179,12 +179,12 @@ export const es: FunnelDict = {
     thenMonthly: "Después {amount} al mes, cobrados al terminar la prueba.",
     thenYearly: "Después {amount} al año, cobrados al terminar la prueba.",
     features: [
-      "Rutas ilimitadas: GPS en directo e importación GPX",
-      "Generador de trazados ilimitado",
-      "Fotos ilimitadas y ficha para compartir automática",
-      "Clasificación nacional y regional completa",
-      "Insignias, retos y niveles",
-      "Historial completo de sus salidas",
+      "Generador de rutas ilimitado (2 al mes en el plan gratuito)",
+      "Biblioteca de rutas: guarde sus circuitos",
+      "Fotos ilimitadas en cada salida",
+      "Ficha para compartir sin marca de agua, lista para publicar",
+      "Todos los retos del mes, no solo uno",
+      "Insignia Premium en la clasificación",
     ],
     cta: "Probar {days} días gratis",
     cardNote:

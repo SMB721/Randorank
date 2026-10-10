@@ -29,7 +29,7 @@ export const es: LandingDict = {
     subtitle:
       "Registre sus rutas, desbloquee nuevas insignias, escale en la clasificación y comparta sus mejores salidas.",
     cta: "Comenzar el ascenso",
-    ctaNote: "Inicie sesión o cree su cuenta en unos segundos · Google, Facebook o correo",
+    ctaNote: "Sin cuenta, sin tarjeta · Elija un apodo y listo",
     imageAlt: "Senderista en una cresta frente a las montañas",
   },
   spots: {
@@ -112,9 +112,19 @@ export const es: LandingDict = {
   },
   offers: {
     eyebrow: "Ofertas",
-    title: "Le MUL. Punto.",
-    text: "Una sola oferta, todo incluido: rutas, trazados y fotos ilimitados, clasificación completa. El detalle de las tarifas se muestra en cuanto cree su perfil.",
+    title: "Gratis para subir. Premium para acelerar.",
+    text: "Empiece sin cuenta y sin tarjeta. Pase a Premium cuando quiera ir más lejos.",
     cta: "Comenzar el ascenso",
+    freeName: "Gratis",
+    freeTagline: "Para empezar",
+    freePrice: "0 €",
+    freeFeatures: ["Importación GPX y grabación de salidas", "Historial y mapa de sus rutas", "Clasificaciones nacional y regional", "Insignias y un reto al mes", "2 rutas generadas al mes", "3 fotos por salida"],
+    premiumName: "Premium · El MUL",
+    premiumTagline: "Para quien lo quiere todo",
+    premiumFeatures: ["Todo lo gratuito", "Rutas generadas ilimitadas + biblioteca", "Todos los retos del mes", "Fotos ilimitadas", "Ficha para compartir sin marca de agua", "Insignia Premium en la clasificación"],
+    perMonth: "/mes",
+    orYearly: "o {amount} al año",
+    trial: "{days} días de prueba gratuita",
   },
   about: {
     eyebrow: "RandoRank en pocas palabras",
@@ -127,7 +137,7 @@ export const es: LandingDict = {
       {
         question: "¿RandoRank es de pago?",
         answer:
-          "Sí: RandoRank funciona únicamente con suscripción Premium (mensual o anual, cancelable en cualquier momento). Tiene acceso a todo: rutas y trazados ilimitados, fotos, clasificación nacional y regional, insignias — el detalle de las tarifas se muestra al crear su perfil.",
+          "No para empezar: el seguimiento de salidas, las clasificaciones, las insignias y un reto son gratuitos, sin cuenta ni tarjeta. Premium (mensual o anual, prueba gratuita, cancelable en cualquier momento) desbloquea rutas ilimitadas, todos los retos, fotos ilimitadas y la ficha para compartir sin marca de agua.",
       },
       {
         question: "¿Cómo funciona la generación de itinerarios?",

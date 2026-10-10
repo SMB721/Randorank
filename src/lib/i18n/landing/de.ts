@@ -29,7 +29,7 @@ export const de: LandingDict = {
     subtitle:
       "Zeichnen Sie Ihre Wanderungen auf, schalten Sie neue Badges frei, klettern Sie in der Rangliste und teilen Sie Ihre schönsten Touren.",
     cta: "Den Aufstieg beginnen",
-    ctaNote: "Anmelden oder Konto erstellen in wenigen Sekunden · Google, Facebook oder E-Mail",
+    ctaNote: "Ohne Konto, ohne Kreditkarte · Spitznamen wählen und los",
     imageAlt: "Wanderer auf einem Grat vor Bergkulisse",
   },
   spots: {
@@ -112,9 +112,19 @@ export const de: LandingDict = {
   },
   offers: {
     eyebrow: "Angebote",
-    title: "Le MUL. Punkt.",
-    text: "Ein Angebot, alles inklusive: unbegrenzt Wanderungen, Routen und Fotos, komplette Rangliste. Die Preise sehen Sie, sobald Sie Ihr Profil erstellt haben.",
+    title: "Gratis zum Aufsteigen. Premium zum Beschleunigen.",
+    text: "Starten Sie ohne Konto und ohne Karte. Wechseln Sie zu Premium, wenn Sie weiter wollen.",
     cta: "Den Aufstieg beginnen",
+    freeName: "Gratis",
+    freeTagline: "Zum Loslegen",
+    freePrice: "0 €",
+    freeFeatures: ["GPX-Import und Aufzeichnung Ihrer Wanderungen", "Verlauf und Karte Ihrer Strecken", "National- und Regionalranglisten", "Abzeichen und eine Challenge pro Monat", "2 generierte Routen pro Monat", "3 Fotos pro Wanderung"],
+    premiumName: "Premium · Le MUL",
+    premiumTagline: "Für alle, die alles wollen",
+    premiumFeatures: ["Alles aus Gratis", "Unbegrenzt generierte Routen + Bibliothek", "Alle Challenges des Monats", "Unbegrenzt Fotos", "Teilen-Karte ohne Wasserzeichen", "Premium-Abzeichen in der Rangliste"],
+    perMonth: "/Monat",
+    orYearly: "oder {amount} pro Jahr",
+    trial: "{days} Tage kostenlos testen",
   },
   about: {
     eyebrow: "RandoRank in ein paar Worten",
@@ -127,7 +137,7 @@ export const de: LandingDict = {
       {
         question: "Kostet RandoRank etwas?",
         answer:
-          "Ja: RandoRank funktioniert ausschließlich im Premium-Abo (monatlich oder jährlich, jederzeit kündbar). Sie haben Zugriff auf alles: unbegrenzt Wanderungen und Routen, Fotos, nationale und regionale Rangliste, Badges — die Preise werden bei der Erstellung Ihres Profils angezeigt.",
+          "Nicht zum Einstieg: Wanderungs-Tracking, Ranglisten, Abzeichen und eine Challenge sind gratis, ohne Konto und ohne Kreditkarte. Premium (monatlich oder jährlich, kostenlose Testphase, jederzeit kündbar) schaltet unbegrenzt Routen, alle Challenges, unbegrenzt Fotos und die Teilen-Karte ohne Wasserzeichen frei.",
       },
       {
         question: "Wie funktioniert die Routenerstellung?",

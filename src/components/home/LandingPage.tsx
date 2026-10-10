@@ -8,8 +8,10 @@ import CommunityStatsSection from "@/components/home/CommunityStatsSection";
 import PhoneMockup from "@/components/home/PhoneMockup";
 import FloatingStatCard from "@/components/home/FloatingStatCard";
 import { createClient } from "@/lib/supabase/server";
-import type { Locale } from "@/lib/i18n/config";
+import { formatEuro, type Locale } from "@/lib/i18n/config";
 import { getLandingDict } from "@/lib/i18n/landing";
+import { fill } from "@/lib/i18n/funnel";
+import { PREMIUM_PRICE, PREMIUM_TRIAL_DAYS } from "@/lib/pricing";
 import type { CommunityStats, CommunityWeeklyKm } from "@/lib/supabase/types";
 
 const heroImage =
@@ -95,7 +97,7 @@ export default async function LandingPage({ locale }: { locale: Locale }) {
                 tabs, and the line below tells returning members it is for them. */}
             <div className="flex flex-col items-center gap-3 pt-2">
               <Link
-                href="/auth"
+                href="/start"
                 className="w-full max-w-md rounded-2xl bg-summit-500 px-8 py-4 text-center text-lg font-semibold text-white shadow-xl shadow-summit-500/30 transition hover:bg-summit-600 sm:w-auto sm:min-w-[22rem]"
               >
                 {t.hero.cta}
@@ -246,7 +248,7 @@ export default async function LandingPage({ locale }: { locale: Locale }) {
               </div>
 
               <Link
-                href="/auth"
+                href="/start"
                 className="mt-6 inline-block rounded-xl bg-summit-500 px-8 py-3 text-base font-semibold text-white shadow-lg shadow-summit-500/30 transition hover:bg-summit-600"
               >
                 {t.share.cta}
@@ -271,7 +273,7 @@ export default async function LandingPage({ locale }: { locale: Locale }) {
                 {t.route.text}
               </p>
               <Link
-                href="/auth"
+                href="/start"
                 className="mt-6 inline-block rounded-xl bg-trail-900 px-8 py-3 text-base font-semibold text-white shadow-lg shadow-trail-900/20 transition hover:bg-trail-800"
               >
                 {t.route.cta}
@@ -507,8 +509,8 @@ export default async function LandingPage({ locale }: { locale: Locale }) {
           </section>
         )}
 
-        {/* Offres — teaser seulement : le tableau de prix complet est dans le
-            dashboard, réservé aux comptes créés (voir /bienvenue/paywall). */}
+        {/* Offres — gratuit vs Premium, prix affichés : un visiteur ne doit
+            jamais avoir à créer un compte pour découvrir ce que ça coûte. */}
         <section id="offres" className="bg-white px-6 py-24">
           <div className="mx-auto max-w-2xl text-center">
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-summit-600">
@@ -520,12 +522,65 @@ export default async function LandingPage({ locale }: { locale: Locale }) {
             <p className="mt-4 text-trail-600">
               {t.offers.text}
             </p>
-            <Link
-              href="/auth"
-              className="mt-6 inline-block rounded-xl bg-summit-500 px-8 py-3 text-base font-semibold text-white shadow-lg shadow-summit-500/30 transition hover:bg-summit-600"
-            >
-              {t.offers.cta}
-            </Link>
+          </div>
+
+          <div className="mx-auto mt-10 grid max-w-4xl gap-6 md:grid-cols-2">
+            <div className="rounded-2xl border border-trail-200 bg-trail-50 p-8">
+              <h3 className="font-display text-3xl tracking-wide text-trail-900">
+                {t.offers.freeName}
+              </h3>
+              <p className="text-sm italic text-trail-500">{t.offers.freeTagline}</p>
+              <p className="mt-4 font-display text-5xl tracking-wide text-trail-900">
+                {t.offers.freePrice}
+              </p>
+              <ul className="mt-6 space-y-2 text-sm text-trail-700">
+                {t.offers.freeFeatures.map((f) => (
+                  <li key={f} className="flex items-start gap-2">
+                    <span className="mt-0.5 text-trail-400" aria-hidden="true">
+                      ✓
+                    </span>
+                    {f}
+                  </li>
+                ))}
+              </ul>
+              <Link
+                href="/start"
+                className="mt-8 block rounded-xl border-2 border-trail-900 py-3 text-center text-base font-semibold text-trail-900 transition hover:bg-trail-900 hover:text-white"
+              >
+                {t.offers.cta}
+              </Link>
+            </div>
+
+            <div className="rounded-2xl border-2 border-summit-400 bg-white p-8 shadow-xl shadow-summit-500/10">
+              <h3 className="font-display text-3xl tracking-wide text-trail-900">
+                {t.offers.premiumName}
+              </h3>
+              <p className="text-sm italic text-trail-500">{t.offers.premiumTagline}</p>
+              <p className="mt-4 font-display text-5xl tracking-wide text-trail-900">
+                {formatEuro(locale, PREMIUM_PRICE.monthly)}
+                <span className="text-lg text-trail-500">{t.offers.perMonth}</span>
+              </p>
+              <p className="text-xs text-trail-500">
+                {fill(t.offers.orYearly, { amount: formatEuro(locale, PREMIUM_PRICE.yearly) })} ·{" "}
+                {fill(t.offers.trial, { days: PREMIUM_TRIAL_DAYS })}
+              </p>
+              <ul className="mt-6 space-y-2 text-sm text-trail-700">
+                {t.offers.premiumFeatures.map((f) => (
+                  <li key={f} className="flex items-start gap-2">
+                    <span className="mt-0.5 text-summit-500" aria-hidden="true">
+                      ✓
+                    </span>
+                    {f}
+                  </li>
+                ))}
+              </ul>
+              <Link
+                href="/start"
+                className="mt-8 block rounded-xl bg-summit-500 py-3 text-center text-base font-semibold text-white shadow-lg shadow-summit-500/30 transition hover:bg-summit-600"
+              >
+                {t.offers.cta}
+              </Link>
+            </div>
           </div>
         </section>
 
@@ -579,7 +634,7 @@ export default async function LandingPage({ locale }: { locale: Locale }) {
               {t.finalCta.text}
             </p>
             <Link
-              href="/auth"
+              href="/start"
               className="mt-6 inline-block rounded-xl bg-summit-500 px-8 py-3 text-base font-semibold text-white shadow-lg shadow-summit-500/30 transition hover:bg-summit-600"
             >
               {t.finalCta.cta}

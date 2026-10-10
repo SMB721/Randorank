@@ -7,6 +7,8 @@ import { landingPath } from "@/lib/i18n/config";
 import { getLandingDict } from "@/lib/i18n/landing";
 import { getFunnelDict } from "@/lib/i18n/funnel";
 import { getRequestLocale } from "@/lib/i18n/server";
+import { getT } from "@/lib/i18n/app/server";
+import { createClient } from "@/lib/supabase/server";
 
 const authImage =
   "https://images.unsplash.com/photo-1600807497639-3b5d8e74a232?auto=format&fit=crop&w=1600&q=80";
@@ -18,6 +20,12 @@ export async function generateMetadata() {
 export default async function AuthPage() {
   const locale = await getRequestLocale();
   const t = getFunnelDict(locale).auth;
+  const { t: appT } = await getT();
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const isAnonymous = Boolean(user?.is_anonymous);
   return (
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-24">
       <HtmlLang locale={locale} />
@@ -48,7 +56,15 @@ export default async function AuthPage() {
 
       <div className="relative z-10 w-full">
         <Suspense fallback={null}>
-          <AuthForm dict={t} />
+          <AuthForm
+            dict={t}
+            isAnonymous={isAnonymous}
+            guestCopy={{
+              upgradeNote: appT("auth.guest.upgrade"),
+              loginWarning: appT("auth.guest.loginWarning"),
+              confirmEmail: appT("auth.guest.confirmEmail"),
+            }}
+          />
         </Suspense>
       </div>
     </main>

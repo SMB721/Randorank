@@ -3,7 +3,7 @@
 import { useState, useTransition } from "react";
 import Image from "next/image";
 import { useT } from "@/lib/i18n/app/client";
-import { deletePhotoAction } from "@/app/(site)/dashboard/(premium)/randos/[id]/photo-actions";
+import { deletePhotoAction } from "@/app/(site)/dashboard/(app)/randos/[id]/photo-actions";
 
 export type GalleryPhoto = {
   id: string;

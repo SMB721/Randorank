@@ -180,12 +180,12 @@ export const de: FunnelDict = {
     thenMonthly: "Danach {amount} pro Monat, abgebucht am Ende der Testphase.",
     thenYearly: "Danach {amount} pro Jahr, abgebucht am Ende der Testphase.",
     features: [
-      "Unbegrenzt Wanderungen: Live-GPS und GPX-Import",
-      "Unbegrenzter Routengenerator",
-      "Unbegrenzt Fotos und automatische Teilen-Karte",
-      "Komplette nationale und regionale Rangliste",
-      "Badges, Challenges und Niveaus",
-      "Vollständiger Verlauf Ihrer Touren",
+      "Unbegrenzter Routengenerator (2 pro Monat im Gratis-Tarif)",
+      "Routenbibliothek: speichern Sie Ihre Runden",
+      "Unbegrenzt Fotos pro Wanderung",
+      "Teilen-Karte ohne Wasserzeichen, bereit zum Posten",
+      "Alle Challenges des Monats, nicht nur eine",
+      "Premium-Abzeichen in der Rangliste",
     ],
     cta: "{days} Tage gratis testen",
     cardNote:
