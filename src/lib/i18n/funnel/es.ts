@@ -180,6 +180,8 @@ export const es: FunnelDict = {
     thenYearly: "Después {amount} al año, cobrados al terminar la prueba.",
     features: [
       "Generador de rutas ilimitado (2 al mes en el plan gratuito)",
+      "3 variantes de ruta para comparar + desnivel máximo",
+      "Estadísticas avanzadas: récords, tendencias, perfil de altitud",
       "Biblioteca de rutas: guarde sus circuitos",
       "Fotos ilimitadas en cada salida",
       "Ficha para compartir sin marca de agua, lista para publicar",

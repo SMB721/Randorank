@@ -121,7 +121,7 @@ export const it: LandingDict = {
     freeFeatures: ["Importazione GPX e registrazione delle uscite", "Storico e mappa dei suoi percorsi", "Classifiche nazionali e regionali", "Badge e una sfida al mese", "2 percorsi generati al mese", "3 foto per uscita"],
     premiumName: "Premium · Le MUL",
     premiumTagline: "Per chi vuole tutto",
-    premiumFeatures: ["Tutto il gratuito", "Percorsi generati illimitati + libreria", "Tutte le sfide del mese", "Foto illimitate", "Scheda di condivisione senza filigrana", "Badge Premium in classifica"],
+    premiumFeatures: ["Tutto il gratuito", "Percorsi generati illimitati + libreria", "3 varianti di percorso da confrontare + dislivello max", "Statistiche avanzate: record, tendenze, profilo altimetrico", "Tutte le sfide del mese", "Foto illimitate", "Scheda di condivisione senza filigrana", "Badge Premium in classifica"],
     perMonth: "/mese",
     orYearly: "oppure {amount} all'anno",
     trial: "{days} giorni di prova gratuita",

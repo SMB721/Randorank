@@ -180,6 +180,8 @@ export const it: FunnelDict = {
     thenYearly: "Poi {amount} all'anno, addebitati alla fine della prova.",
     features: [
       "Generatore di percorsi illimitato (2 al mese nel piano gratuito)",
+      "3 varianti di percorso da confrontare + dislivello max",
+      "Statistiche avanzate: record, tendenze, profilo altimetrico",
       "Libreria di itinerari: salvi i suoi anelli",
       "Foto illimitate su ogni uscita",
       "Scheda di condivisione senza filigrana, pronta da pubblicare",

@@ -179,6 +179,8 @@ export const en: FunnelDict = {
     thenYearly: "Then {amount} per year, charged when the trial ends.",
     features: [
       "Unlimited route generator (2 a month on the free plan)",
+      "3 route variants to compare + max elevation",
+      "Advanced stats: records, trends, altitude profile",
       "Route library: save your loops",
       "Unlimited photos on every hike",
       "Share card without the watermark, ready to post",

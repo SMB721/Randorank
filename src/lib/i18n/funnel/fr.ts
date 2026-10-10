@@ -180,6 +180,8 @@ export const fr: FunnelDict = {
     thenYearly: "Puis {amount} par an, débité à la fin de l'essai.",
     features: [
       "Générateur de tracé illimité (2 par mois en gratuit)",
+      "3 variantes de tracé comparées + dénivelé max",
+      "Stats avancées : records, tendances, profil d'altitude",
       "Bibliothèque d'itinéraires : enregistrez vos boucles",
       "Photos illimitées sur chaque sortie",
       "Fiche de partage sans filigrane, prête à poster",

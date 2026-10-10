@@ -121,7 +121,7 @@ export const de: LandingDict = {
     freeFeatures: ["GPX-Import und Aufzeichnung Ihrer Wanderungen", "Verlauf und Karte Ihrer Strecken", "National- und Regionalranglisten", "Abzeichen und eine Challenge pro Monat", "2 generierte Routen pro Monat", "3 Fotos pro Wanderung"],
     premiumName: "Premium · Le MUL",
     premiumTagline: "Für alle, die alles wollen",
-    premiumFeatures: ["Alles aus Gratis", "Unbegrenzt generierte Routen + Bibliothek", "Alle Challenges des Monats", "Unbegrenzt Fotos", "Teilen-Karte ohne Wasserzeichen", "Premium-Abzeichen in der Rangliste"],
+    premiumFeatures: ["Alles aus Gratis", "Unbegrenzt generierte Routen + Bibliothek", "3 Routenvarianten zum Vergleichen + max. Höhenmeter", "Erweiterte Statistiken: Rekorde, Trends, Höhenprofil", "Alle Challenges des Monats", "Unbegrenzt Fotos", "Teilen-Karte ohne Wasserzeichen", "Premium-Abzeichen in der Rangliste"],
     perMonth: "/Monat",
     orYearly: "oder {amount} pro Jahr",
     trial: "{days} Tage kostenlos testen",

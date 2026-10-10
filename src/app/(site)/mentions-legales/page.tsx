@@ -95,10 +95,11 @@ export default function MentionsLegalesPage() {
 
         <h3 className="text-lg font-semibold text-trail-900">Compte et offres</h3>
         <p className="text-trail-700">
-          L&apos;accès à certaines fonctionnalités nécessite la création d&apos;un compte.
-          RandoRank est accessible sur abonnement Premium, mensuel ou annuel, résiliables à tout moment
-          depuis l&apos;espace compte ; la résiliation prend effet à la fin de la période
-          déjà payée. Le détail des offres et de leurs tarifs est disponible sur la page
+          RandoRank est utilisable gratuitement, sans compte ni carte bancaire : la création
+          d&apos;un compte n&apos;est demandée que pour conserver ses données ou accéder à
+          certaines fonctionnalités. Une offre Premium, mensuelle ou annuelle, débloque les
+          fonctionnalités avancées ; elle est résiliable à tout moment depuis l&apos;espace
+          compte, et la résiliation prend effet à la fin de la période déjà payée. Le détail des offres et de leurs tarifs est disponible sur la page
           d&apos;accueil.
         </p>
 

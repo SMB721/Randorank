@@ -121,7 +121,7 @@ export const en: LandingDict = {
     freeFeatures: ["GPX import and hike recording", "History and map of your tracks", "National and regional rankings", "Badges and one challenge a month", "2 generated routes a month", "3 photos per hike"],
     premiumName: "Premium · Le MUL",
     premiumTagline: "For those who want it all",
-    premiumFeatures: ["Everything in Free", "Unlimited generated routes + library", "Every challenge of the month", "Unlimited photos", "Share card without watermark", "Premium badge on the leaderboard"],
+    premiumFeatures: ["Everything in Free", "Unlimited generated routes + library", "3 route variants to compare + max elevation", "Advanced stats: records, trends, altitude profile", "Every challenge of the month", "Unlimited photos", "Share card without watermark", "Premium badge on the leaderboard"],
     perMonth: "/month",
     orYearly: "or {amount} a year",
     trial: "{days}-day free trial",

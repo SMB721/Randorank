@@ -121,7 +121,7 @@ export const es: LandingDict = {
     freeFeatures: ["Importación GPX y grabación de salidas", "Historial y mapa de sus rutas", "Clasificaciones nacional y regional", "Insignias y un reto al mes", "2 rutas generadas al mes", "3 fotos por salida"],
     premiumName: "Premium · El MUL",
     premiumTagline: "Para quien lo quiere todo",
-    premiumFeatures: ["Todo lo gratuito", "Rutas generadas ilimitadas + biblioteca", "Todos los retos del mes", "Fotos ilimitadas", "Ficha para compartir sin marca de agua", "Insignia Premium en la clasificación"],
+    premiumFeatures: ["Todo lo gratuito", "Rutas generadas ilimitadas + biblioteca", "3 variantes de ruta para comparar + desnivel máximo", "Estadísticas avanzadas: récords, tendencias, perfil de altitud", "Todos los retos del mes", "Fotos ilimitadas", "Ficha para compartir sin marca de agua", "Insignia Premium en la clasificación"],
     perMonth: "/mes",
     orYearly: "o {amount} al año",
     trial: "{days} días de prueba gratuita",

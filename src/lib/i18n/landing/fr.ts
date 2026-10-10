@@ -122,7 +122,7 @@ export const fr: LandingDict = {
     freeFeatures: ["Import GPX et enregistrement de vos sorties", "Historique et carte de vos tracés", "Classements national et régional", "Badges et un défi par mois", "2 tracés générés par mois", "3 photos par sortie"],
     premiumName: "Premium · Le MUL",
     premiumTagline: "Pour ceux qui veulent tout",
-    premiumFeatures: ["Tout le gratuit", "Tracés générés illimités + bibliothèque", "Tous les défis du mois", "Photos illimitées", "Fiche de partage sans filigrane", "Badge Premium au classement"],
+    premiumFeatures: ["Tout le gratuit", "Tracés générés illimités + bibliothèque", "3 variantes de tracé comparées + dénivelé max", "Stats avancées : records, tendances, profil d'altitude", "Tous les défis du mois", "Photos illimitées", "Fiche de partage sans filigrane", "Badge Premium au classement"],
     perMonth: "/mois",
     orYearly: "ou {amount} par an",
     trial: "{days} jours d'essai offerts",

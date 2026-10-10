@@ -181,6 +181,8 @@ export const de: FunnelDict = {
     thenYearly: "Danach {amount} pro Jahr, abgebucht am Ende der Testphase.",
     features: [
       "Unbegrenzter Routengenerator (2 pro Monat im Gratis-Tarif)",
+      "3 Routenvarianten zum Vergleichen + max. Höhenmeter",
+      "Erweiterte Statistiken: Rekorde, Trends, Höhenprofil",
       "Routenbibliothek: speichern Sie Ihre Runden",
       "Unbegrenzt Fotos pro Wanderung",
       "Teilen-Karte ohne Wasserzeichen, bereit zum Posten",
