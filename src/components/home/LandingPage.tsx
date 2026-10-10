@@ -75,7 +75,7 @@ export default async function LandingPage({ locale }: { locale: Locale }) {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-trail-950" />
 
-          <div className="relative z-10 space-y-5 pt-20 pb-10">
+          <div className="relative z-10 space-y-6 pt-16">
             <span className="inline-block rounded-full border border-white/30 bg-white/10 px-4 py-1 text-sm font-semibold text-white backdrop-blur">
               {showCommunityStats
                 ? fill(t.hero.liveBadge, {
@@ -97,31 +97,6 @@ export default async function LandingPage({ locale }: { locale: Locale }) {
             <p className="mx-auto max-w-xl text-lg text-white/85">
               {t.hero.subtitle}
             </p>
-
-            {/* Product teaser: what the visitor gets, before any click. The
-                names and distances are an illustration (labelled as such). */}
-            <div
-              className="mx-auto w-full max-w-sm rounded-2xl border border-white/15 bg-trail-950/70 p-4 text-left backdrop-blur"
-              role="img"
-              aria-label={t.hero.preview.title}
-            >
-              <div className="mb-2 flex items-center justify-between text-xs">
-                <span className="font-semibold text-white">{t.hero.preview.title}</span>
-                <span className="text-summit-400">{t.hero.preview.example}</span>
-              </div>
-              <div className="flex justify-between py-1 text-sm text-white/75">
-                <span>1. SherpaFringant</span>
-                <span>148 km</span>
-              </div>
-              <div className="flex justify-between py-1 text-sm text-white/75">
-                <span>2. MarmotteBoss</span>
-                <span>131 km</span>
-              </div>
-              <div className="mt-1 flex justify-between rounded-lg bg-summit-500/25 px-2 py-1.5 text-sm font-semibold text-white">
-                <span>3. {t.hero.preview.you}</span>
-                <span>{t.hero.preview.gap}</span>
-              </div>
-            </div>
 
             {/* One invitation instead of "sign up" / "log in": /auth shows both
                 tabs, and the line below tells returning members it is for them. */}

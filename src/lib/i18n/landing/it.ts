@@ -33,7 +33,6 @@ export const it: LandingDict = {
     imageAlt: "Escursionista su una cresta di fronte alle montagne",
     liveBadge: "{km} km percorsi dalla community",
     stickyCta: "Si parte, basta un nickname",
-    preview: { title: "Classifica della sua regione", example: "esempio", you: "Lei?", gap: "+12 km per salire" },
   },
   spots: {
     eyebrow: "Spot e community",
