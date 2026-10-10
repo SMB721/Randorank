@@ -116,9 +116,9 @@ export const es: LandingDict = {
     eyebrow: "Cómo funciona",
     title: "Tres pasos. Cero complicaciones.",
     steps: [
-      { title: "Importe su ruta", text: "Suba un archivo GPX: su recorrido aparece en el mapa con distancia, desnivel y duración." },
-      { title: "Suba en la clasificación", text: "Sus kilómetros le sitúan en la clasificación nacional y en la de su región." },
-      { title: "Desbloquee y comparta", text: "Insignias, títulos y una ficha con estilo para publicar en sus stories." },
+      { title: "Salga a caminar", text: "Elija su ruta o deje que RandoRank le proponga un circuito a su medida." },
+      { title: "Suba en la clasificación", text: "Cada kilómetro cuenta: suba en la clasificación de su región y del país, en plan divertido." },
+      { title: "Apunte más alto", text: "Genere un recorrido a medida para nuevos retos, consiga insignias y comparta sus hazañas." },
     ],
   },
   badges: {

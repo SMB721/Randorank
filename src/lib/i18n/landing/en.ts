@@ -116,9 +116,9 @@ export const en: LandingDict = {
     eyebrow: "How it works",
     title: "Three steps. Zero hassle.",
     steps: [
-      { title: "Import your hike", text: "Drop in a GPX file: your route appears on the map with distance, elevation and duration." },
-      { title: "Climb the leaderboard", text: "Your kilometres place you on the national and regional leaderboards." },
-      { title: "Unlock and share", text: "Badges, titles and a stylish card to post to your story." },
+      { title: "Hit the trail", text: "Pick your outing, or let RandoRank suggest a loop made for you." },
+      { title: "Climb the leaderboard", text: "Every kilometre counts: move up your region's and the country's leaderboards, the fun way." },
+      { title: "Aim higher", text: "Generate a custom route for new challenges, earn badges and share your feats." },
     ],
   },
   badges: {
