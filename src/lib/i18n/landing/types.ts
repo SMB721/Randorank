@@ -26,6 +26,9 @@ export interface LandingDict {
     cta: string;
     ctaNote: string;
     imageAlt: string;
+    liveBadge: string;
+    stickyCta: string;
+    preview: { title: string; example: string; you: string; gap: string };
   };
   spots: {
     eyebrow: string;

@@ -24,13 +24,16 @@ export const it: LandingDict = {
   },
   hero: {
     badge: "🥾 Entri nella community RandoRank",
-    titleLine1: "Ogni sentiero",
-    titleLine2: "diventa una sfida.",
+    titleLine1: "La sua gita della domenica,",
+    titleLine2: "edizione competizione.",
     subtitle:
-      "Registri le sue escursioni, sblocchi nuovi badge, scali la classifica e condivida le sue uscite più belle.",
+      "Importi un GPX e scopra la sua classifica in 30 secondi.",
     cta: "Iniziare la salita",
     ctaNote: "Senza account, senza carta di credito · Scelga un nickname e via",
     imageAlt: "Escursionista su una cresta di fronte alle montagne",
+    liveBadge: "{km} km percorsi dalla community",
+    stickyCta: "Si parte, basta un nickname",
+    preview: { title: "Classifica della sua regione", example: "esempio", you: "Lei?", gap: "+12 km per salire" },
   },
   spots: {
     eyebrow: "Spot e community",

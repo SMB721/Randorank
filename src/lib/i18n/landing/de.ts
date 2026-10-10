@@ -24,13 +24,16 @@ export const de: LandingDict = {
   },
   hero: {
     badge: "🥾 Werden Sie Teil der RandoRank-Community",
-    titleLine1: "Jeder Pfad",
-    titleLine2: "wird zur Herausforderung.",
+    titleLine1: "Ihre Sonntagswanderung,",
+    titleLine2: "Wettkampf-Edition.",
     subtitle:
-      "Zeichnen Sie Ihre Wanderungen auf, schalten Sie neue Badges frei, klettern Sie in der Rangliste und teilen Sie Ihre schönsten Touren.",
+      "GPX importieren und in 30 Sekunden Ihren Rang sehen.",
     cta: "Den Aufstieg beginnen",
     ctaNote: "Ohne Konto, ohne Kreditkarte · Spitznamen wählen und los",
     imageAlt: "Wanderer auf einem Grat vor Bergkulisse",
+    liveBadge: "{km} km von der Community gewandert",
+    stickyCta: "Los geht's, nur ein Spitzname",
+    preview: { title: "Rangliste Ihrer Region", example: "Beispiel", you: "Sie?", gap: "+12 km zum Aufstieg" },
   },
   spots: {
     eyebrow: "Spots & Community",

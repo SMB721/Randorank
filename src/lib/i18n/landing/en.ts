@@ -24,13 +24,16 @@ export const en: LandingDict = {
   },
   hero: {
     badge: "🥾 Join the RandoRank community",
-    titleLine1: "Every trail",
-    titleLine2: "becomes a challenge.",
+    titleLine1: "Your Sunday hike,",
+    titleLine2: "competition edition.",
     subtitle:
-      "Track your hikes, unlock new badges, climb the leaderboard and share your best outings.",
+      "Import a GPX, see where you rank in 30 seconds.",
     cta: "Start the climb",
     ctaNote: "No account, no credit card · Pick a nickname and go",
     imageAlt: "Hiker on a mountain ridge facing the peaks",
+    liveBadge: "{km} km hiked by the community",
+    stickyCta: "Let's go, just a nickname",
+    preview: { title: "Your region's leaderboard", example: "example", you: "You?", gap: "+12 km to move up" },
   },
   spots: {
     eyebrow: "Spots & community",

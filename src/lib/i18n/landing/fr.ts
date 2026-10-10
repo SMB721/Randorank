@@ -25,13 +25,16 @@ export const fr: LandingDict = {
   },
   hero: {
     badge: "🥾 Rejoignez la communauté RandoRank",
-    titleLine1: "Chaque sentier",
-    titleLine2: "devient un défi.",
+    titleLine1: "Votre rando du dimanche,",
+    titleLine2: "version compétition.",
     subtitle:
-      "Suivez vos randos, débloquez de nouveaux badges, grimpez au classement et partagez vos plus belles sorties.",
+      "Importez un GPX, découvrez votre classement en 30 secondes.",
     cta: "Commencer l'ascension",
     ctaNote: "Sans compte, sans carte bancaire · Choisissez un pseudo et c'est parti",
     imageAlt: "Randonneur au sommet d'une crête face aux montagnes",
+    liveBadge: "{km} km parcourus par la communauté",
+    stickyCta: "C'est parti, juste un pseudo",
+    preview: { title: "Classement de votre région", example: "exemple", you: "Vous ?", gap: "+12 km pour monter" },
   },
   spots: {
     eyebrow: "Spots & communauté",
