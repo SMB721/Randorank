@@ -117,7 +117,7 @@ export default function Header({
               {dict.login}
             </Link>
             <Link
-              href="/auth"
+              href="/start"
               onClick={() => setOpen(false)}
               className="flex-1 rounded-xl bg-summit-500 py-3 text-center text-sm font-semibold shadow-lg shadow-summit-500/30 transition hover:bg-summit-600"
             >

@@ -6,8 +6,9 @@ import { useRouter } from "next/navigation";
 import { computeStats, haversineKm, type TrackPoint } from "@/lib/gpx";
 import { useWakeLock } from "@/hooks/useWakeLock";
 import { formatDuration } from "@/lib/format";
+import { sampleElevations } from "@/lib/elevationProfile";
 import { useT } from "@/lib/i18n/app/client";
-import { saveLiveHikeAction } from "@/app/(site)/dashboard/(premium)/randos/live/actions";
+import { saveLiveHikeAction } from "@/app/(site)/dashboard/(app)/randos/live/actions";
 
 function MapLoading() {
   const { t } = useT();
@@ -179,6 +180,7 @@ export default function LiveRecorder() {
       startedAt: stats.startedAt,
       isValid: stats.isValid,
       validationNotes: stats.validationNotes,
+      elevations: sampleElevations(points.map((p) => p.ele)),
     });
 
     if (!result.success) {

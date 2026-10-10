@@ -29,7 +29,7 @@ export const en: LandingDict = {
     subtitle:
       "Track your hikes, unlock new badges, climb the leaderboard and share your best outings.",
     cta: "Start the climb",
-    ctaNote: "Log in or create an account in seconds · Google, Facebook or email",
+    ctaNote: "No account, no credit card · Pick a nickname and go",
     imageAlt: "Hiker on a mountain ridge facing the peaks",
   },
   spots: {
@@ -76,7 +76,7 @@ export const en: LandingDict = {
     eyebrow: "Generate your route",
     titleLine1: "Tell us your distance.",
     titleLine2: "RandoRank handles the rest.",
-    text: "Enter the distance you're up for — and your goal, if you have one. RandoRank suggests a route you can actually walk, then adjusts it to your level and the health information in your profile, so you get a trail that fits you rather than a generic itinerary.",
+    text: "Enter the distance you're up for — and your goal, if you have one. RandoRank suggests a route you can actually walk, then rates its difficulty (beginner, amateur or advanced) from the distance and elevation gain, so you know what to expect.",
     cta: "Plan my route",
     floatingRoute: { label: "Route generated", value: "12 km" },
     floatingElevation: { label: "Max elevation gain", value: "+450 m" },
@@ -112,9 +112,19 @@ export const en: LandingDict = {
   },
   offers: {
     eyebrow: "Plans",
-    title: "Le MUL. Period.",
-    text: "One plan, everything included: unlimited hikes, routes and photos, the full leaderboard. Pricing details appear as soon as you create your profile.",
+    title: "Free to climb. Premium to speed up.",
+    text: "Start with no account and no card. Go Premium whenever you want to push further.",
     cta: "Start the climb",
+    freeName: "Free",
+    freeTagline: "To get started",
+    freePrice: "€0",
+    freeFeatures: ["GPX import and hike recording", "History and map of your tracks", "National and regional rankings", "Badges and one challenge a month", "2 generated routes a month", "3 photos per hike"],
+    premiumName: "Premium · Le MUL",
+    premiumTagline: "For those who want it all",
+    premiumFeatures: ["Everything in Free", "Unlimited generated routes + library", "3 route variants to compare + max elevation", "Advanced stats: records, trends, altitude profile", "Every challenge of the month", "Unlimited photos", "Share card without watermark", "Premium badge on the leaderboard"],
+    perMonth: "/month",
+    orYearly: "or {amount} a year",
+    trial: "{days}-day free trial",
   },
   about: {
     eyebrow: "RandoRank in a few words",
@@ -125,14 +135,14 @@ export const en: LandingDict = {
     title: "Frequently asked questions",
     items: [
       {
-        question: "Does RandoRank cost anything?",
+        question: "Does RandoRank cost money?",
         answer:
-          "Yes: RandoRank works on a Premium subscription only (monthly or yearly, cancel any time). You get access to everything: unlimited hikes and routes, photos, national and regional leaderboards, badges — pricing details are shown when you create your profile.",
+          "Not to get started: hike tracking, rankings, badges and one challenge are free, with no account or credit card. Premium (monthly or yearly, free trial, cancel anytime) unlocks unlimited generated routes, every challenge, unlimited photos and the share card without watermark.",
       },
       {
         question: "How does route generation work?",
         answer:
-          "You tell us the distance you want to cover (and optionally a starting point or a maximum elevation gain). RandoRank suggests a route you can actually walk, then refines it to your level and the health information you enter in your profile, so you get a trail that fits you rather than a plain generic itinerary.",
+          "You tell us the distance you want to cover (and optionally a starting point or a maximum elevation gain). RandoRank suggests a route you can actually walk, then rates its difficulty (beginner, amateur or advanced) from the distance and elevation gain, so you know what to expect. No health data is asked for.",
       },
       {
         question: "Are my stats public?",

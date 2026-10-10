@@ -26,6 +26,10 @@ type Props = {
   goal: string | null;
   goalLabel: string | null;
   checkoutStatus: string | null;
+  /** Reminder of what stays free, shown above the Premium list. */
+  freeNote: string;
+  /** Label of the "continue for free" way out. */
+  skipLabel: string;
 };
 
 export default function PaywallScreen({
@@ -39,6 +43,8 @@ export default function PaywallScreen({
   goal,
   goalLabel,
   checkoutStatus,
+  freeNote,
+  skipLabel,
 }: Props) {
   const router = useRouter();
   const [period, setPeriod] = useState<Period>("monthly");
@@ -163,7 +169,8 @@ export default function PaywallScreen({
           </div>
           <p className="text-xs text-white/50">{chargeAfterTrial}</p>
 
-          <ul className="mt-5 space-y-2 text-sm">
+          <p className="mt-5 text-xs text-white/50">{freeNote}</p>
+          <ul className="mt-2 space-y-2 text-sm">
             {t.features.map((f) => (
               <li key={f} className="flex items-start gap-2 text-white/80">
                 <span className="mt-0.5 text-summit-400" aria-hidden="true">
@@ -190,6 +197,13 @@ export default function PaywallScreen({
             {t.secure}
           </p>
         </div>
+
+        <Link
+          href="/dashboard"
+          className="mt-5 block text-center text-sm font-semibold text-white/60 underline hover:text-white"
+        >
+          {skipLabel}
+        </Link>
       </div>
     </main>
   );

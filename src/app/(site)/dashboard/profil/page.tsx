@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
+import UpsellCard from "@/components/dashboard/UpsellCard";
 import ProfileEditForm from "@/components/dashboard/ProfileEditForm";
 import AvatarUploadForm from "@/components/dashboard/AvatarUploadForm";
 import DeleteAccountButton from "@/components/dashboard/DeleteAccountButton";
@@ -26,7 +27,7 @@ export default async function ProfilPage({
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/auth?mode=login");
+    redirect("/start");
   }
 
   const { data: profile } = await supabase
@@ -57,7 +58,19 @@ export default async function ProfilPage({
         <h1 className="font-display text-4xl tracking-wide text-trail-900">
           {t("profil.title")}
         </h1>
-        <p className="mt-1 text-trail-600">{user.email}</p>
+        <p className="mt-1 text-trail-600">{user.email ?? profile.username}</p>
+
+        {user.is_anonymous && (
+          <div className="mt-4">
+            <UpsellCard
+              icon="💾"
+              title={t("home.guest.title")}
+              text={t("home.guest.text")}
+              cta={t("home.guest.cta")}
+              href="/auth?mode=signup&next=/dashboard/profil"
+            />
+          </div>
+        )}
 
         <div className="mt-6 grid gap-3 sm:grid-cols-2">
           <Link
@@ -165,6 +178,14 @@ export default async function ProfilPage({
                   {t("profil.manage")}
                 </button>
               </form>
+            )}
+            {hasStripeAccount && (
+              <Link
+                href="/dashboard/resiliation"
+                className="text-sm font-semibold text-trail-500 hover:underline"
+              >
+                {t("cancel.link")}
+              </Link>
             )}
           </div>
         </div>

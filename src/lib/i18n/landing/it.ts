@@ -29,7 +29,7 @@ export const it: LandingDict = {
     subtitle:
       "Registri le sue escursioni, sblocchi nuovi badge, scali la classifica e condivida le sue uscite più belle.",
     cta: "Iniziare la salita",
-    ctaNote: "Accesso o creazione dell'account in pochi secondi · Google, Facebook o e-mail",
+    ctaNote: "Senza account, senza carta di credito · Scelga un nickname e via",
     imageAlt: "Escursionista su una cresta di fronte alle montagne",
   },
   spots: {
@@ -76,7 +76,7 @@ export const it: LandingDict = {
     eyebrow: "Generi il suo percorso",
     titleLine1: "Indichi la distanza.",
     titleLine2: "A tutto il resto pensa RandoRank.",
-    text: "Inserisca la distanza che si sente di percorrere — e il suo obiettivo, se ne ha uno. RandoRank le propone un percorso davvero percorribile, poi lo adatta al suo livello e alle informazioni sulla salute del suo profilo, per suggerirle un tracciato su misura invece di un itinerario generico.",
+    text: "Inserisca la distanza che si sente di percorrere — e il suo obiettivo, se ne ha uno. RandoRank le propone un percorso davvero percorribile, poi ne indica la difficoltà (principiante, amatore o avanzato) in base a distanza e dislivello, così sa cosa aspettarsi.",
     cta: "Prepara il mio itinerario",
     floatingRoute: { label: "Itinerario generato", value: "12 km" },
     floatingElevation: { label: "Dislivello max", value: "+450 m" },
@@ -112,9 +112,19 @@ export const it: LandingDict = {
   },
   offers: {
     eyebrow: "Offerte",
-    title: "Le MUL. Punto.",
-    text: "Una sola offerta, tutto incluso: escursioni, percorsi e foto illimitati, classifica completa. I dettagli dei prezzi compaiono appena crea il suo profilo.",
+    title: "Gratis per salire. Premium per accelerare.",
+    text: "Inizi senza account e senza carta. Passi a Premium quando vuole spingersi oltre.",
     cta: "Iniziare la salita",
+    freeName: "Gratis",
+    freeTagline: "Per iniziare",
+    freePrice: "0 €",
+    freeFeatures: ["Importazione GPX e registrazione delle uscite", "Storico e mappa dei suoi percorsi", "Classifiche nazionali e regionali", "Badge e una sfida al mese", "2 percorsi generati al mese", "3 foto per uscita"],
+    premiumName: "Premium · Le MUL",
+    premiumTagline: "Per chi vuole tutto",
+    premiumFeatures: ["Tutto il gratuito", "Percorsi generati illimitati + libreria", "3 varianti di percorso da confrontare + dislivello max", "Statistiche avanzate: record, tendenze, profilo altimetrico", "Tutte le sfide del mese", "Foto illimitate", "Scheda di condivisione senza filigrana", "Badge Premium in classifica"],
+    perMonth: "/mese",
+    orYearly: "oppure {amount} all'anno",
+    trial: "{days} giorni di prova gratuita",
   },
   about: {
     eyebrow: "RandoRank in poche parole",
@@ -127,12 +137,12 @@ export const it: LandingDict = {
       {
         question: "RandoRank è a pagamento?",
         answer:
-          "Sì: RandoRank funziona solo con abbonamento Premium (mensile o annuale, disdicibile in qualsiasi momento). Ha accesso a tutto: escursioni e percorsi illimitati, foto, classifica nazionale e regionale, badge — i prezzi sono mostrati al momento della creazione del suo profilo.",
+          "Non per iniziare: il tracciamento delle uscite, le classifiche, i badge e una sfida sono gratuiti, senza account né carta di credito. Premium (mensile o annuale, prova gratuita, disdicibile in qualsiasi momento) sblocca percorsi illimitati, tutte le sfide, foto illimitate e la scheda di condivisione senza filigrana.",
       },
       {
         question: "Come funziona la generazione dell'itinerario?",
         answer:
-          "Indica la distanza che desidera percorrere (e, se vuole, un punto di partenza o un dislivello massimo). RandoRank le propone un percorso davvero percorribile, poi affina la proposta in base al suo livello e alle informazioni sulla salute che inserisce nel suo profilo, per suggerirle un tracciato adatto invece di un semplice itinerario generico.",
+          "Indica la distanza che desidera percorrere (e, se vuole, un punto di partenza o un dislivello massimo). RandoRank le propone un percorso davvero percorribile, poi ne indica la difficoltà (principiante, amatore o avanzato) in base a distanza e dislivello, così sa cosa aspettarsi. Non viene richiesto alcun dato sanitario.",
       },
       {
         question: "Le mie statistiche sono pubbliche?",

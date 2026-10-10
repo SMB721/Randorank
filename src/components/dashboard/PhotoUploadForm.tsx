@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useT } from "@/lib/i18n/app/client";
-import { uploadPhotosAction } from "@/app/(site)/dashboard/(premium)/randos/[id]/photo-actions";
+import { uploadPhotosAction } from "@/app/(site)/dashboard/(app)/randos/[id]/photo-actions";
 
 export default function PhotoUploadForm({ hikeId }: { hikeId: string }) {
   const { t } = useT();

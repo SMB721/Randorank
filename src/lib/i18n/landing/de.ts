@@ -29,7 +29,7 @@ export const de: LandingDict = {
     subtitle:
       "Zeichnen Sie Ihre Wanderungen auf, schalten Sie neue Badges frei, klettern Sie in der Rangliste und teilen Sie Ihre schönsten Touren.",
     cta: "Den Aufstieg beginnen",
-    ctaNote: "Anmelden oder Konto erstellen in wenigen Sekunden · Google, Facebook oder E-Mail",
+    ctaNote: "Ohne Konto, ohne Kreditkarte · Spitznamen wählen und los",
     imageAlt: "Wanderer auf einem Grat vor Bergkulisse",
   },
   spots: {
@@ -76,7 +76,7 @@ export const de: LandingDict = {
     eyebrow: "Erstellen Sie Ihre Route",
     titleLine1: "Geben Sie Ihre Distanz an.",
     titleLine2: "RandoRank erledigt den Rest.",
-    text: "Geben Sie an, wie weit Sie gehen möchten — und Ihr Ziel, falls Sie eines haben. RandoRank schlägt Ihnen eine wirklich begehbare Route vor und passt sie dann an Ihr Niveau und die Gesundheitsangaben in Ihrem Profil an, damit Sie eine passende Strecke erhalten statt einer generischen Tour.",
+    text: "Geben Sie an, wie weit Sie gehen möchten — und Ihr Ziel, falls Sie eines haben. RandoRank schlägt Ihnen eine wirklich begehbare Route vor und bewertet dann ihren Schwierigkeitsgrad (Anfänger, Amateur oder Fortgeschritten) anhand von Distanz und Höhenunterschied, damit Sie wissen, was Sie erwartet.",
     cta: "Meine Route planen",
     floatingRoute: { label: "Route erstellt", value: "12 km" },
     floatingElevation: { label: "Max. Höhenunterschied", value: "+450 m" },
@@ -112,9 +112,19 @@ export const de: LandingDict = {
   },
   offers: {
     eyebrow: "Angebote",
-    title: "Le MUL. Punkt.",
-    text: "Ein Angebot, alles inklusive: unbegrenzt Wanderungen, Routen und Fotos, komplette Rangliste. Die Preise sehen Sie, sobald Sie Ihr Profil erstellt haben.",
+    title: "Gratis zum Aufsteigen. Premium zum Beschleunigen.",
+    text: "Starten Sie ohne Konto und ohne Karte. Wechseln Sie zu Premium, wenn Sie weiter wollen.",
     cta: "Den Aufstieg beginnen",
+    freeName: "Gratis",
+    freeTagline: "Zum Loslegen",
+    freePrice: "0 €",
+    freeFeatures: ["GPX-Import und Aufzeichnung Ihrer Wanderungen", "Verlauf und Karte Ihrer Strecken", "National- und Regionalranglisten", "Abzeichen und eine Challenge pro Monat", "2 generierte Routen pro Monat", "3 Fotos pro Wanderung"],
+    premiumName: "Premium · Le MUL",
+    premiumTagline: "Für alle, die alles wollen",
+    premiumFeatures: ["Alles aus Gratis", "Unbegrenzt generierte Routen + Bibliothek", "3 Routenvarianten zum Vergleichen + max. Höhenmeter", "Erweiterte Statistiken: Rekorde, Trends, Höhenprofil", "Alle Challenges des Monats", "Unbegrenzt Fotos", "Teilen-Karte ohne Wasserzeichen", "Premium-Abzeichen in der Rangliste"],
+    perMonth: "/Monat",
+    orYearly: "oder {amount} pro Jahr",
+    trial: "{days} Tage kostenlos testen",
   },
   about: {
     eyebrow: "RandoRank in ein paar Worten",
@@ -127,12 +137,12 @@ export const de: LandingDict = {
       {
         question: "Kostet RandoRank etwas?",
         answer:
-          "Ja: RandoRank funktioniert ausschließlich im Premium-Abo (monatlich oder jährlich, jederzeit kündbar). Sie haben Zugriff auf alles: unbegrenzt Wanderungen und Routen, Fotos, nationale und regionale Rangliste, Badges — die Preise werden bei der Erstellung Ihres Profils angezeigt.",
+          "Nicht zum Einstieg: Wanderungs-Tracking, Ranglisten, Abzeichen und eine Challenge sind gratis, ohne Konto und ohne Kreditkarte. Premium (monatlich oder jährlich, kostenlose Testphase, jederzeit kündbar) schaltet unbegrenzt Routen, alle Challenges, unbegrenzt Fotos und die Teilen-Karte ohne Wasserzeichen frei.",
       },
       {
         question: "Wie funktioniert die Routenerstellung?",
         answer:
-          "Sie geben die gewünschte Distanz an (und optional einen Startpunkt oder einen maximalen Höhenunterschied). RandoRank schlägt Ihnen eine wirklich begehbare Route vor und verfeinert den Vorschlag anhand Ihres Niveaus und der Gesundheitsangaben in Ihrem Profil, damit Sie eine passende Strecke erhalten statt einer einfachen, generischen Route.",
+          "Sie geben die gewünschte Distanz an (und optional einen Startpunkt oder einen maximalen Höhenunterschied). RandoRank schlägt Ihnen eine wirklich begehbare Route vor und bewertet dann ihren Schwierigkeitsgrad (Anfänger, Amateur oder Fortgeschritten) anhand von Distanz und Höhenunterschied, damit Sie wissen, was Sie erwartet. Es werden keine Gesundheitsdaten abgefragt.",
       },
       {
         question: "Sind meine Statistiken öffentlich?",

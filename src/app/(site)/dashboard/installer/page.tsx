@@ -12,7 +12,7 @@ export default async function InstallerPage() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/auth?mode=login");
+    redirect("/start");
   }
 
   return (

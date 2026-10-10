@@ -15,12 +15,16 @@ const TILE_URLS = {
 export default function HikeMap({
   coordinates,
   blurred = false,
+  others = [],
 }: {
   // GeoJSON order: [lon, lat] — Leaflet wants [lat, lon].
   coordinates: [number, number][];
   // When true, trims the start/end of the track so the exact departure and
   // arrival points (often home) are never rendered — see src/lib/geoPrivacy.
   blurred?: boolean;
+  // Other proposals (route comparison): drawn faded under the main track and
+  // included in the bounds, so switching the highlighted one never re-zooms.
+  others?: [number, number][][];
 }) {
   const scheme = useColorScheme();
   const displayCoordinates = blurred ? blurEndpoints(coordinates) : coordinates;
@@ -31,8 +35,9 @@ export default function HikeMap({
   // Bounds are derived from the same (possibly trimmed) points as the
   // polyline — otherwise the map would still zoom/pan to reveal roughly
   // where the hidden endpoint sits, defeating the point of blurring it.
-  const lats = displayCoordinates.map(([, lat]) => lat);
-  const lons = displayCoordinates.map(([lon]) => lon);
+  const allPoints = [...displayCoordinates, ...others.flat()];
+  const lats = allPoints.map(([, lat]) => lat);
+  const lons = allPoints.map(([lon]) => lon);
   const bounds: LatLngBoundsLiteral = [
     [Math.min(...lats), Math.min(...lons)],
     [Math.max(...lats), Math.max(...lons)],
@@ -51,6 +56,13 @@ export default function HikeMap({
         url={TILE_URLS[scheme]}
         maxZoom={16}
       />
+      {others.map((other, i) => (
+        <Polyline
+          key={i}
+          positions={other.map(([lon, lat]) => [lat, lon] as LatLngExpression)}
+          pathOptions={{ color: "#8a9a85", weight: 4, opacity: 0.7, dashArray: "6 8" }}
+        />
+      ))}
       <Polyline positions={positions} pathOptions={{ color: "#fd7310", weight: 5, opacity: 0.95 }} />
       <CircleMarker
         center={start}

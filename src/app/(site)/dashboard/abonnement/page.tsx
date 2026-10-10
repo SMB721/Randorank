@@ -14,7 +14,7 @@ export default async function AbonnementPage() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/auth?mode=login");
+    redirect("/start");
   }
 
   const { data: profile } = await supabase

@@ -85,7 +85,22 @@ export interface LandingDict {
     elevationLabel: string;
     chartLabel: string;
   };
-  offers: { eyebrow: string; title: string; text: string; cta: string };
+  offers: {
+    eyebrow: string;
+    title: string;
+    text: string;
+    cta: string;
+    freeName: string;
+    freeTagline: string;
+    freePrice: string;
+    freeFeatures: string[];
+    premiumName: string;
+    premiumTagline: string;
+    premiumFeatures: string[];
+    perMonth: string;
+    orYearly: string; // "{amount}" is replaced
+    trial: string; // "{days}" is replaced
+  };
   about: { eyebrow: string; text: string };
   faq: {
     eyebrow: string;
