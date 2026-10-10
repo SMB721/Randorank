@@ -9,10 +9,10 @@ import PhoneMockup from "@/components/home/PhoneMockup";
 import FloatingStatCard from "@/components/home/FloatingStatCard";
 import StickyCta from "@/components/home/StickyCta";
 import { createClient } from "@/lib/supabase/server";
-import { formatEuro, type Locale } from "@/lib/i18n/config";
+import type { Locale } from "@/lib/i18n/config";
 import { getLandingDict } from "@/lib/i18n/landing";
+import { getAppDict } from "@/lib/i18n/app";
 import { fill } from "@/lib/i18n/funnel";
-import { PREMIUM_PRICE, PREMIUM_TRIAL_DAYS } from "@/lib/pricing";
 import type { CommunityStats, CommunityWeeklyKm } from "@/lib/supabase/types";
 
 const heroImage =
@@ -44,6 +44,17 @@ export default async function LandingPage({ locale }: { locale: Locale }) {
     src,
     ...t.spots.items[i],
   }));
+  const appDict = getAppDict(locale);
+  // Badge names and descriptions come from the app dictionary, so the
+  // landing shows exactly what members unlock.
+  const showcaseBadges = [
+    { key: "first_hike", icon: "🥾", name: appDict["badge.first_hike.name"], desc: appDict["badge.first_hike.desc"] },
+    { key: "distance_50", icon: "🔥", name: appDict["badge.distance_50.name"], desc: appDict["badge.distance_50.desc"] },
+    { key: "elevation_1000", icon: "⛰️", name: appDict["badge.elevation_1000.name"], desc: appDict["badge.elevation_1000.desc"] },
+    { key: "elevation_5000", icon: "🏔️", name: appDict["badge.elevation_5000.name"], desc: appDict["badge.elevation_5000.desc"] },
+    { key: "elevation_10000", icon: "👑", name: appDict["badge.elevation_10000.name"], desc: appDict["badge.elevation_10000.desc"] },
+    { key: "level_avance", icon: "🏆", name: appDict["badge.level_avance.name"], desc: appDict["badge.level_avance.desc"] },
+  ];
   const supabase = await createClient();
   const [{ data: stats }, { data: weekly }] = await Promise.all([
     supabase.from("community_stats").select("*").single<CommunityStats>(),
@@ -109,6 +120,33 @@ export default async function LandingPage({ locale }: { locale: Locale }) {
               </Link>
               <p className="max-w-md text-xs text-white/60">{t.hero.ctaNote}</p>
             </div>
+          </div>
+        </section>
+
+        {/* Comment ça marche */}
+        <section id="comment" className="bg-trail-50 px-6 py-20">
+          <div className="mx-auto max-w-5xl">
+            <div className="mx-auto max-w-2xl text-center">
+              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-summit-600">
+                {t.howItWorks.eyebrow}
+              </span>
+              <h2 className="mt-3 font-display text-4xl tracking-wide text-trail-900 sm:text-5xl">
+                {t.howItWorks.title}
+              </h2>
+            </div>
+            <ol className="mt-12 grid gap-4 md:grid-cols-3">
+              {t.howItWorks.steps.map((step, i) => (
+                <li key={step.title} className="rounded-2xl border border-trail-200 bg-white p-6">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-summit-500 font-display text-xl text-white">
+                    {i + 1}
+                  </span>
+                  <h3 className="mt-4 font-display text-2xl tracking-wide text-trail-900">
+                    {step.title}
+                  </h3>
+                  <p className="mt-2 text-sm text-trail-600">{step.text}</p>
+                </li>
+              ))}
+            </ol>
           </div>
         </section>
 
@@ -514,82 +552,99 @@ export default async function LandingPage({ locale }: { locale: Locale }) {
           </section>
         )}
 
-        {/* Offres — gratuit vs Premium, prix affichés : un visiteur ne doit
-            jamais avoir à créer un compte pour découvrir ce que ça coûte. */}
-        <section id="offres" className="bg-white px-6 py-24">
-          <div className="mx-auto max-w-2xl text-center">
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-summit-600">
-              {t.offers.eyebrow}
-            </span>
-            <h2 className="mt-3 font-display text-4xl tracking-wide text-trail-900 sm:text-5xl">
-              {t.offers.title}
-            </h2>
-            <p className="mt-4 text-trail-600">
-              {t.offers.text}
-            </p>
-          </div>
-
-          <div className="mx-auto mt-10 grid max-w-4xl gap-6 md:grid-cols-2">
-            <div className="rounded-2xl border border-trail-200 bg-trail-50 p-8">
-              <h3 className="font-display text-3xl tracking-wide text-trail-900">
-                {t.offers.freeName}
-              </h3>
-              <p className="text-sm italic text-trail-500">{t.offers.freeTagline}</p>
-              <p className="mt-4 font-display text-5xl tracking-wide text-trail-900">
-                {t.offers.freePrice}
-              </p>
-              <ul className="mt-6 space-y-2 text-sm text-trail-700">
-                {t.offers.freeFeatures.map((f) => (
-                  <li key={f} className="flex items-start gap-2">
-                    <span className="mt-0.5 text-trail-400" aria-hidden="true">
-                      ✓
+        {/* Badges — real badge names from the app, the first two shown as earned. */}
+        <section id="badges" className="bg-trail-950 px-6 py-24 text-white">
+          <div className="mx-auto max-w-6xl">
+            <div className="mx-auto max-w-2xl text-center">
+              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-summit-400">
+                {t.badges.eyebrow}
+              </span>
+              <h2 className="mt-3 font-display text-4xl tracking-wide sm:text-5xl">
+                {t.badges.title}
+              </h2>
+              <p className="mt-4 text-white/70">{t.badges.text}</p>
+            </div>
+            <ul className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
+              {showcaseBadges.map((badge, i) => {
+                const earned = i < 2;
+                return (
+                  <li
+                    key={badge.key}
+                    className={`rounded-2xl border p-4 text-center sm:p-6 ${
+                      earned
+                        ? "border-summit-400/50 bg-summit-500/10"
+                        : "border-white/10 bg-white/5"
+                    }`}
+                  >
+                    <span
+                      aria-hidden="true"
+                      className={`block text-4xl ${earned ? "" : "opacity-40 grayscale"}`}
+                    >
+                      {badge.icon}
                     </span>
-                    {f}
+                    <p className="mt-3 font-display text-lg tracking-wide sm:text-xl">
+                      {badge.name}
+                    </p>
+                    <p className="mt-1 hidden text-xs text-white/60 sm:block">{badge.desc}</p>
+                    {!earned && (
+                      <p className="mt-2 text-[11px] font-semibold uppercase tracking-widest text-white/40">
+                        {t.badges.locked}
+                      </p>
+                    )}
                   </li>
-                ))}
-              </ul>
+                );
+              })}
+            </ul>
+          </div>
+        </section>
+
+        {/* Défi du mois — progress is an illustration, labelled as an example. */}
+        <section id="defi" className="bg-trail-50 px-6 py-24">
+          <div className="mx-auto grid max-w-5xl items-center gap-10 md:grid-cols-2">
+            <div>
+              <span className="text-xs font-semibold uppercase tracking-[0.2em] text-summit-600">
+                {t.challenge.eyebrow}
+              </span>
+              <h2 className="mt-3 font-display text-4xl tracking-wide text-trail-900 sm:text-5xl">
+                {t.challenge.title}
+              </h2>
+              <p className="mt-4 text-trail-600">{t.challenge.text}</p>
               <Link
                 href="/start"
-                className="mt-8 block rounded-xl border-2 border-trail-900 py-3 text-center text-base font-semibold text-trail-900 transition hover:bg-trail-900 hover:text-white"
+                className="mt-6 inline-block rounded-xl bg-summit-500 px-8 py-3 text-base font-semibold text-white shadow-lg shadow-summit-500/30 transition hover:bg-summit-600"
               >
-                {t.offers.cta}
+                {t.hero.cta}
               </Link>
             </div>
-
-            <div className="rounded-2xl border-2 border-summit-400 bg-white p-8 shadow-xl shadow-summit-500/10">
-              <h3 className="font-display text-3xl tracking-wide text-trail-900">
-                {t.offers.premiumName}
-              </h3>
-              <p className="text-sm italic text-trail-500">{t.offers.premiumTagline}</p>
-              <p className="mt-4 font-display text-5xl tracking-wide text-trail-900">
-                {formatEuro(locale, PREMIUM_PRICE.monthly)}
-                <span className="text-lg text-trail-500">{t.offers.perMonth}</span>
+            <div className="rounded-2xl border border-trail-200 bg-white p-6 shadow-sm">
+              <div className="flex items-center justify-between text-xs">
+                <span className="font-semibold uppercase tracking-widest text-trail-500">
+                  {t.challenge.eyebrow}
+                </span>
+                <span className="text-summit-600">{t.challenge.example}</span>
+              </div>
+              <p className="mt-2 font-display text-2xl tracking-wide text-trail-900">
+                {appDict["challenge.monthly_elevation.name"]}
               </p>
-              <p className="text-xs text-trail-500">
-                {fill(t.offers.orYearly, { amount: formatEuro(locale, PREMIUM_PRICE.yearly) })} ·{" "}
-                {fill(t.offers.trial, { days: PREMIUM_TRIAL_DAYS })}
+              <p className="mt-1 text-sm text-trail-600">
+                {appDict["challenge.monthly_elevation.desc"]}
               </p>
-              <ul className="mt-6 space-y-2 text-sm text-trail-700">
-                {t.offers.premiumFeatures.map((f) => (
-                  <li key={f} className="flex items-start gap-2">
-                    <span className="mt-0.5 text-summit-500" aria-hidden="true">
-                      ✓
-                    </span>
-                    {f}
-                  </li>
-                ))}
-              </ul>
-              <Link
-                href="/start"
-                className="mt-8 block rounded-xl bg-summit-500 py-3 text-center text-base font-semibold text-white shadow-lg shadow-summit-500/30 transition hover:bg-summit-600"
+              <div
+                className="mt-5 h-3 overflow-hidden rounded-full bg-trail-100"
+                role="progressbar"
+                aria-valuemin={0}
+                aria-valuemax={1000}
+                aria-valuenow={640}
               >
-                {t.offers.cta}
-              </Link>
+                <div className="h-full w-[64%] rounded-full bg-summit-500" />
+              </div>
+              <p className="mt-2 text-sm font-semibold text-trail-900">
+                {fill(t.challenge.progress, { done: 640, goal: 1000 })}
+              </p>
             </div>
           </div>
         </section>
 
-        {/* RandoRank en quelques mots */}
         <section id="apropos" className="bg-trail-50 px-6 py-24">
           <div className="mx-auto max-w-3xl text-center">
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-summit-600">

@@ -17,7 +17,7 @@ export default function Header({
   const menuLinks = [
     { label: dict.links.ranking, href: landingPath(locale, "classement") },
     { label: dict.links.navigation, href: landingPath(locale, "navigation") },
-    { label: dict.links.offers, href: landingPath(locale, "offres") },
+    { label: dict.links.how, href: landingPath(locale, "comment") },
     { label: dict.links.faq, href: landingPath(locale, "faq") },
     { label: dict.links.spots, href: landingPath(locale, "spots") },
     { label: dict.links.follow, href: landingPath(locale, "suivez-nous") },
