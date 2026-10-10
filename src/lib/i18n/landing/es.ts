@@ -24,10 +24,10 @@ export const es: LandingDict = {
   },
   hero: {
     badge: "🥾 Únase a la comunidad RandoRank",
-    titleLine1: "Su ruta del domingo,",
-    titleLine2: "edición competición.",
+    titleLine1: "Cada sendero",
+    titleLine2: "se convierte en un reto.",
     subtitle:
-      "Importe un GPX y vea su clasificación en 30 segundos.",
+      "Registre sus rutas, desbloquee nuevas insignias, escale en la clasificación y comparta sus mejores salidas.",
     cta: "Comenzar el ascenso",
     ctaNote: "Sin cuenta, sin tarjeta · Elija un apodo y listo",
     imageAlt: "Senderista en una cresta frente a las montañas",

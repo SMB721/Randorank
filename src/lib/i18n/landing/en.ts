@@ -24,10 +24,10 @@ export const en: LandingDict = {
   },
   hero: {
     badge: "🥾 Join the RandoRank community",
-    titleLine1: "Your Sunday hike,",
-    titleLine2: "competition edition.",
+    titleLine1: "Every trail",
+    titleLine2: "becomes a challenge.",
     subtitle:
-      "Import a GPX, see where you rank in 30 seconds.",
+      "Track your hikes, unlock new badges, climb the leaderboard and share your best outings.",
     cta: "Start the climb",
     ctaNote: "No account, no credit card · Pick a nickname and go",
     imageAlt: "Hiker on a mountain ridge facing the peaks",

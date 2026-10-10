@@ -24,10 +24,10 @@ export const de: LandingDict = {
   },
   hero: {
     badge: "🥾 Werden Sie Teil der RandoRank-Community",
-    titleLine1: "Ihre Sonntagswanderung,",
-    titleLine2: "Wettkampf-Edition.",
+    titleLine1: "Jeder Pfad",
+    titleLine2: "wird zur Herausforderung.",
     subtitle:
-      "GPX importieren und in 30 Sekunden Ihren Rang sehen.",
+      "Zeichnen Sie Ihre Wanderungen auf, schalten Sie neue Badges frei, klettern Sie in der Rangliste und teilen Sie Ihre schönsten Touren.",
     cta: "Den Aufstieg beginnen",
     ctaNote: "Ohne Konto, ohne Kreditkarte · Spitznamen wählen und los",
     imageAlt: "Wanderer auf einem Grat vor Bergkulisse",

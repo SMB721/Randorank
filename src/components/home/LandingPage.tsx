@@ -84,10 +84,10 @@ export default async function LandingPage({ locale }: { locale: Locale }) {
                 : t.hero.badge}
             </span>
             <h1
-              className={`font-display leading-[0.95] tracking-wide text-white break-words sm:text-7xl ${
+              className={`font-display leading-[0.95] tracking-wide text-white hyphens-auto break-words sm:text-8xl ${
                 // German compounds ("Herausforderung") overflow a 375px
                 // screen at the default size.
-                locale === "de" ? "hyphens-auto text-3xl" : "text-[1.9rem]"
+                locale === "de" ? "text-5xl" : "text-6xl"
               }`}
             >
               {t.hero.titleLine1}
