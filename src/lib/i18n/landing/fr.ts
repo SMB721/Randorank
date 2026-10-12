@@ -146,7 +146,7 @@ export const fr: LandingDict = {
       {
         question: "RandoRank est-il payant ?",
         answer:
-          "Pas pour commencer : le suivi de vos sorties, les classements, les badges et un défi sont gratuits, sans compte ni carte bancaire. Premium (mensuel ou annuel, essai gratuit, résiliable à tout moment) débloque les tracés illimités, tous les défis, les photos illimitées et la fiche de partage sans filigrane.",
+          "Pas pour commencer : le suivi de vos sorties, les classements, les badges et un défi sont gratuits, sans compte ni carte bancaire. Premium ({monthly} par mois ou {yearly} par an, {days} jours d'essai offerts avec carte bancaire requise, résiliable à tout moment) débloque les tracés illimités, tous les défis, les photos illimitées et la fiche de partage sans filigrane.",
       },
       {
         question: "Comment fonctionne la génération d'itinéraire ?",
