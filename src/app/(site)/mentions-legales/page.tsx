@@ -95,9 +95,9 @@ export default function MentionsLegalesPage() {
 
         <h3 className="text-lg font-semibold text-trail-900">Compte et offres</h3>
         <p className="text-trail-700">
-          RandoRank est utilisable gratuitement, sans compte ni carte bancaire : la création
-          d&apos;un compte n&apos;est demandée que pour conserver ses données ou accéder à
-          certaines fonctionnalités. Une offre Premium, mensuelle ou annuelle, débloque les
+          RandoRank est utilisable gratuitement, sans carte bancaire : la création d&apos;un
+          compte (e-mail, Google ou Facebook) est nécessaire pour utiliser le service. Une
+          offre Premium, mensuelle ou annuelle, débloque les
           fonctionnalités avancées ; elle est résiliable à tout moment depuis l&apos;espace
           compte, et la résiliation prend effet à la fin de la période déjà payée. Le détail
           des offres et de leurs tarifs est présenté dans l&apos;espace compte et lors de la

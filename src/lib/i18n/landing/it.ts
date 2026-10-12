@@ -29,10 +29,10 @@ export const it: LandingDict = {
     subtitle:
       "Registri le sue escursioni, sblocchi nuovi badge, scali la classifica e condivida le sue uscite più belle.",
     cta: "Iniziare la salita",
-    ctaNote: "Senza account, senza carta di credito · Scelga un nickname e via",
+    ctaNote: "Registrazione gratuita, senza carta di credito · E-mail, Google o Facebook",
     imageAlt: "Escursionista su una cresta di fronte alle montagne",
     liveBadge: "{km} km percorsi dalla community",
-    stickyCta: "Si parte, basta un nickname",
+    stickyCta: "Crea il mio account gratis",
   },
   spots: {
     eyebrow: "Spot e community",
@@ -145,7 +145,7 @@ export const it: LandingDict = {
       {
         question: "RandoRank è a pagamento?",
         answer:
-          "Non per iniziare: il tracciamento delle uscite, le classifiche, i badge e una sfida sono gratuiti, senza account né carta di credito. Premium ({monthly} al mese o {yearly} all'anno, prova gratuita di {days} giorni con carta di credito, disdicibile in qualsiasi momento) sblocca percorsi illimitati, tutte le sfide, foto illimitate e la scheda di condivisione senza filigrana.",
+          "Non per iniziare: il tracciamento delle uscite, le classifiche, i badge e una sfida sono gratuiti: basta creare un account, senza carta di credito. Premium ({monthly} al mese o {yearly} all'anno, prova gratuita di {days} giorni con carta di credito, disdicibile in qualsiasi momento) sblocca percorsi illimitati, tutte le sfide, foto illimitate e la scheda di condivisione senza filigrana.",
       },
       {
         question: "Come funziona la generazione dell'itinerario?",
