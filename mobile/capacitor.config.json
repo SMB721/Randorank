@@ -1,0 +1,14 @@
+{
+  "appId": "com.randorank.app",
+  "appName": "RandoRank",
+  "webDir": "www",
+  "server": {
+    "url": "https://randorank.com",
+    "cleartext": false,
+    "allowNavigation": ["randorank.com", "*.randorank.com", "*.supabase.co"]
+  },
+  "android": {
+    "appendUserAgent": "RandoRankApp",
+    "allowMixedContent": false
+  }
+}

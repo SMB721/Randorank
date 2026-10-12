@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">RandoRank</string>
+    <string name="title_activity_main">RandoRank</string>
+    <string name="package_name">com.randorank.app</string>
+    <string name="custom_url_scheme">com.randorank.app</string>
+</resources>
