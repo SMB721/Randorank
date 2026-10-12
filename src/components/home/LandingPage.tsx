@@ -13,7 +13,7 @@ import { formatEuro, type Locale } from "@/lib/i18n/config";
 import { getLandingDict } from "@/lib/i18n/landing";
 import { getAppDict } from "@/lib/i18n/app";
 import { fill } from "@/lib/i18n/funnel";
-import { PREMIUM_PRICE } from "@/lib/pricing";
+import { PREMIUM_PRICE, PREMIUM_TRIAL_DAYS } from "@/lib/pricing";
 import type { CommunityStats, CommunityWeeklyKm } from "@/lib/supabase/types";
 
 const heroImage =
@@ -675,6 +675,7 @@ export default async function LandingPage({ locale }: { locale: Locale }) {
                 answer: fill(item.answer, {
                   monthly: formatEuro(locale, PREMIUM_PRICE.monthly),
                   yearly: formatEuro(locale, PREMIUM_PRICE.yearly),
+                  days: PREMIUM_TRIAL_DAYS,
                 }),
               }))}
             />

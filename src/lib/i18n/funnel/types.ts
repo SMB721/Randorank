@@ -106,11 +106,12 @@ export interface FunnelDict {
     planTagline: string;
     monthly: string;
     yearly: string;
+    trialBadge: string; // "{days}" is replaced
     perMonth: string;
     thenMonthly: string; // "{amount}" is replaced
     thenYearly: string;
     features: string[];
-    cta: string
+    cta: string; // "{days}" is replaced
     cardNote: string;
     secure: string;
   };

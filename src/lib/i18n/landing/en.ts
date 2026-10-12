@@ -145,7 +145,7 @@ export const en: LandingDict = {
       {
         question: "Does RandoRank cost money?",
         answer:
-          "Not to get started: hike tracking, rankings, badges and one challenge are free, with no account or credit card. Premium ({monthly} a month or {yearly} a year, cancel anytime) unlocks unlimited generated routes, every challenge, unlimited photos and the share card without watermark.",
+          "Not to get started: hike tracking, rankings, badges and one challenge are free, with no account or credit card. Premium ({monthly} a month or {yearly} a year, {days}-day free trial with a credit card required, cancel anytime) unlocks unlimited generated routes, every challenge, unlimited photos and the share card without watermark.",
       },
       {
         question: "How does route generation work?",

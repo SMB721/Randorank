@@ -3,6 +3,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { stripe, PRICE_IDS, type BillingPeriod, type PaidTier } from "@/lib/stripe";
+import { PREMIUM_TRIAL_DAYS } from "@/lib/pricing";
 import { STRIPE_LOCALES } from "@/lib/i18n/config";
 import { getRequestLocale } from "@/lib/i18n/server";
 import {
@@ -63,10 +64,13 @@ export async function createCheckoutSessionAction(tier: PaidTier, period: Billin
       customer: profile?.stripe_customer_id ?? undefined,
       customer_email: profile?.stripe_customer_id ? undefined : (user!.email ?? undefined),
       client_reference_id: user!.id,
-      // No trial: Premium is billed at checkout. The free tier is the way to
-      // try the app before paying.
+      // Card is always collected up front; the first charge happens when the
+      // trial ends. Only users who never completed a checkout get the trial,
+      // so cancelling and resubscribing can't chain free weeks.
+      payment_method_collection: "always",
       subscription_data: {
         metadata: { supabase_user_id: user!.id },
+        ...(profile?.stripe_customer_id ? {} : { trial_period_days: PREMIUM_TRIAL_DAYS }),
       },
       metadata: { supabase_user_id: user!.id },
       success_url: `${siteUrl}/bienvenue/paywall?checkout=success`,
