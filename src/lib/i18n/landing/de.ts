@@ -145,7 +145,7 @@ export const de: LandingDict = {
       {
         question: "Kostet RandoRank etwas?",
         answer:
-          "Nicht zum Einstieg: Wanderungs-Tracking, Ranglisten, Abzeichen und eine Challenge sind gratis, ohne Konto und ohne Kreditkarte. Premium ({monthly} pro Monat oder {yearly} pro Jahr, {days} Tage kostenlos testen mit Kreditkarte, jederzeit kündbar) schaltet unbegrenzt Routen, alle Challenges, unbegrenzt Fotos und die Teilen-Karte ohne Wasserzeichen frei.",
+          "Nicht zum Einstieg: Wanderungs-Tracking, Ranglisten, Abzeichen und eine Challenge sind gratis, ohne Konto und ohne Kreditkarte. Premium ({monthly} pro Monat oder {yearly} pro Jahr, jederzeit kündbar) schaltet unbegrenzt Routen, alle Challenges, unbegrenzt Fotos und die Teilen-Karte ohne Wasserzeichen frei.",
       },
       {
         question: "Wie funktioniert die Routenerstellung?",

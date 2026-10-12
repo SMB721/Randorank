@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import { createCheckoutSessionAction } from "@/app/actions/subscription";
 import {
   PREMIUM_PRICE,
-  PREMIUM_TRIAL_DAYS,
   PREMIUM_YEARLY_SAVINGS_PERCENT,
 } from "@/lib/pricing";
 import HtmlLang from "@/components/HtmlLang";
@@ -72,7 +71,7 @@ export default function PaywallScreen({
         : null;
   const price =
     period === "monthly" ? PREMIUM_PRICE.monthly : PREMIUM_PRICE.yearly / 12;
-  const chargeAfterTrial =
+  const charge =
     period === "monthly"
       ? fill(t.thenMonthly, { amount: formatEuro(locale, PREMIUM_PRICE.monthly) })
       : fill(t.thenYearly, { amount: formatEuro(locale, PREMIUM_PRICE.yearly) });
@@ -160,14 +159,11 @@ export default function PaywallScreen({
             </button>
           </div>
 
-          <p className="mt-4 inline-block rounded-full bg-summit-500/15 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-summit-300">
-            {fill(t.trialBadge, { days: PREMIUM_TRIAL_DAYS })}
-          </p>
-          <div className="mt-3 flex items-baseline gap-1">
+          <div className="mt-4 flex items-baseline gap-1">
             <span className="font-display text-5xl tracking-wide">{formatEuro(locale, price)}</span>
             <span className="text-white/50">{t.perMonth}</span>
           </div>
-          <p className="text-xs text-white/50">{chargeAfterTrial}</p>
+          <p className="text-xs text-white/50">{charge}</p>
 
           <p className="mt-5 text-xs text-white/50">{freeNote}</p>
           <ul className="mt-2 space-y-2 text-sm">
@@ -186,7 +182,7 @@ export default function PaywallScreen({
               type="submit"
               className="mt-6 w-full rounded-xl bg-summit-500 py-3 text-sm font-semibold text-white shadow-lg shadow-summit-500/30 transition hover:bg-summit-600"
             >
-              {fill(t.cta, { days: PREMIUM_TRIAL_DAYS })}
+              {t.cta}
             </button>
           </form>
           <p className="mt-3 text-center text-xs text-white/50">

@@ -145,7 +145,7 @@ export const it: LandingDict = {
       {
         question: "RandoRank è a pagamento?",
         answer:
-          "Non per iniziare: il tracciamento delle uscite, le classifiche, i badge e una sfida sono gratuiti, senza account né carta di credito. Premium ({monthly} al mese o {yearly} all'anno, prova gratuita di {days} giorni con carta di credito, disdicibile in qualsiasi momento) sblocca percorsi illimitati, tutte le sfide, foto illimitate e la scheda di condivisione senza filigrana.",
+          "Non per iniziare: il tracciamento delle uscite, le classifiche, i badge e una sfida sono gratuiti, senza account né carta di credito. Premium ({monthly} al mese o {yearly} all'anno, disdicibile in qualsiasi momento) sblocca percorsi illimitati, tutte le sfide, foto illimitate e la scheda di condivisione senza filigrana.",
       },
       {
         question: "Come funziona la generazione dell'itinerario?",
