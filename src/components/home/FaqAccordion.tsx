@@ -20,6 +20,7 @@ export default function FaqAccordion({ items }: { items: FaqItem[] }) {
               type="button"
               onClick={() => setOpenIndex(isOpen ? null : index)}
               aria-expanded={isOpen}
+              aria-controls={`faq-answer-${index}`}
               className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left"
             >
               <span className="font-semibold text-trail-900">{item.question}</span>
@@ -32,9 +33,15 @@ export default function FaqAccordion({ items }: { items: FaqItem[] }) {
                 +
               </span>
             </button>
-            {isOpen && (
-              <p className="px-6 pb-5 text-sm leading-relaxed text-trail-700">{item.answer}</p>
-            )}
+            {/* Always in the markup (only hidden when closed) so search engines
+                and text-only readers still get every answer. */}
+            <p
+              id={`faq-answer-${index}`}
+              hidden={!isOpen}
+              className="px-6 pb-5 text-sm leading-relaxed text-trail-700"
+            >
+              {item.answer}
+            </p>
           </div>
         );
       })}

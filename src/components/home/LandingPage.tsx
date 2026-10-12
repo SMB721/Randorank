@@ -9,10 +9,11 @@ import PhoneMockup from "@/components/home/PhoneMockup";
 import FloatingStatCard from "@/components/home/FloatingStatCard";
 import StickyCta from "@/components/home/StickyCta";
 import { createClient } from "@/lib/supabase/server";
-import type { Locale } from "@/lib/i18n/config";
+import { formatEuro, type Locale } from "@/lib/i18n/config";
 import { getLandingDict } from "@/lib/i18n/landing";
 import { getAppDict } from "@/lib/i18n/app";
 import { fill } from "@/lib/i18n/funnel";
+import { PREMIUM_PRICE, PREMIUM_TRIAL_DAYS } from "@/lib/pricing";
 import type { CommunityStats, CommunityWeeklyKm } from "@/lib/supabase/types";
 
 const heroImage =
@@ -668,7 +669,16 @@ export default async function LandingPage({ locale }: { locale: Locale }) {
           </div>
 
           <div className="mt-12">
-            <FaqAccordion items={t.faq.items} />
+            <FaqAccordion
+              items={t.faq.items.map((item) => ({
+                ...item,
+                answer: fill(item.answer, {
+                  monthly: formatEuro(locale, PREMIUM_PRICE.monthly),
+                  yearly: formatEuro(locale, PREMIUM_PRICE.yearly),
+                  days: PREMIUM_TRIAL_DAYS,
+                }),
+              }))}
+            />
           </div>
 
           <p className="mx-auto mt-8 max-w-xl text-center text-sm text-trail-500">

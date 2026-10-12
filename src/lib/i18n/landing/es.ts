@@ -145,7 +145,7 @@ export const es: LandingDict = {
       {
         question: "¿RandoRank es de pago?",
         answer:
-          "No para empezar: el seguimiento de salidas, las clasificaciones, las insignias y un reto son gratuitos, sin cuenta ni tarjeta. Premium (mensual o anual, prueba gratuita, cancelable en cualquier momento) desbloquea rutas ilimitadas, todos los retos, fotos ilimitadas y la ficha para compartir sin marca de agua.",
+          "No para empezar: el seguimiento de salidas, las clasificaciones, las insignias y un reto son gratuitos, sin cuenta ni tarjeta. Premium ({monthly} al mes o {yearly} al año, prueba gratuita de {days} días con tarjeta, cancelable en cualquier momento) desbloquea rutas ilimitadas, todos los retos, fotos ilimitadas y la ficha para compartir sin marca de agua.",
       },
       {
         question: "¿Cómo funciona la generación de itinerarios?",
