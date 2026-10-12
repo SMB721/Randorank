@@ -1,12 +1,18 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import type { FunnelDict } from "@/lib/i18n/funnel";
 
 type Mode = "signup" | "login";
+
+// The Android app (mobile/) is a WebView tagged with "RandoRankApp" in its
+// user agent. Google refuses OAuth inside embedded WebViews, so Google and
+// Facebook sign-in are hidden there and email + password is the way in.
+const noopSubscribe = () => () => {};
+const isAndroidApp = () => navigator.userAgent.includes("RandoRankApp");
 
 const passwordChecks = [
   { key: "chars", test: (v: string) => v.length >= 6 },
@@ -43,6 +49,7 @@ export default function AuthForm({
   const initialMode: Mode = searchParams.get("mode") === "login" ? "login" : "signup";
   const next = safeNext(searchParams.get("next"));
 
+  const inApp = useSyncExternalStore(noopSubscribe, isAndroidApp, () => false);
   const [mode, setMode] = useState<Mode>(initialMode);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -166,30 +173,34 @@ export default function AuthForm({
         </button>
       </div>
 
-      <div className="space-y-3">
-        <button
-          type="button"
-          onClick={() => handleOAuth("google")}
-          className="flex w-full items-center justify-center gap-3 rounded-xl border border-white/20 bg-white/5 py-2.5 text-sm font-semibold text-white transition hover:border-white/40 hover:bg-white/10"
-        >
-          <GoogleIcon />
-          {t.google}
-        </button>
-        <button
-          type="button"
-          onClick={() => handleOAuth("facebook")}
-          className="flex w-full items-center justify-center gap-3 rounded-xl border border-white/20 bg-white/5 py-2.5 text-sm font-semibold text-white transition hover:border-white/40 hover:bg-white/10"
-        >
-          <FacebookIcon />
-          {t.facebook}
-        </button>
-      </div>
+      {!inApp && (
+        <>
+          <div className="space-y-3">
+            <button
+              type="button"
+              onClick={() => handleOAuth("google")}
+              className="flex w-full items-center justify-center gap-3 rounded-xl border border-white/20 bg-white/5 py-2.5 text-sm font-semibold text-white transition hover:border-white/40 hover:bg-white/10"
+            >
+              <GoogleIcon />
+              {t.google}
+            </button>
+            <button
+              type="button"
+              onClick={() => handleOAuth("facebook")}
+              className="flex w-full items-center justify-center gap-3 rounded-xl border border-white/20 bg-white/5 py-2.5 text-sm font-semibold text-white transition hover:border-white/40 hover:bg-white/10"
+            >
+              <FacebookIcon />
+              {t.facebook}
+            </button>
+          </div>
 
-      <div className="flex items-center gap-3">
-        <div className="h-px flex-1 bg-white/10" />
-        <span className="text-xs font-medium uppercase text-white/40">{t.or}</span>
-        <div className="h-px flex-1 bg-white/10" />
-      </div>
+          <div className="flex items-center gap-3">
+            <div className="h-px flex-1 bg-white/10" />
+            <span className="text-xs font-medium uppercase text-white/40">{t.or}</span>
+            <div className="h-px flex-1 bg-white/10" />
+          </div>
+        </>
+      )}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-1.5">
