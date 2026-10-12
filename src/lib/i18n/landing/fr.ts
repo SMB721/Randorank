@@ -30,10 +30,10 @@ export const fr: LandingDict = {
     subtitle:
       "Suivez vos randos, débloquez de nouveaux badges, grimpez au classement et partagez vos plus belles sorties.",
     cta: "Commencer l'ascension",
-    ctaNote: "Sans compte, sans carte bancaire · Choisissez un pseudo et c'est parti",
+    ctaNote: "Inscription gratuite, sans carte bancaire · E-mail, Google ou Facebook",
     imageAlt: "Randonneur au sommet d'une crête face aux montagnes",
     liveBadge: "{km} km parcourus par la communauté",
-    stickyCta: "C'est parti, juste un pseudo",
+    stickyCta: "Créer mon compte gratuit",
   },
   spots: {
     eyebrow: "Spots & communauté",
@@ -146,7 +146,7 @@ export const fr: LandingDict = {
       {
         question: "RandoRank est-il payant ?",
         answer:
-          "Pas pour commencer : le suivi de vos sorties, les classements, les badges et un défi sont gratuits, sans compte ni carte bancaire. Premium ({monthly} par mois ou {yearly} par an, {days} jours d'essai offerts avec carte bancaire requise, résiliable à tout moment) débloque les tracés illimités, tous les défis, les photos illimitées et la fiche de partage sans filigrane.",
+          "Pas pour commencer : le suivi de vos sorties, les classements, les badges et un défi sont gratuits, avec un simple compte et sans carte bancaire. Premium ({monthly} par mois ou {yearly} par an, {days} jours d'essai offerts avec carte bancaire requise, résiliable à tout moment) débloque les tracés illimités, tous les défis, les photos illimitées et la fiche de partage sans filigrane.",
       },
       {
         question: "Comment fonctionne la génération d'itinéraire ?",
