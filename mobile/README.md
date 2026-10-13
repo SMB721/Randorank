@@ -29,6 +29,16 @@ première publication.** Modifiez-le avant de créer l'app dans la Play Console 
      votre clé sert de clé d'envoi.
    - Le fichier produit (`.aab`) est celui à envoyer à la Play Console.
 
+## Compiler dans le cloud (sans Android Studio)
+Le workflow `.github/workflows/android-apk.yml` compile l'app sur GitHub et produit un APK de
+test (clé de débogage automatique, **pas** le fichier du Play Store).
+1. GitHub > onglet *Actions* > « Android APK » > *Run workflow* (il se lance aussi à chaque
+   modification du dossier `mobile/`).
+2. Quand l'exécution est verte, ouvrez-la et téléchargez l'artefact `randorank-debug-apk`
+   (un `.zip` qui contient `app-debug.apk`, conservé 14 jours).
+3. Envoyez `app-debug.apk` sur un téléphone Android (câble, e-mail, messagerie) et ouvrez-le.
+   Android demande d'autoriser l'installation depuis cette source : acceptez.
+
 ## Publication (Play Console)
 1. Créer l'application (nom, langue par défaut : français, gratuite).
 2. Test fermé : ajouter des testeurs (adresses Gmail). À ma connaissance, un compte personnel
