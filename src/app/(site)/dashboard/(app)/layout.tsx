@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import GuestBanner from "@/components/dashboard/GuestBanner";
+import InstallPromptListener from "@/components/InstallPromptListener";
 import { createClient } from "@/lib/supabase/server";
 
 // The app is open to everyone, guests included ("value first, account
@@ -20,6 +21,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   return (
     <>
+      <InstallPromptListener />
       {user.is_anonymous && <GuestBanner />}
       {children}
     </>

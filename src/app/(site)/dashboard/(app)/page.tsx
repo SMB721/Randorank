@@ -130,7 +130,7 @@ export default async function DashboardPage() {
             <DashboardHeader dark />
 
             <div className="mt-6">
-              <InstallBanner />
+              <InstallBanner hikeCount={profile.hike_count} />
             </div>
 
             <div className="mt-8 flex items-center gap-4">

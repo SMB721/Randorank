@@ -14,6 +14,11 @@ export const en: Dict = {
   "installBanner.subtitle": "Faster access · full screen",
   "installBanner.cta": "Install",
   "installBanner.dismiss": "Dismiss",
+  "installBanner.subtitleValue": "Your challenges and ranking one tap away, full screen.",
+  "installBanner.inapp": "You're in another app's built-in browser. Open this link in Safari or Chrome to install RandoRank.",
+  "installBanner.copyLink": "Copy link",
+  "installBanner.copied": "Link copied ✓",
+  "installBanner.how": "How to",
   // ── Levels
   "level.debutant": "Beginner",
   "level.amateur": "Amateur",

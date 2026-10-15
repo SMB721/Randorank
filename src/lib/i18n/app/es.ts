@@ -15,6 +15,11 @@ export const es: Dict = {
   "installBanner.subtitle": "Acceso más rápido · pantalla completa",
   "installBanner.cta": "Instalar",
   "installBanner.dismiss": "Ignorar",
+  "installBanner.subtitleValue": "Sus retos y su clasificación a un toque, a pantalla completa.",
+  "installBanner.inapp": "Está en el navegador integrado de otra app. Abra este enlace en Safari o Chrome para instalar RandoRank.",
+  "installBanner.copyLink": "Copiar enlace",
+  "installBanner.copied": "Enlace copiado ✓",
+  "installBanner.how": "Cómo hacerlo",
   // ── Levels
   "level.debutant": "Principiante",
   "level.amateur": "Aficionado",
