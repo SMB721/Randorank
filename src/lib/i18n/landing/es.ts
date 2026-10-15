@@ -136,7 +136,7 @@ export const es: LandingDict = {
   },
   about: {
     eyebrow: "RandoRank en pocas palabras",
-    text: "RandoRank le ayuda a preparar itinerarios de senderismo según su nivel, a compartir su pasión y a descubrir nuevos spots. Registre cada recorrido, analice sus rutas y compárese con sus amigos y con todos los senderistas del sitio — por región, por departamento, hasta el ámbito nacional.",
+    text: "RandoRank le ayuda a preparar itinerarios de senderismo según su nivel, a compartir su pasión y a descubrir nuevos spots. Registre cada recorrido, analice sus rutas y compárese con sus amigos y con todos los senderistas del sitio — por región y por nivel, hasta el ámbito nacional.",
   },
   faq: {
     eyebrow: "Todo claro",

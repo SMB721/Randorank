@@ -136,7 +136,7 @@ export const en: LandingDict = {
   },
   about: {
     eyebrow: "RandoRank in a few words",
-    text: "RandoRank helps you plan hiking routes that match your level, share your passion and discover new spots. Record every route, analyse your hikes and compare yourself with friends and with every hiker on the site — by region, by département, all the way up to the national level.",
+    text: "RandoRank helps you plan hiking routes that match your level, share your passion and discover new spots. Record every route, analyse your hikes and compare yourself with friends and with every hiker on the site — by region and by level, all the way up to the national level.",
   },
   faq: {
     eyebrow: "Everything's clear",

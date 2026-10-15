@@ -136,7 +136,7 @@ export const de: LandingDict = {
   },
   about: {
     eyebrow: "RandoRank in ein paar Worten",
-    text: "RandoRank hilft Ihnen, Wanderrouten passend zu Ihrem Niveau zu planen, Ihre Leidenschaft zu teilen und neue Spots zu entdecken. Speichern Sie jede Tour, analysieren Sie Ihre Wanderungen und vergleichen Sie sich mit Freunden und allen Wanderern der Seite — nach Region, nach Département, bis hin zur nationalen Ebene.",
+    text: "RandoRank hilft Ihnen, Wanderrouten passend zu Ihrem Niveau zu planen, Ihre Leidenschaft zu teilen und neue Spots zu entdecken. Speichern Sie jede Tour, analysieren Sie Ihre Wanderungen und vergleichen Sie sich mit Freunden und allen Wanderern der Seite — nach Region und nach Niveau, bis hin zur nationalen Ebene.",
   },
   faq: {
     eyebrow: "Alles klar",
