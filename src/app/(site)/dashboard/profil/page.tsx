@@ -8,6 +8,7 @@ import AvatarUploadForm from "@/components/dashboard/AvatarUploadForm";
 import DeleteAccountButton from "@/components/dashboard/DeleteAccountButton";
 import SignOutButton from "@/components/dashboard/SignOutButton";
 import BlurEndpointsToggle from "@/components/dashboard/BlurEndpointsToggle";
+import WeeklySummaryToggle from "@/components/dashboard/WeeklySummaryToggle";
 import { createPortalSessionAction } from "@/app/actions/subscription";
 import type { Profile } from "@/lib/supabase/types";
 import LanguageSelector from "@/components/dashboard/LanguageSelector";
@@ -230,6 +231,20 @@ export default async function ProfilPage({
             <BlurEndpointsToggle initialValue={profile.blur_endpoints} profileId={profile.id} />
           </div>
         </div>
+
+        {!user.is_anonymous && (
+          <div className="mt-6 rounded-2xl border border-trail-200 bg-white p-6">
+            <WeeklySummaryToggle
+              initial={
+                !profile.weekly_summary
+                  ? "off"
+                  : profile.weekly_summary_confirmed_at
+                    ? "on"
+                    : "pending"
+              }
+            />
+          </div>
+        )}
 
         <div className="mt-6 rounded-2xl border border-trail-200 bg-white p-6">
           <h2 className="font-display text-2xl tracking-wide text-trail-900">

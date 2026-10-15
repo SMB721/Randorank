@@ -28,6 +28,10 @@ export type Profile = {
   referral_source: string | null;
   onboarding_completed_at: string | null;
   blur_endpoints: boolean;
+  weekly_summary: boolean;
+  weekly_summary_confirmed_at: string | null;
+  email_locale: "fr" | "en" | "it" | "es" | "de";
+  last_weekly_summary_at: string | null;
   created_at: string;
   updated_at: string;
 };
