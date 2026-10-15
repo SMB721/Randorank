@@ -15,6 +15,11 @@ export const fr = {
   "installBanner.subtitle": "Accès plus rapide · plein écran",
   "installBanner.cta": "Installer",
   "installBanner.dismiss": "Ignorer",
+  "installBanner.subtitleValue": "Vos défis et votre classement en un tap, en plein écran.",
+  "installBanner.inapp": "Vous êtes dans le navigateur intégré d'une autre app. Ouvrez ce lien dans Safari ou Chrome pour installer RandoRank.",
+  "installBanner.copyLink": "Copier le lien",
+  "installBanner.copied": "Lien copié ✓",
+  "installBanner.how": "Comment faire",
   // ── Levels (user level labels, stored values stay debutant/amateur/avance)
   "level.debutant": "Débutant",
   "level.amateur": "Amateur",

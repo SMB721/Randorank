@@ -4,16 +4,9 @@ import { useEffect, useState } from "react";
 import { dismissInstallPromptAction } from "@/app/(site)/dashboard/installer/actions";
 import { useT } from "@/lib/i18n/app/client";
 import type { DictKey } from "@/lib/i18n/app";
+import { useInstallPrompt } from "@/lib/pwa/install";
 
 type Platform = "iphone" | "android";
-
-// Non-standard event, not yet in lib.dom.d.ts — Chromium-only (Android
-// Chrome, desktop Chrome/Edge). Safari never fires it; there is no
-// programmatic install prompt on iOS, only the manual Share-sheet flow.
-type BeforeInstallPromptEvent = Event & {
-  prompt: () => Promise<void>;
-  userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
-};
 
 function detectDefaultPlatform(): Platform {
   if (typeof navigator === "undefined") return "android";
@@ -35,8 +28,7 @@ const iphoneSteps: { icon: string; text: DictKey }[] = [
 export default function InstallAppGuide() {
   const { t } = useT();
   const [platform, setPlatform] = useState<Platform>("android");
-  const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
-  const [installed, setInstalled] = useState(false);
+  const { canPrompt, installed, prompt } = useInstallPrompt();
 
   useEffect(() => {
     // Deliberately deferred to an effect: the initial "android" state has to
@@ -45,29 +37,10 @@ export default function InstallAppGuide() {
     // during SSR).
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setPlatform(detectDefaultPlatform());
-
-    function handleBeforeInstallPrompt(e: Event) {
-      e.preventDefault();
-      setDeferredPrompt(e as BeforeInstallPromptEvent);
-    }
-    function handleInstalled() {
-      setInstalled(true);
-      setDeferredPrompt(null);
-    }
-
-    window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
-    window.addEventListener("appinstalled", handleInstalled);
-    return () => {
-      window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
-      window.removeEventListener("appinstalled", handleInstalled);
-    };
   }, []);
 
   async function handleInstallClick() {
-    if (!deferredPrompt) return;
-    await deferredPrompt.prompt();
-    await deferredPrompt.userChoice;
-    setDeferredPrompt(null);
+    await prompt();
   }
 
   if (installed) {
@@ -133,7 +106,7 @@ export default function InstallAppGuide() {
         ))}
       </div>
 
-      {platform === "android" && deferredPrompt && (
+      {platform === "android" && canPrompt && (
         <button
           type="button"
           onClick={handleInstallClick}
