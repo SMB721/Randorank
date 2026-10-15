@@ -159,6 +159,11 @@ export default function MentionsLegalesPage() {
           </li>
           <li>Photos géolocalisées rattachées à vos randos.</li>
           <li>Données d&apos;abonnement et de facturation, traitées par Stripe.</li>
+          <li>
+            Adresse e-mail et statistiques de la semaine, utilisées uniquement pour le résumé
+            hebdomadaire si vous l&apos;activez (confirmation par e-mail, désactivable à tout
+            moment depuis le profil ou le lien de désabonnement).
+          </li>
         </ul>
 
         <h3 className="text-lg font-semibold text-trail-900">Finalités et base légale</h3>
@@ -182,7 +187,8 @@ export default function MentionsLegalesPage() {
         <p className="text-trail-700">
           Vos données sont hébergées et traitées par nos sous-traitants techniques :
           Supabase (authentification et base de données), Stripe (paiement des
-          abonnements), un service de stockage compatible S3 (photos), et les moteurs de
+          abonnements), un service de stockage compatible S3 (photos), Resend (envoi du
+          résumé hebdomadaire par e-mail, si vous l&apos;activez), et les moteurs de
           routing utilisés pour la génération d&apos;itinéraire. Aucune donnée n&apos;est
           vendue à des tiers.
         </p>
