@@ -136,7 +136,7 @@ export const it: LandingDict = {
   },
   about: {
     eyebrow: "RandoRank in poche parole",
-    text: "RandoRank la aiuta a preparare itinerari di escursionismo in base al suo livello, a condividere la sua passione e a scoprire nuovi spot. Registri ogni percorso, analizzi le sue uscite e si confronti con i suoi amici e con tutti gli escursionisti del sito — per regione, per dipartimento, fino a livello nazionale.",
+    text: "RandoRank la aiuta a preparare itinerari di escursionismo in base al suo livello, a condividere la sua passione e a scoprire nuovi spot. Registri ogni percorso, analizzi le sue uscite e si confronti con i suoi amici e con tutti gli escursionisti del sito — per regione e per livello, fino a livello nazionale.",
   },
   faq: {
     eyebrow: "Tutto chiaro",

@@ -137,7 +137,7 @@ export const fr: LandingDict = {
   },
   about: {
     eyebrow: "RandoRank en quelques mots",
-    text: "RandoRank vous aide à préparer des itinéraires de randonnée selon votre niveau, à partager votre passion et à découvrir de nouveaux spots. Enregistrez chaque parcours, analysez vos randos et comparez-vous à vos amis comme à l'ensemble des randonneurs du site — par région, par département, jusqu'à l'échelle du pays.",
+    text: "RandoRank vous aide à préparer des itinéraires de randonnée selon votre niveau, à partager votre passion et à découvrir de nouveaux spots. Enregistrez chaque parcours, analysez vos randos et comparez-vous à vos amis comme à l'ensemble des randonneurs du site — par région et par niveau, jusqu'à l'échelle du pays.",
   },
   faq: {
     eyebrow: "Tout est clair",
