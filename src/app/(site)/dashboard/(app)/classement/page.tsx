@@ -3,6 +3,7 @@ import Link from "next/link";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import UpsellCard from "@/components/dashboard/UpsellCard";
 import FriendsSearch from "@/components/dashboard/FriendsSearch";
+import InviteCard from "@/components/dashboard/InviteCard";
 import { unfollowUserAction } from "@/app/(site)/dashboard/(app)/classement/actions";
 import { createClient } from "@/lib/supabase/server";
 import {
@@ -59,6 +60,11 @@ export default async function ClassementPage({
     .eq("follower_id", user.id)
     .returns<{ followed_id: string }[]>();
   const followingIds = (following ?? []).map((f) => f.followed_id);
+  const { data: own } = await supabase
+    .from("profiles")
+    .select("invite_code")
+    .eq("id", user.id)
+    .maybeSingle<{ invite_code: string }>();
 
   let rows: RankedProfile[] = [];
 
@@ -168,7 +174,8 @@ export default async function ClassementPage({
         </div>
 
         {scope === "amis" ? (
-          <div className="mt-4">
+          <div className="mt-4 space-y-4">
+            {own?.invite_code && !user.is_anonymous && <InviteCard code={own.invite_code} />}
             <FriendsSearch followingIds={followingIds} />
           </div>
         ) : (
