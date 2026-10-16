@@ -16,6 +16,8 @@ function requirementLabel(badge: Badge, tr: Translator): string {
       return tr.t("badges.req.elevation", { n: badge.threshold });
     case "user_level":
       return tr.t("badges.req.level", { level: tr.t(levelKey(USER_LEVELS[badge.threshold])) });
+    case "member_number":
+      return tr.t("badges.req.pioneer", { n: badge.threshold });
   }
 }
 

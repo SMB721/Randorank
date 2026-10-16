@@ -45,9 +45,9 @@ export async function GET(
   // an ad. Premium gets the clean card.
   const { data: profile } = await supabase
     .from("profiles")
-    .select("subscription_tier")
+    .select("subscription_tier, invite_code")
     .eq("id", user.id)
-    .single<{ subscription_tier: SubscriptionTier }>();
+    .single<{ subscription_tier: SubscriptionTier; invite_code: string | null }>();
   const showTagline = !hasCleanShareCard(profile?.subscription_tier ?? "freemium");
 
   // Up to 3 photos, shown side by side as a small album strip — the stats
@@ -186,8 +186,10 @@ export async function GET(
                 paddingTop: 12,
               }}
             >
-              <span>{t("shareImage.tagline")}</span>
-              <span style={{ color: "#fd7310", fontWeight: 700 }}>randorank.com</span>
+              <span>{profile?.invite_code ? t("shareImage.invite") : t("shareImage.tagline")}</span>
+              <span style={{ color: "#fd7310", fontWeight: 700 }}>
+                {profile?.invite_code ? `randorank.com/i/${profile.invite_code}` : "randorank.com"}
+              </span>
             </div>
           )}
         </div>
