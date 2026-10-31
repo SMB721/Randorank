@@ -15,6 +15,14 @@ export type TrackPoint = {
   lon: number;
   ele: number | null;
   time: string | null;
+  /**
+   * True when recording was interrupted just before this point (phone
+   * locked, app switched, signal lost) or when it opens a new <trkseg> in an
+   * imported file. The straight line from the previous point is NOT walked
+   * ground: it counts for no distance and no speed check. A gap can only
+   * ever lower the totals, so it is not a way to cheat.
+   */
+  segmentStart?: boolean;
 };
 
 export type ParsedGpx = {
@@ -69,6 +77,7 @@ export function parseGpx(xml: string): ParsedGpx {
       const trkpts = asArray(
         seg.trkpt as Record<string, unknown> | Record<string, unknown>[]
       );
+      let opensSegment = points.length > 0;
       for (const pt of trkpts) {
         const lat = parseFloat(String(pt["@_lat"]));
         const lon = parseFloat(String(pt["@_lon"]));
@@ -79,7 +88,9 @@ export function parseGpx(xml: string): ParsedGpx {
           lon,
           ele: ele !== null && !Number.isNaN(ele) ? ele : null,
           time: pt.time ? String(pt.time) : null,
+          ...(opensSegment ? { segmentStart: true } : {}),
         });
+        opensSegment = false;
       }
     }
   }
@@ -118,6 +129,16 @@ const IMPOSSIBLE_SPEED_KMH = 60;
 // unreliable throughout and the hike isn't counted.
 const MAX_NOISE_RATIO = 0.25;
 
+/** Walked distance of a live track: gaps between segments are not counted. */
+export function trackDistanceKm(points: TrackPoint[]): number {
+  let total = 0;
+  for (let i = 1; i < points.length; i++) {
+    if (points[i].segmentStart) continue;
+    total += haversineKm(points[i - 1], points[i]);
+  }
+  return Number(total.toFixed(2));
+}
+
 export function computeStats(points: TrackPoint[]): GpxStats {
   let distanceKm = 0;
   let elevationGainM = 0;
@@ -133,6 +154,12 @@ export function computeStats(points: TrackPoint[]): GpxStats {
 
   for (let i = 1; i < points.length; i++) {
     const curr = points[i];
+
+    if (curr.segmentStart) {
+      // Recording gap: restart from here without counting the jump.
+      reference = curr;
+      continue;
+    }
 
     if (hasTimestamps) {
       const dtSeconds =
