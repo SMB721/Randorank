@@ -28,6 +28,9 @@ export type Profile = {
   referral_source: string | null;
   onboarding_completed_at: string | null;
   blur_endpoints: boolean;
+  invite_code: string;
+  invited_by: string | null;
+  member_number: number;
   weekly_summary: boolean;
   weekly_summary_confirmed_at: string | null;
   email_locale: "fr" | "en" | "it" | "es" | "de";
@@ -88,7 +91,8 @@ export type BadgeMetric =
   | "hike_count"
   | "total_distance_km"
   | "total_elevation_m"
-  | "user_level";
+  | "user_level"
+  | "member_number";
 
 export type Badge = {
   id: string;
