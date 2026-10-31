@@ -3,13 +3,15 @@
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
-import { computeStats, haversineKm, trackDistanceKm, type TrackPoint } from "@/lib/gpx";
+import { haversineKm, trackDistanceKm, type TrackPoint } from "@/lib/gpx";
 import { clearDraft, loadDraft, saveDraft, type LiveDraft } from "@/lib/liveDraft";
 import { useWakeLock } from "@/hooks/useWakeLock";
 import { formatDuration } from "@/lib/format";
-import { sampleElevations } from "@/lib/elevationProfile";
 import { useT } from "@/lib/i18n/app/client";
-import { saveLiveHikeAction } from "@/app/(site)/dashboard/(app)/randos/live/actions";
+import {
+  saveLiveHikeAction,
+  type LivePointTuple,
+} from "@/app/(site)/dashboard/(app)/randos/live/actions";
 
 function MapLoading() {
   const { t } = useT();
@@ -279,21 +281,17 @@ export default function LiveRecorder() {
       return;
     }
 
-    const stats = computeStats(track);
-    const coordinates: [number, number][] = track.map((p) => [p.lon, p.lat]);
+    // Only the raw fixes leave the phone: the server recomputes the stats.
     const name = t("hike.defaultName", { date: new Date().toLocaleDateString(locale) });
-
     const result = await saveLiveHikeAction({
       name,
-      coordinates,
-      distanceKm: stats.distanceKm,
-      elevationGainM: stats.elevationGainM,
-      durationSeconds: stats.durationSeconds,
-      avgSpeedKmh: stats.avgSpeedKmh,
-      startedAt: stats.startedAt,
-      isValid: stats.isValid,
-      validationNotes: stats.validationNotes,
-      elevations: sampleElevations(track.map((p) => p.ele)),
+      points: track.map((p): LivePointTuple => [
+        Number(p.lat.toFixed(6)),
+        Number(p.lon.toFixed(6)),
+        p.ele === null ? null : Number(p.ele.toFixed(1)),
+        p.time ? Math.round(new Date(p.time).getTime() / 1000) : 0,
+        p.segmentStart ? 1 : 0,
+      ]),
     });
 
     if (!result.success) {
