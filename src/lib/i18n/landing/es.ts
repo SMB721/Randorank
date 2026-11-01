@@ -32,7 +32,7 @@ export const es: LandingDict = {
     ctaNote: "Registro gratuito, sin tarjeta · Correo, Google o Facebook",
     imageAlt: "Senderista en una cresta frente a las montañas",
     liveBadge: "{km} km recorridos por la comunidad",
-    stickyCta: "Crear mi cuenta gratis",
+    stickyCta: "Empiece su nueva ruta",
   },
   spots: {
     eyebrow: "Spots y comunidad",

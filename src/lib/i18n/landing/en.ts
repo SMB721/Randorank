@@ -32,7 +32,7 @@ export const en: LandingDict = {
     ctaNote: "Free sign-up, no credit card · Email, Google or Facebook",
     imageAlt: "Hiker on a mountain ridge facing the peaks",
     liveBadge: "{km} km hiked by the community",
-    stickyCta: "Create my free account",
+    stickyCta: "Start your next hike",
   },
   spots: {
     eyebrow: "Spots & community",
