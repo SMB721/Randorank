@@ -100,7 +100,7 @@ export const en: LandingDict = {
     floatingPosition: { label: "Your position", value: "#3" },
     floatingNext: { label: "To pass #2", value: "6.4 km" },
     month: "Leaderboard · September 2026",
-    tabs: { national: "National", region: "Region", friends: "Friends" },
+    tabs: { national: "National", friends: "Friends" },
     you: "You",
     kms: ["58.1 km", "48.5 km", "42.0 km", "39.7 km"],
   },
@@ -117,7 +117,7 @@ export const en: LandingDict = {
     title: "Three steps. Zero hassle.",
     steps: [
       { title: "Hit the trail", text: "Pick your outing, or let RandoRank suggest a loop made for you." },
-      { title: "Climb the leaderboard", text: "Every kilometre counts: move up your region's and the country's leaderboards, the fun way." },
+      { title: "Climb the leaderboard", text: "Every kilometre counts: move up your country's leaderboard, the fun way." },
       { title: "Aim higher", text: "Generate a custom route for new challenges, earn badges and share your feats." },
     ],
   },
@@ -136,7 +136,7 @@ export const en: LandingDict = {
   },
   about: {
     eyebrow: "RandoRank in a few words",
-    text: "RandoRank helps you plan hiking routes that match your level, share your passion and discover new spots. Record every route, analyse your hikes and compare yourself with friends and with every hiker on the site — by region and by level, all the way up to the national level.",
+    text: "RandoRank helps you plan hiking routes that match your level, share your passion and discover new spots. Record every route, analyse your hikes and compare yourself with friends and with every hiker on the site — by country and by level.",
   },
   faq: {
     eyebrow: "Everything's clear",

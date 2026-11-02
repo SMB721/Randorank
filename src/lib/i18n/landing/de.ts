@@ -100,7 +100,7 @@ export const de: LandingDict = {
     floatingPosition: { label: "Ihre Platzierung", value: "#3" },
     floatingNext: { label: "Für Platz 2", value: "6,4 km" },
     month: "Rangliste · September 2026",
-    tabs: { national: "National", region: "Region", friends: "Freunde" },
+    tabs: { national: "National", friends: "Freunde" },
     you: "Sie",
     kms: ["58,1 km", "48,5 km", "42,0 km", "39,7 km"],
   },
@@ -117,7 +117,7 @@ export const de: LandingDict = {
     title: "Drei Schritte. Null Aufwand.",
     steps: [
       { title: "Ab auf den Weg", text: "Wählen Sie Ihre Tour oder lassen Sie sich von RandoRank eine passende Runde vorschlagen." },
-      { title: "In der Rangliste aufsteigen", text: "Jeder Kilometer zählt: Steigen Sie in der Rangliste Ihrer Region und des Landes auf, mit Spaß." },
+      { title: "In der Rangliste aufsteigen", text: "Jeder Kilometer zählt: Steigen Sie in der Rangliste Ihres Landes auf, mit Spaß." },
       { title: "Höher hinaus", text: "Erstellen Sie eine Strecke nach Maß für neue Challenges, sammeln Sie Abzeichen und teilen Sie Ihre Erfolge." },
     ],
   },
@@ -136,7 +136,7 @@ export const de: LandingDict = {
   },
   about: {
     eyebrow: "RandoRank in ein paar Worten",
-    text: "RandoRank hilft Ihnen, Wanderrouten passend zu Ihrem Niveau zu planen, Ihre Leidenschaft zu teilen und neue Spots zu entdecken. Speichern Sie jede Tour, analysieren Sie Ihre Wanderungen und vergleichen Sie sich mit Freunden und allen Wanderern der Seite — nach Region und nach Niveau, bis hin zur nationalen Ebene.",
+    text: "RandoRank hilft Ihnen, Wanderrouten passend zu Ihrem Niveau zu planen, Ihre Leidenschaft zu teilen und neue Spots zu entdecken. Speichern Sie jede Tour, analysieren Sie Ihre Wanderungen und vergleichen Sie sich mit Freunden und allen Wanderern der Seite — nach Land und nach Niveau.",
   },
   faq: {
     eyebrow: "Alles klar",

@@ -100,7 +100,7 @@ export const it: LandingDict = {
     floatingPosition: { label: "La sua posizione", value: "#3" },
     floatingNext: { label: "Per superare il #2", value: "6,4 km" },
     month: "Classifica · Settembre 2026",
-    tabs: { national: "Nazionale", region: "Regione", friends: "Amici" },
+    tabs: { national: "Nazionale", friends: "Amici" },
     you: "Lei",
     kms: ["58,1 km", "48,5 km", "42,0 km", "39,7 km"],
   },
@@ -117,7 +117,7 @@ export const it: LandingDict = {
     title: "Tre passi. Zero complicazioni.",
     steps: [
       { title: "Parta per un'escursione", text: "Scelga la sua uscita o lasci che RandoRank le proponga un anello su misura." },
-      { title: "Salga in classifica", text: "Ogni chilometro conta: salga nella classifica della sua regione e del paese, in versione divertente." },
+      { title: "Salga in classifica", text: "Ogni chilometro conta: salga nella classifica del suo paese, in versione divertente." },
       { title: "Punti più in alto", text: "Generi un percorso su misura per nuove sfide, ottenga badge e condivida le sue imprese." },
     ],
   },
@@ -136,7 +136,7 @@ export const it: LandingDict = {
   },
   about: {
     eyebrow: "RandoRank in poche parole",
-    text: "RandoRank la aiuta a preparare itinerari di escursionismo in base al suo livello, a condividere la sua passione e a scoprire nuovi spot. Registri ogni percorso, analizzi le sue uscite e si confronti con i suoi amici e con tutti gli escursionisti del sito — per regione e per livello, fino a livello nazionale.",
+    text: "RandoRank la aiuta a preparare itinerari di escursionismo in base al suo livello, a condividere la sua passione e a scoprire nuovi spot. Registri ogni percorso, analizzi le sue uscite e si confronti con i suoi amici e con tutti gli escursionisti del sito — per paese e per livello.",
   },
   faq: {
     eyebrow: "Tutto chiaro",

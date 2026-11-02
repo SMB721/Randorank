@@ -7,7 +7,7 @@ import { getT } from "@/lib/i18n/app/server";
 
 const SEARCH_LIMIT = 8;
 
-export type SearchResult = Pick<PublicProfile, "id" | "username" | "region" | "user_level">;
+export type SearchResult = Pick<PublicProfile, "id" | "username" | "country" | "user_level">;
 
 export async function searchProfilesAction(query: string): Promise<SearchResult[]> {
   const supabase = await createClient();
@@ -18,7 +18,7 @@ export async function searchProfilesAction(query: string): Promise<SearchResult[
 
   const { data } = await supabase
     .from("profiles_public")
-    .select("id, username, region, user_level")
+    .select("id, username, country, user_level")
     .ilike("username", `%${query.trim()}%`)
     .neq("id", user.id)
     .limit(SEARCH_LIMIT)

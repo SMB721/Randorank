@@ -6,12 +6,13 @@ import SpotCarousel from "@/components/dashboard/SpotCarousel";
 import { createClient } from "@/lib/supabase/server";
 import type { PublicProfile, Spot } from "@/lib/supabase/types";
 import { getT } from "@/lib/i18n/app/server";
+import { countryName } from "@/lib/countries";
 import { levelKey } from "@/lib/i18n/app/labels";
 
 const FRIENDS_PREVIEW_COUNT = 3;
 
 export default async function CommunautePage() {
-  const { t } = await getT();
+  const { t, locale } = await getT();
   const supabase = await createClient();
   const {
     data: { user },
@@ -87,7 +88,7 @@ export default async function CommunautePage() {
                         {friend.username || t("rank.anonymous")}
                       </p>
                       <p className="truncate text-xs text-trail-500">
-                        {friend.region || t("rank.regionMissing")} ·{" "}
+                        {countryName(friend.country, locale)} ·{" "}
                         {t(levelKey(friend.user_level))}
                       </p>
                     </div>

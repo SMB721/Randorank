@@ -487,9 +487,6 @@ export default async function LandingPage({ locale }: { locale: Locale }) {
                         {t.ranking.tabs.national}
                       </span>
                       <span className="rounded-full bg-white/10 px-3 py-1 text-white/60">
-                        {t.ranking.tabs.region}
-                      </span>
-                      <span className="rounded-full bg-white/10 px-3 py-1 text-white/60">
                         {t.ranking.tabs.friends}
                       </span>
                     </div>

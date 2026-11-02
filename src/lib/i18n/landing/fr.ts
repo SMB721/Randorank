@@ -101,7 +101,7 @@ export const fr: LandingDict = {
     floatingPosition: { label: "Votre position", value: "#3" },
     floatingNext: { label: "Pour passer #2", value: "6,4 km" },
     month: "Classement · Septembre 2026",
-    tabs: { national: "National", region: "Région", friends: "Amis" },
+    tabs: { national: "National", friends: "Amis" },
     you: "Vous",
     kms: ["58,1 km", "48,5 km", "42,0 km", "39,7 km"],
   },
@@ -118,7 +118,7 @@ export const fr: LandingDict = {
     title: "Trois étapes. Zéro prise de tête.",
     steps: [
       { title: "Partez en rando", text: "Choisissez votre sortie, ou laissez RandoRank vous proposer une boucle à votre mesure." },
-      { title: "Grimpez au classement", text: "Chaque kilomètre compte : montez dans le classement de votre région et du pays, version fun." },
+      { title: "Grimpez au classement", text: "Chaque kilomètre compte : montez dans le classement de votre pays, version fun." },
       { title: "Visez plus haut", text: "Générez un tracé sur mesure pour de nouveaux défis, décrochez des badges et partagez vos exploits." },
     ],
   },
@@ -137,7 +137,7 @@ export const fr: LandingDict = {
   },
   about: {
     eyebrow: "RandoRank en quelques mots",
-    text: "RandoRank vous aide à préparer des itinéraires de randonnée selon votre niveau, à partager votre passion et à découvrir de nouveaux spots. Enregistrez chaque parcours, analysez vos randos et comparez-vous à vos amis comme à l'ensemble des randonneurs du site — par région et par niveau, jusqu'à l'échelle du pays.",
+    text: "RandoRank vous aide à préparer des itinéraires de randonnée selon votre niveau, à partager votre passion et à découvrir de nouveaux spots. Enregistrez chaque parcours, analysez vos randos et comparez-vous à vos amis comme à l'ensemble des randonneurs du site — par pays et par niveau.",
   },
   faq: {
     eyebrow: "Tout est clair",
