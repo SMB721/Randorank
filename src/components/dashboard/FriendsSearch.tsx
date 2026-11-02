@@ -8,10 +8,11 @@ import {
   type SearchResult,
 } from "@/app/(site)/dashboard/(app)/classement/actions";
 import { useT } from "@/lib/i18n/app/client";
+import { countryName } from "@/lib/countries";
 import { levelKey } from "@/lib/i18n/app/labels";
 
 export default function FriendsSearch({ followingIds }: { followingIds: string[] }) {
-  const { t } = useT();
+  const { t, locale } = useT();
   const router = useRouter();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResult[] | null>(null);
@@ -79,7 +80,7 @@ export default function FriendsSearch({ followingIds }: { followingIds: string[]
                       {r.username || t("rank.anonymous")}
                     </p>
                     <p className="text-xs text-trail-500">
-                      {r.region || t("rank.regionMissing")} · {t(levelKey(r.user_level))}
+                      {countryName(r.country, locale)} · {t(levelKey(r.user_level))}
                     </p>
                   </div>
                   <button

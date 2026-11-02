@@ -76,14 +76,15 @@ export async function GET(req: NextRequest) {
 
     const { data: own } = await supabase
       .from("profiles_public")
-      .select("national_rank, total_distance_km")
+      .select("national_rank, total_distance_km, country")
       .eq("id", member.id)
-      .maybeSingle<{ national_rank: number; total_distance_km: number }>();
+      .maybeSingle<{ national_rank: number; total_distance_km: number; country: string }>();
     let nextKm: number | null = null;
     if (own && own.national_rank > 1) {
       const { data: next } = await supabase
         .from("profiles_public")
         .select("total_distance_km")
+        .eq("country", own.country)
         .eq("national_rank", own.national_rank - 1)
         .limit(1)
         .maybeSingle<{ total_distance_km: number }>();

@@ -77,7 +77,7 @@ export default async function DashboardPage() {
     : 0;
 
   // One nudge at a time, most valuable first: save the account, then fill the
-  // profile (it decides which regional ranking you land in), then Premium.
+  // profile (it decides which national ranking you land in), then Premium.
   const nudge = user.is_anonymous
     ? { icon: "💾", key: "home.guest", href: "/auth?mode=signup&next=/dashboard" }
     : !profile.onboarding_completed_at

@@ -6,13 +6,13 @@ import FriendsSearch from "@/components/dashboard/FriendsSearch";
 import { unfollowUserAction } from "@/app/(site)/dashboard/(app)/classement/actions";
 import { createClient } from "@/lib/supabase/server";
 import {
-  FRENCH_REGIONS,
   USER_LEVELS,
   type PublicProfile,
   type SubscriptionTier,
 } from "@/lib/supabase/types";
 import { getT } from "@/lib/i18n/app/server";
 import { levelKey } from "@/lib/i18n/app/labels";
+import { countryName } from "@/lib/countries";
 
 const TOP_N = 50;
 
@@ -20,18 +20,17 @@ const TIER_BADGE: Partial<Record<SubscriptionTier, string>> = {
   premium: "Le MUL",
 };
 
-type Scope = "national" | "regional" | "amis";
+type Scope = "national" | "amis";
 type RankedProfile = PublicProfile & { rank: number };
 
 export default async function ClassementPage({
   searchParams,
 }: {
-  searchParams: Promise<{ scope?: string; region?: string; niveau?: string }>;
+  searchParams: Promise<{ scope?: string; niveau?: string }>;
 }) {
   const params = await searchParams;
-  const { t } = await getT();
-  const scope: Scope =
-    params.scope === "regional" ? "regional" : params.scope === "amis" ? "amis" : "national";
+  const { t, locale } = await getT();
+  const scope: Scope = params.scope === "amis" ? "amis" : "national";
   const niveau = params.niveau || undefined;
 
   const supabase = await createClient();
@@ -48,10 +47,6 @@ export default async function ClassementPage({
     .select("*")
     .eq("id", user.id)
     .single<PublicProfile>();
-
-  // The region tab needs a region to show — default to the visitor's own,
-  // falling back to the first one on the list if theirs isn't set.
-  const region = scope === "regional" ? params.region || me?.region || FRENCH_REGIONS[0] : undefined;
 
   const { data: following } = await supabase
     .from("follows")
@@ -71,28 +66,23 @@ export default async function ClassementPage({
       .sort((a, b) => b.total_distance_km - a.total_distance_km)
       .map((r, i) => ({ ...r, rank: i + 1 }));
   } else {
-    const rankField = scope === "regional" ? "regional_rank" : "national_rank";
+    // "National" = the visitor's own country (national_rank is per country).
     let query = supabase
       .from("profiles_public")
       .select("*")
-      .order(rankField, { ascending: true })
+      .eq("country", me?.country ?? "FR")
+      .order("national_rank", { ascending: true })
       .limit(TOP_N);
-    if (scope === "regional" && region) query = query.eq("region", region);
     if (niveau) query = query.eq("user_level", niveau);
     const { data } = await query.returns<PublicProfile[]>();
-    rows = (data ?? []).map((r) => ({ ...r, rank: r[rankField] }));
+    rows = (data ?? []).map((r) => ({ ...r, rank: r.national_rank }));
   }
 
   const meVisible = rows.some((r) => r.id === user.id);
 
-  function hrefFor(next: Partial<{ scope: Scope; region: string; niveau: string }>) {
+  function hrefFor(next: Partial<{ scope: Scope; niveau: string }>) {
     const p = new URLSearchParams();
-    const s = next.scope ?? scope;
-    p.set("scope", s);
-    if (s === "regional") {
-      const r = next.region ?? region;
-      if (r) p.set("region", r);
-    }
+    p.set("scope", next.scope ?? scope);
     const n = next.niveau ?? niveau;
     if (n) p.set("niveau", n);
     return `/dashboard/classement?${p.toString()}`;
@@ -123,23 +113,17 @@ export default async function ClassementPage({
         )}
 
         {me && (
-          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+          <div className="mt-6">
             <div className="rounded-2xl border border-summit-300 bg-summit-50 p-5">
               <p className="text-xs font-semibold uppercase tracking-widest text-summit-600">
-                {t("rank.myNational")}
+                {t("rank.myCountry", { country: countryName(me.country, locale) })}
               </p>
               <p className="mt-1 font-display text-3xl text-trail-900">#{me.national_rank}</p>
-            </div>
-            <div className="rounded-2xl border border-trail-200 bg-white p-5">
-              <p className="text-xs font-semibold uppercase tracking-widest text-trail-500">
-                {t("rank.myRegional", { region: me.region || t("rank.yourRegion") })}
-              </p>
-              <p className="mt-1 font-display text-3xl text-trail-900">#{me.regional_rank}</p>
             </div>
           </div>
         )}
 
-        {/* Scope tabs: two distinct rankings, not one list filtered twice. */}
+        {/* Scope tabs: your country, or the people you follow. */}
         <div className="mt-6 inline-flex rounded-full border border-trail-200 bg-white p-1 text-sm font-semibold">
           <Link
             href={hrefFor({ scope: "national" })}
@@ -148,14 +132,6 @@ export default async function ClassementPage({
             }`}
           >
             {t("rank.tab.national")}
-          </Link>
-          <Link
-            href={hrefFor({ scope: "regional" })}
-            className={`rounded-full px-5 py-2 transition ${
-              scope === "regional" ? "bg-trail-900 text-white" : "text-trail-600"
-            }`}
-          >
-            {t("rank.tab.regional")}
           </Link>
           <Link
             href={hrefFor({ scope: "amis" })}
@@ -174,20 +150,6 @@ export default async function ClassementPage({
         ) : (
           <form className="mt-4 flex flex-wrap gap-3" method="get">
             <input type="hidden" name="scope" value={scope} />
-
-            {scope === "regional" && (
-              <select
-                name="region"
-                defaultValue={region}
-                className="rounded-xl border border-trail-200 bg-white px-4 py-2 text-sm text-trail-700"
-              >
-                {FRENCH_REGIONS.map((r) => (
-                  <option key={r} value={r}>
-                    {r}
-                  </option>
-                ))}
-              </select>
-            )}
 
             <select
               name="niveau"
@@ -259,7 +221,7 @@ export default async function ClassementPage({
                         )}
                       </p>
                       <p className="truncate text-xs text-trail-500">
-                        {row.region || t("rank.regionMissing")} ·{" "}
+                        {countryName(row.country, locale)} ·{" "}
                         {t(levelKey(row.user_level))}
                       </p>
                     </div>

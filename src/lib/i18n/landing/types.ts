@@ -75,7 +75,7 @@ export interface LandingDict {
     floatingPosition: Pair;
     floatingNext: Pair;
     month: string;
-    tabs: { national: string; region: string; friends: string };
+    tabs: { national: string; friends: string };
     you: string;
     kms: string[];
   };
