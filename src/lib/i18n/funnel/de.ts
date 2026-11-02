@@ -50,7 +50,7 @@ export const de: FunnelDict = {
       },
       {
         title: "Wo wandern Sie normalerweise?",
-        subtitle: "Ihre Region speist die regionale Rangliste. Der genaue Ort ist optional.",
+        subtitle: "Ihr Land bestimmt Ihre nationale Rangliste. Der genaue Ort ist optional.",
       },
       {
         title: "Was Sie nach draußen treibt.",
@@ -73,7 +73,7 @@ export const de: FunnelDict = {
     groupExperience: "Sie wandern seit",
     groupFrequency: "Ihre Touren",
     groupDistance: "Ihre typische Tour",
-    regionPlaceholder: "Wählen Sie Ihre Region",
+    countryPlaceholder: "Wählen Sie Ihr Land",
     areaPlaceholder: "Gebirge, Stadt oder gewohnter Spot (optional)",
     groupGoal: "Ihr Antrieb",
     groupGear: "Sie zeichnen Ihre Touren auf mit",
@@ -140,7 +140,7 @@ export const de: FunnelDict = {
       level: "Wählen Sie Ihr Niveau.",
       experience: "Seit wann wandern Sie?",
       frequency: "Wie oft wandern Sie?",
-      region: "Wählen Sie Ihre Region.",
+      country: "Wählen Sie Ihr Land.",
       areaTooLong: "Ort zu lang (maximal 80 Zeichen).",
       goal: "Wählen Sie ein Ziel.",
       distance: "Wählen Sie eine übliche Distanz.",

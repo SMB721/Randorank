@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { completeOnboardingAction } from "@/app/(site)/bienvenue/actions";
-import { FRENCH_REGIONS } from "@/lib/supabase/types";
+import { COUNTRY_CODES, countryName } from "@/lib/countries";
 import {
   DISTANCE_OPTIONS,
   EXPERIENCE_OPTIONS,
@@ -27,7 +27,7 @@ const STEP_VALIDATORS: ((a: OnboardingAnswers) => boolean)[] = [
   (a) => !!a.firstName.trim() && !!a.lastName.trim() && a.username.trim().length >= 2,
   (a) => !!a.declaredLevel && !!a.experience,
   (a) => !!a.frequency && !!a.typicalDistance,
-  (a) => !!a.region,
+  (a) => !!a.country,
   (a) => !!a.goal && !!a.gear,
   (a) => !!a.referral,
   (a) => a.consent,
@@ -179,15 +179,15 @@ export default function OnboardingFlow({
             <>
               <select
                 className={`${inputClass} appearance-none`}
-                value={answers.region}
-                onChange={(e) => set("region", e.target.value)}
+                value={answers.country}
+                onChange={(e) => set("country", e.target.value)}
               >
                 <option value="" className="text-trail-900">
-                  {t.regionPlaceholder}
+                  {t.countryPlaceholder}
                 </option>
-                {FRENCH_REGIONS.map((r) => (
-                  <option key={r} value={r} className="text-trail-900">
-                    {r}
+                {COUNTRY_CODES.map((c) => (
+                  <option key={c} value={c} className="text-trail-900">
+                    {countryName(c, locale)}
                   </option>
                 ))}
               </select>

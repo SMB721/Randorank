@@ -42,7 +42,7 @@ export interface FunnelDict {
     groupExperience: string;
     groupFrequency: string;
     groupDistance: string;
-    regionPlaceholder: string;
+    countryPlaceholder: string;
     areaPlaceholder: string;
     groupGoal: string;
     groupGear: string;
@@ -72,7 +72,7 @@ export interface FunnelDict {
       level: string;
       experience: string;
       frequency: string;
-      region: string;
+      country: string;
       areaTooLong: string;
       goal: string;
       distance: string;

@@ -49,7 +49,7 @@ export const fr: FunnelDict = {
       },
       {
         title: "Où marchez-vous d'habitude ?",
-        subtitle: "Votre région alimente le classement régional. Le lieu précis est facultatif.",
+        subtitle: "Votre pays détermine votre classement national. Le lieu précis est facultatif.",
       },
       {
         title: "Ce qui vous fait sortir.",
@@ -72,7 +72,7 @@ export const fr: FunnelDict = {
     groupExperience: "Vous randonnez depuis",
     groupFrequency: "Vos sorties",
     groupDistance: "Votre sortie type",
-    regionPlaceholder: "Choisissez votre région",
+    countryPlaceholder: "Choisissez votre pays",
     areaPlaceholder: "Massif, ville ou spot habituel (facultatif)",
     groupGoal: "Votre moteur",
     groupGear: "Vous enregistrez vos sorties avec",
@@ -139,7 +139,7 @@ export const fr: FunnelDict = {
       level: "Choisissez votre niveau.",
       experience: "Depuis combien de temps randonnez-vous ?",
       frequency: "À quelle fréquence randonnez-vous ?",
-      region: "Choisissez votre région.",
+      country: "Choisissez votre pays.",
       areaTooLong: "Lieu trop long (80 caractères max).",
       goal: "Choisissez un objectif.",
       distance: "Choisissez une distance habituelle.",

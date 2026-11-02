@@ -1,7 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import { FRENCH_REGIONS } from "@/lib/supabase/types";
+import { COUNTRY_CODES } from "@/lib/countries";
 import { validateAnswers, type OnboardingAnswers } from "@/lib/onboarding";
 import { getFunnelDict } from "@/lib/i18n/funnel";
 import { getRequestLocale } from "@/lib/i18n/server";
@@ -19,7 +19,7 @@ export async function completeOnboardingAction(
     return { success: false, error: errors.notLoggedIn };
   }
 
-  const invalid = validateAnswers(answers, FRENCH_REGIONS);
+  const invalid = validateAnswers(answers, COUNTRY_CODES);
   if (invalid) {
     // Only the username error is fixed on the first screen; the client
     // sends the user back there.
@@ -39,7 +39,7 @@ export async function completeOnboardingAction(
       declared_level: answers.declaredLevel,
       hiking_experience: answers.experience,
       hikes_per_month: answers.frequency,
-      region: answers.region,
+      country: answers.country,
       usual_area: answers.usualArea.trim() || null,
       goal: answers.goal,
       typical_distance: answers.typicalDistance,

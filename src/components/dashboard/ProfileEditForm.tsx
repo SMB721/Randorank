@@ -4,7 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { computeAge } from "@/lib/birthday";
-import { FRENCH_REGIONS, type Profile } from "@/lib/supabase/types";
+import { COUNTRY_CODES, countryName } from "@/lib/countries";
+import type { Profile } from "@/lib/supabase/types";
 import { useT } from "@/lib/i18n/app/client";
 
 function isoDateYearsAgo(years: number): string {
@@ -15,11 +16,11 @@ function isoDateYearsAgo(years: number): string {
 
 export default function ProfileEditForm({ profile }: { profile: Profile }) {
   const router = useRouter();
-  const { t } = useT();
+  const { t, locale } = useT();
   const supabase = createClient();
 
   const [username, setUsername] = useState(profile.username ?? "");
-  const [region, setRegion] = useState(profile.region ?? "");
+  const [country, setCountry] = useState(profile.country);
   const [birthDate, setBirthDate] = useState(profile.birth_date ?? "");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -35,7 +36,7 @@ export default function ProfileEditForm({ profile }: { profile: Profile }) {
       .from("profiles")
       .update({
         username: username.trim() || null,
-        region: region || null,
+        country,
         birth_date: birthDate || null,
       })
       .eq("id", profile.id);
@@ -73,19 +74,18 @@ export default function ProfileEditForm({ profile }: { profile: Profile }) {
       </div>
 
       <div className="space-y-1.5">
-        <label htmlFor="region" className="text-sm font-medium text-trail-800">
-          {t("pe.region")}
+        <label htmlFor="country" className="text-sm font-medium text-trail-800">
+          {t("pe.country")}
         </label>
         <select
-          id="region"
-          value={region}
-          onChange={(e) => setRegion(e.target.value)}
+          id="country"
+          value={country}
+          onChange={(e) => setCountry(e.target.value)}
           className="w-full rounded-xl border border-trail-200 bg-white px-4 py-2.5 text-sm outline-none focus:border-summit-400 focus:ring-2 focus:ring-summit-100"
         >
-          <option value="">{t("pe.regionNone")}</option>
-          {FRENCH_REGIONS.map((r) => (
-            <option key={r} value={r}>
-              {r}
+          {COUNTRY_CODES.map((c) => (
+            <option key={c} value={c}>
+              {countryName(c, locale)}
             </option>
           ))}
         </select>
