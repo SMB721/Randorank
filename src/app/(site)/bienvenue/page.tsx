@@ -22,9 +22,9 @@ export default async function BienvenuePage() {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("onboarding_completed_at, username, region")
+    .select("onboarding_completed_at, username")
     .eq("id", user.id)
-    .single<{ onboarding_completed_at: string | null; username: string | null; region: string | null }>();
+    .single<{ onboarding_completed_at: string | null; username: string | null }>();
 
   if (profile?.onboarding_completed_at) {
     redirect("/dashboard");
@@ -37,7 +37,6 @@ export default async function BienvenuePage() {
       initial={{
         ...EMPTY_ANSWERS,
         username: profile?.username ?? "",
-        region: profile?.region ?? "",
       }}
     />
   );

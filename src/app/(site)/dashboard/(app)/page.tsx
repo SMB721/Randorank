@@ -17,6 +17,7 @@ import {
   type Spot,
 } from "@/lib/supabase/types";
 import { getT } from "@/lib/i18n/app/server";
+import { countryName } from "@/lib/countries";
 import { levelKey } from "@/lib/i18n/app/labels";
 import type { DictKey } from "@/lib/i18n/app";
 
@@ -24,7 +25,7 @@ const dashboardBg =
   "https://images.unsplash.com/photo-1674085678761-5472e776e4c8?auto=format&fit=crop&w=2000&q=80";
 
 export default async function DashboardPage() {
-  const { t, tn } = await getT();
+  const { t, tn, locale } = await getT();
   const supabase = await createClient();
   const {
     data: { user },
@@ -153,7 +154,7 @@ export default async function DashboardPage() {
                 </h1>
                 <div className="mt-2 flex flex-wrap gap-2">
                   <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-medium text-white/80 backdrop-blur">
-                    {profile.region || t("home.regionMissing")}
+                    {countryName(profile.country, locale)}
                   </span>
                   <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 text-xs font-medium text-white/80 backdrop-blur">
                     {t(levelKey(profile.user_level))}

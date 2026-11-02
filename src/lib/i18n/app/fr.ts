@@ -32,7 +32,6 @@ export const fr = {
   "home.stat.distance": "Distance cumulée",
   "home.stat.elevation": "Dénivelé cumulé",
   "home.welcome": "Bienvenue",
-  "home.regionMissing": "Région non renseignée",
   "home.birthday.title": "🎂 Joyeux anniversaire, {name} !",
   "home.birthday.text_one": "{age} ans, et déjà {n} rando au compteur — une bougie de plus, un sommet de plus à viser.",
   "home.birthday.text_other": "{age} ans, et déjà {n} randos au compteur — une bougie de plus, un sommet de plus à viser.",
@@ -339,8 +338,7 @@ export const fr = {
   // ── Profile edit form ────────────────────────────────────────
   "pe.username": "Pseudo",
   "pe.usernamePlaceholder": "Votre pseudo sur le classement",
-  "pe.region": "Région",
-  "pe.regionNone": "Non renseignée",
+  "pe.country": "Pays",
   "pe.birth": "Date de naissance",
   "pe.birthHint": "(facultatif, jamais publique)",
   "pe.birthAge": "{age} ans — de quoi glaner un petit message le jour J 🎂",

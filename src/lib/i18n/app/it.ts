@@ -32,7 +32,6 @@ export const it: Dict = {
   "home.stat.distance": "Distanza totale",
   "home.stat.elevation": "Dislivello totale",
   "home.welcome": "Benvenuto",
-  "home.regionMissing": "Regione non indicata",
   "home.birthday.title": "🎂 Buon compleanno, {name}!",
   "home.birthday.text_one": "{age} anni e già {n} escursione al contatore — una candelina in più, una vetta in più da puntare.",
   "home.birthday.text_other": "{age} anni e già {n} escursioni al contatore — una candelina in più, una vetta in più da puntare.",
@@ -339,8 +338,7 @@ export const it: Dict = {
   // ── Profile edit form ────────────────────────────────────────
   "pe.username": "Pseudonimo",
   "pe.usernamePlaceholder": "Il suo pseudonimo in classifica",
-  "pe.region": "Regione",
-  "pe.regionNone": "Non indicata",
+  "pe.country": "Paese",
   "pe.birth": "Data di nascita",
   "pe.birthHint": "(facoltativa, mai pubblica)",
   "pe.birthAge": "{age} anni — un buon motivo per un piccolo messaggio il giorno speciale 🎂",

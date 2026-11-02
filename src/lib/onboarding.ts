@@ -72,7 +72,7 @@ export type OnboardingAnswers = {
   declaredLevel: string;
   experience: string;
   frequency: string;
-  region: string;
+  country: string;
   usualArea: string;
   goal: string;
   typicalDistance: string;
@@ -89,7 +89,7 @@ export const EMPTY_ANSWERS: OnboardingAnswers = {
   declaredLevel: "",
   experience: "",
   frequency: "",
-  region: "",
+  country: "",
   usualArea: "",
   goal: "",
   typicalDistance: "",
@@ -108,7 +108,7 @@ export type OnboardingErrorKey = keyof FunnelDict["onboarding"]["errors"];
 // step and, on the server, to re-check the whole payload.
 export function validateAnswers(
   a: OnboardingAnswers,
-  regions: readonly string[]
+  countries: readonly string[]
 ): OnboardingErrorKey | null {
   if (!a.firstName.trim() || !a.lastName.trim()) return "nameRequired";
   if (a.firstName.trim().length > 50 || a.lastName.trim().length > 50) return "nameTooLong";
@@ -117,7 +117,7 @@ export function validateAnswers(
   if (!values(LEVEL_OPTIONS).includes(a.declaredLevel)) return "level";
   if (!values(EXPERIENCE_OPTIONS).includes(a.experience)) return "experience";
   if (!values(FREQUENCY_OPTIONS).includes(a.frequency)) return "frequency";
-  if (!regions.includes(a.region)) return "region";
+  if (!countries.includes(a.country)) return "country";
   if (a.usualArea.trim().length > 80) return "areaTooLong";
   if (!values(GOAL_OPTIONS).includes(a.goal)) return "goal";
   if (!values(DISTANCE_OPTIONS).includes(a.typicalDistance)) return "distance";

@@ -48,7 +48,7 @@ export const en: FunnelDict = {
       },
       {
         title: "Where do you usually walk?",
-        subtitle: "Your region feeds the regional leaderboard. The exact place is optional.",
+        subtitle: "Your country sets your national leaderboard. The exact place is optional.",
       },
       {
         title: "What gets you out the door.",
@@ -71,7 +71,7 @@ export const en: FunnelDict = {
     groupExperience: "You've been hiking for",
     groupFrequency: "Your outings",
     groupDistance: "Your typical outing",
-    regionPlaceholder: "Choose your region",
+    countryPlaceholder: "Choose your country",
     areaPlaceholder: "Mountain range, town or usual spot (optional)",
     groupGoal: "Your driving force",
     groupGear: "You record your outings with",
@@ -138,7 +138,7 @@ export const en: FunnelDict = {
       level: "Choose your level.",
       experience: "How long have you been hiking?",
       frequency: "How often do you hike?",
-      region: "Choose your region.",
+      country: "Choose your country.",
       areaTooLong: "Place too long (80 characters max).",
       goal: "Choose a goal.",
       distance: "Choose a usual distance.",

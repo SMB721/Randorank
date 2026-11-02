@@ -6,6 +6,7 @@ export type Profile = {
   username: string | null;
   avatar_url: string | null;
   region: string | null;
+  country: string;
   birth_date: string | null;
   user_level: UserLevel;
   total_distance_km: number;
@@ -75,6 +76,7 @@ export type PublicProfile = {
   username: string | null;
   avatar_url: string | null;
   region: string | null;
+  country: string;
   user_level: UserLevel;
   total_distance_km: number;
   total_elevation_m: number;
