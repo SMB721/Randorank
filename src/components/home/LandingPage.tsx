@@ -16,6 +16,11 @@ import { fill } from "@/lib/i18n/funnel";
 import { PREMIUM_PRICE, PREMIUM_TRIAL_DAYS } from "@/lib/pricing";
 import type { CommunityStats, CommunityWeeklyKm } from "@/lib/supabase/types";
 
+// A real-looking switchback loop (lake, climb to a summit, descent) drawn
+// over a shaded-relief tile, for the "how it works" preview.
+const LOOP_TRAIL =
+  "M150.4 770.8 L154.1 767.6 L158.3 762.6 L161.2 755.2 L169.9 749.2 L175.6 740.4 L180.0 733.6 L185.6 727.3 L188.4 719.1 L193.1 714.2 L197.9 704.4 L201.0 696.6 L203.2 688.8 L204.0 683.4 L207.5 673.6 L213.0 668.3 L214.3 661.5 L219.1 653.8 L222.5 648.2 L228.7 642.0 L234.1 633.7 L237.1 627.2 L240.9 620.9 L245.6 616.5 L248.4 610.6 L252.6 603.1 L256.8 597.3 L257.6 591.0 L261.0 583.3 L263.9 576.9 L265.4 573.3 L265.6 566.9 L269.6 560.3 L271.6 552.4 L275.4 549.0 L278.9 542.0 L284.8 536.4 L286.7 528.6 L291.3 524.6 L294.2 519.7 L301.0 516.2 L303.4 513.6 L308.8 509.9 L315.9 510.7 L320.7 510.1 L327.2 507.7 L332.5 506.7 L337.7 505.6 L345.6 506.6 L350.2 501.3 L359.5 500.3 L364.6 496.5 L372.2 495.4 L378.5 490.9 L383.4 489.0 L388.9 483.9 L396.1 478.8 L399.0 477.1 L400.6 471.7 L400.0 465.4 L400.8 461.4 L402.0 454.8 L405.5 450.8 L407.7 444.5 L410.0 440.7 L416.0 435.1 L423.9 430.5 L433.2 429.4 L444.9 424.5 L452.8 419.9 L459.7 416.2 L467.9 414.6 L469.6 410.9 L469.9 407.3 L465.1 404.3 L457.3 401.1 L449.0 397.5 L442.6 395.1 L434.3 392.9 L431.1 388.6 L428.4 385.2 L433.0 382.0 L441.2 378.7 L451.8 374.8 L462.0 370.5 L474.5 367.2 L483.2 363.4 L492.4 359.1 L496.5 356.5 L494.4 351.8 L488.9 349.6 L484.5 345.4 L475.6 343.2 L467.7 338.5 L461.0 336.7 L456.2 333.1 L455.4 330.9 L459.3 327.2 L464.8 321.6 L476.1 319.4 L486.6 315.6 L499.1 309.6 L508.6 306.4 L514.8 302.4 L519.4 299.0 L518.3 295.2 L514.8 293.1 L508.4 290.8 L499.2 288.8 L490.3 284.2 L484.4 281.2 L479.5 279.4 L479.6 273.5 L484.1 270.2 L491.1 267.2 L500.9 265.4 L512.6 259.7 L523.6 256.6 L532.2 251.1 L540.8 248.7 L546.5 246.5 L546.0 241.1 L544.5 236.7 L537.4 235.2 L533.5 230.7 L527.9 230.0 L522.3 225.6 L519.0 222.2 L521.5 219.6 L524.8 218.6 L529.3 213.8 L537.8 211.9 L544.4 208.9 L555.0 207.0 L561.2 204.5 L568.0 202.7 L574.8 199.3 L579.9 198.7 L580.3 195.2 L583.2 193.9 L586.5 189.2 L586.5 186.7 L590.6 185.3 L591.9 184.6 L595.5 184.3 L600.2 182.7 L605.2 183.7 L609.9 184.6 L615.0 186.4 L621.5 187.5 L628.6 190.2 L632.5 191.5 L639.9 196.3 L647.3 198.3 L650.8 202.6 L658.6 206.0 L666.0 210.5 L671.7 216.0 L677.7 219.3 L685.3 223.8 L689.3 231.1 L694.2 236.5 L701.8 241.0 L705.9 248.1 L713.2 252.3 L716.8 260.0 L721.6 265.9 L724.9 273.4 L731.0 278.6 L732.8 288.0 L737.9 294.6 L738.5 302.0 L744.3 310.3 L745.9 314.9 L748.3 323.2 L749.3 333.4 L750.7 338.8 L750.0 349.7 L749.9 357.4 L750.6 364.9 L750.7 373.5 L748.2 383.7 L746.9 391.6 L747.0 402.4 L746.2 408.8 L742.8 417.4 L741.1 425.7 L739.6 432.8 L733.9 441.3 L731.0 448.4 L728.5 456.5 L724.6 463.0 L719.2 470.2 L714.2 478.4 L709.5 484.1 L702.7 492.5 L697.9 499.6 L691.3 508.7 L682.5 516.2 L675.6 521.8 L670.3 529.2 L664.3 536.7 L655.4 544.3 L647.2 550.4 L639.8 554.8 L635.1 562.6 L625.1 566.9 L619.6 574.6 L611.0 578.8 L602.2 585.4 L592.6 591.2 L585.3 597.0 L575.9 602.0 L568.5 609.2 L559.4 614.0 L550.4 619.7 L540.3 625.2 L531.2 629.9 L519.4 634.0 L509.8 639.1 L501.9 645.6 L491.3 649.0 L480.1 656.7 L470.5 660.0 L459.9 663.7 L448.9 668.5 L439.6 673.7 L431.2 677.4 L419.2 682.1 L408.9 686.4 L399.2 691.3 L388.5 697.0 L379.6 701.4 L370.6 705.0 L359.9 710.4 L348.8 714.1 L339.3 718.7 L330.7 721.5 L319.0 725.4 L309.1 729.8 L299.7 736.5 L289.5 738.1 L279.7 741.6 L270.3 746.5 L258.3 748.2 L249.8 753.6 L239.8 754.8 L231.0 756.1 L218.6 760.9 L210.0 760.6 L200.3 765.4 L190.0 764.8 L178.7 765.2 L172.0 767.6 L163.7 767.1 L154.5 767.9 L149.7 768.6";
+
 const heroImage =
   "https://images.unsplash.com/photo-1616494268339-f49a1c4ac8f8?auto=format&fit=crop&w=2000&q=80";
 const forestSpot =
@@ -152,12 +157,23 @@ export default async function LandingPage({ locale }: { locale: Locale }) {
                           </div>
                           <span className="inline-block rounded-full bg-white/10 px-3 py-1 text-xs font-bold">{t.howItWorks.preview.level}</span>
                         </div>
-                        <div className="flex w-28 flex-col items-center gap-2">
-                          <svg viewBox="0 0 100 100" className="h-24 w-24" aria-hidden="true">
-                            <rect width="100" height="100" rx="14" fill="#1c2a1a" />
-                            <path d="M25 78 C 10 60, 18 35, 40 25 C 62 15, 85 28, 82 50 C 79 72, 58 70, 46 80 C 38 86, 30 84, 25 78 Z" fill="none" stroke="#fd7310" strokeWidth="5" strokeLinejoin="round" />
-                            <circle cx="25" cy="78" r="6" fill="#4c9436" stroke="#fff" strokeWidth="2.5" />
-                          </svg>
+                        <div className="flex w-32 shrink-0 flex-col items-center gap-2">
+                          <div className="relative h-[7.6rem] w-32 overflow-hidden rounded-2xl ring-1 ring-white/15">
+                            <Image
+                              src="/images/landing-loop-relief.jpg"
+                              alt=""
+                              fill
+                              sizes="128px"
+                              className="object-cover"
+                            />
+                            <svg viewBox="0 0 880 840" preserveAspectRatio="xMidYMid slice" className="absolute inset-0 h-full w-full" aria-hidden="true">
+                              <path d={LOOP_TRAIL} fill="none" stroke="#ffffff" strokeWidth="26" strokeLinejoin="round" strokeLinecap="round" />
+                              <path d={LOOP_TRAIL} fill="none" stroke="#fd7310" strokeWidth="15" strokeLinejoin="round" strokeLinecap="round" />
+                              <circle cx="150" cy="770" r="30" fill="#3a7529" stroke="#ffffff" strokeWidth="12" />
+                              <path d="M595 184 V100" stroke="#0f1a0c" strokeWidth="10" strokeLinecap="round" />
+                              <path d="M595 104 L660 124 L595 144 Z" fill="#fd7310" />
+                            </svg>
+                          </div>
                           <span className="text-xs font-bold text-summit-400">{t.howItWorks.preview.ready}</span>
                         </div>
                       </div>
