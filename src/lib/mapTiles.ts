@@ -47,3 +47,17 @@ export const MAP_TILES: Record<"light" | "dark", Tiles> = MAPBOX_TOKEN
         zoomOffset: 0,
       },
     };
+
+export type Basemap = "satellite" | "plan";
+
+// Free Esri satellite imagery (same terms as the topo basemap), with a
+// transparent layer of place names and borders drawn on top.
+export const SATELLITE_TILES: Tiles = {
+  url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+  attribution: "Esri, Maxar, Earthstar Geographics, and the GIS User Community",
+  maxZoom: 18,
+  tileSize: 256,
+  zoomOffset: 0,
+};
+export const SATELLITE_LABELS_URL =
+  "https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}";

@@ -26,7 +26,13 @@ function positionData(points: Point[]) {
 
 // Live 3D view: the camera follows the walker in a tilted perspective over
 // the relief, and the track grows as new GPS points arrive.
-export default function LiveMap3D({ points }: { points: Point[] }) {
+export default function LiveMap3D({
+  points,
+  basemap = "satellite",
+}: {
+  points: Point[];
+  basemap?: "satellite" | "plan";
+}) {
   const { t } = useT();
   const containerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<MapLibre | null>(null);
@@ -47,7 +53,7 @@ export default function LiveMap3D({ points }: { points: Point[] }) {
         const last = initial[initial.length - 1];
         const map = new maplibregl.Map({
           container: containerRef.current,
-          style: terrainStyle(),
+          style: terrainStyle(basemap),
           center: last ? [last.lon, last.lat] : [2.5, 46.5],
           zoom: last ? 15 : 5,
           pitch: 60,
@@ -105,7 +111,7 @@ export default function LiveMap3D({ points }: { points: Point[] }) {
       if (mapRef.current) mapRef.current.remove();
       mapRef.current = null;
     };
-  }, []);
+  }, [basemap]);
 
   // New GPS point: extend the track and glide the camera to it, keeping the
   // walker's own tilt and rotation.

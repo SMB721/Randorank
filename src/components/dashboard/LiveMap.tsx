@@ -5,7 +5,7 @@ import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Polyline, CircleMarker, useMap } from "react-leaflet";
 import type { LatLngExpression } from "leaflet";
 import { useColorScheme } from "@/hooks/useColorScheme";
-import { MAP_TILES } from "@/lib/mapTiles";
+import { MAP_TILES, SATELLITE_LABELS_URL, SATELLITE_TILES, type Basemap } from "@/lib/mapTiles";
 
 function RecenterOnUpdate({ position }: { position: LatLngExpression | null }) {
   const map = useMap();
@@ -17,9 +17,15 @@ function RecenterOnUpdate({ position }: { position: LatLngExpression | null }) {
   return null;
 }
 
-export default function LiveMap({ points }: { points: { lat: number; lon: number }[] }) {
+export default function LiveMap({
+  points,
+  basemap = "satellite",
+}: {
+  points: { lat: number; lon: number }[];
+  basemap?: Basemap;
+}) {
   const scheme = useColorScheme();
-  const tiles = MAP_TILES[scheme];
+  const tiles = basemap === "satellite" ? SATELLITE_TILES : MAP_TILES[scheme];
   const positions: LatLngExpression[] = points.map((p) => [p.lat, p.lon]);
   const start = positions.length > 0 ? positions[0] : null;
   const current = positions.length > 0 ? positions[positions.length - 1] : null;
@@ -33,13 +39,14 @@ export default function LiveMap({ points }: { points: { lat: number; lon: number
       className="h-full w-full"
     >
       <TileLayer
-        key={scheme}
+        key={`${basemap}-${scheme}`}
         attribution={tiles.attribution}
         url={tiles.url}
         maxZoom={tiles.maxZoom}
         tileSize={tiles.tileSize}
         zoomOffset={tiles.zoomOffset}
       />
+      {basemap === "satellite" && <TileLayer key="labels" url={SATELLITE_LABELS_URL} maxZoom={18} />}
       {positions.length > 1 && (
         <>
           {/* White casing under the orange line keeps the track readable on any terrain. */}

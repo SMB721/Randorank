@@ -10,6 +10,10 @@ const MAPLIBRE_CSS = `https://unpkg.com/maplibre-gl@${MAPLIBRE_VERSION}/dist/map
 // data (Terrarium tiles from Mapzen, hosted on AWS Open Data).
 const ESRI_TOPO =
   "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}";
+const ESRI_IMAGERY =
+  "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
+const ESRI_LABELS =
+  "https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}";
 const TERRARIUM = "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
@@ -41,17 +45,21 @@ export function loadMapLibre(): Promise<MapLibre> {
   return loader;
 }
 
-export function terrainStyle(): MapLibre {
+export function terrainStyle(basemap: "satellite" | "plan" = "satellite"): MapLibre {
+  const satellite = basemap === "satellite";
   return {
     version: 8,
     sources: {
-      topo: {
+      base: {
         type: "raster",
-        tiles: [ESRI_TOPO],
+        tiles: [satellite ? ESRI_IMAGERY : ESRI_TOPO],
         tileSize: 256,
-        maxzoom: 17,
-        attribution: "Esri, HERE, Garmin, Intermap, USGS, METI/NASA, NGA, © OpenStreetMap contributors",
+        maxzoom: satellite ? 18 : 17,
+        attribution: satellite
+          ? "Esri, Maxar, Earthstar Geographics, and the GIS User Community"
+          : "Esri, HERE, Garmin, Intermap, USGS, METI/NASA, NGA, © OpenStreetMap contributors",
       },
+      labels: { type: "raster", tiles: [ESRI_LABELS], tileSize: 256, maxzoom: 18 },
       terrain: {
         type: "raster-dem",
         tiles: [TERRARIUM],
@@ -63,13 +71,17 @@ export function terrainStyle(): MapLibre {
       shade: { type: "raster-dem", tiles: [TERRARIUM], encoding: "terrarium", tileSize: 256, maxzoom: 15 },
     },
     layers: [
-      { id: "topo", type: "raster", source: "topo" },
+      { id: "base", type: "raster", source: "base" },
       {
         id: "hillshade",
         type: "hillshade",
         source: "shade",
-        paint: { "hillshade-exaggeration": 0.3, "hillshade-shadow-color": "#2f3b2a" },
+        paint: {
+          "hillshade-exaggeration": satellite ? 0.15 : 0.3,
+          "hillshade-shadow-color": "#2f3b2a",
+        },
       },
+      ...(satellite ? [{ id: "labels", type: "raster", source: "labels" }] : []),
     ],
     terrain: { source: "terrain", exaggeration: 1.5 },
   };

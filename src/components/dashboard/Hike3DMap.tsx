@@ -8,10 +8,12 @@ import { loadMapLibre, terrainStyle, type MapLibre } from "@/lib/maplibre";
 export default function Hike3DMap({
   coordinates,
   blurred = false,
+  basemap = "satellite",
 }: {
   // GeoJSON order: [lon, lat].
   coordinates: [number, number][];
   blurred?: boolean;
+  basemap?: "satellite" | "plan";
 }) {
   const { t } = useT();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -36,7 +38,7 @@ export default function Hike3DMap({
 
         map = new maplibregl.Map({
           container: containerRef.current,
-          style: terrainStyle(),
+          style: terrainStyle(basemap),
           bounds,
           fitBoundsOptions: { padding: 48 },
           maxPitch: 75,
@@ -100,7 +102,7 @@ export default function Hike3DMap({
       cancelled = true;
       if (map) map.remove();
     };
-  }, [coordinates, blurred]);
+  }, [coordinates, blurred, basemap]);
 
   if (failed) {
     return (
