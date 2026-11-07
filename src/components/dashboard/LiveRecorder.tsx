@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { haversineKm, trackDistanceKm, type TrackPoint } from "@/lib/gpx";
 import { clearDraft, loadDraft, saveDraft, type LiveDraft } from "@/lib/liveDraft";
 import { useWakeLock } from "@/hooks/useWakeLock";
-import { formatDuration } from "@/lib/format";
 import { useT } from "@/lib/i18n/app/client";
+import { sunsetAt } from "@/lib/sun";
 import {
   saveLiveHikeAction,
   type LivePointTuple,
@@ -40,6 +40,62 @@ const MAX_JUMP_KM = 2;
 const GAP_MS = 90_000;
 // How often the running track is copied to the phone's storage.
 const DRAFT_SAVE_EVERY_S = 10;
+// Phone altitude is noisy: a climb only counts once it adds up to this many
+// meters, so GPS jitter on flat ground doesn't inflate the elevation gain.
+const ELEVATION_STEP_M = 3;
+// Live calorie estimate for a reference 70 kg hiker: about 0.8 kcal/kg per
+// km walked plus 0.01 kcal/kg per meter climbed. Shown as an estimate.
+const REFERENCE_WEIGHT_KG = 70;
+
+function elevationGainM(points: TrackPoint[]): number {
+  let gain = 0;
+  let anchor: number | null = null;
+  for (const p of points) {
+    if (p.ele === null) continue;
+    if (anchor === null || p.segmentStart) {
+      anchor = p.ele;
+      continue;
+    }
+    const diff = p.ele - anchor;
+    if (diff >= ELEVATION_STEP_M) {
+      gain += diff;
+      anchor = p.ele;
+    } else if (diff <= -ELEVATION_STEP_M) {
+      anchor = p.ele;
+    }
+  }
+  return Math.round(gain);
+}
+
+function formatClock(totalSeconds: number): string {
+  const h = Math.floor(totalSeconds / 3600);
+  const m = Math.floor((totalSeconds % 3600) / 60);
+  const s = totalSeconds % 60;
+  const mm = String(m).padStart(2, "0");
+  const ss = String(s).padStart(2, "0");
+  return h > 0 ? `${h}:${mm}:${ss}` : `${mm}:${ss}`;
+}
+
+function InfoIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true" className="mt-0.5 shrink-0">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 11v5M12 7.5v.01" />
+    </svg>
+  );
+}
+
+function LiveStat({ label, value, unit }: { label: string; value: string; unit?: string }) {
+  return (
+    <div>
+      <p className="text-sm font-medium text-trail-500">{label}</p>
+      <p className="mt-0.5 text-[2rem] font-extrabold leading-tight tracking-tight text-trail-950 tabular-nums">
+        {value}
+        {unit && <span className="ml-0.5 text-base font-bold text-trail-700">{unit}</span>}
+      </p>
+    </div>
+  );
+}
 
 type Status = "idle" | "requesting" | "recording" | "finishing" | "error";
 
@@ -331,15 +387,34 @@ export default function LiveRecorder() {
   }
 
   const isRecording = status === "recording" || status === "finishing";
+  const gainM = useMemo(() => elevationGainM(points), [points]);
+  const hasElevation = useMemo(() => points.some((p) => p.ele !== null), [points]);
+  const speedKmh = elapsedSeconds > 60 ? distanceKm / (elapsedSeconds / 3600) : 0;
+  const caloriesKcal = Math.round(REFERENCE_WEIGHT_KG * (0.8 * distanceKm + 0.01 * gainM));
+  const lastPoint = points.length > 0 ? points[points.length - 1] : null;
+  const altitudeM = lastPoint && lastPoint.ele !== null ? Math.round(lastPoint.ele) : null;
+  // Recomputed only when the position moves enough to matter (~1 km).
+  const sunLat = lastPoint ? Math.round(lastPoint.lat * 100) / 100 : null;
+  const sunLon = lastPoint ? Math.round(lastPoint.lon * 100) / 100 : null;
+  const sunsetLabel = useMemo(() => {
+    if (sunLat === null || sunLon === null) return null;
+    const sunset = sunsetAt(sunLat, sunLon);
+    return sunset
+      ? sunset.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" })
+      : null;
+  }, [sunLat, sunLon, locale]);
 
   return (
     <div className="space-y-4">
-      <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-        {t("live.keepOpen")}
-      </div>
+      {!isRecording && (
+        <div className="flex gap-3 rounded-2xl border border-trail-200 bg-white px-4 py-3 text-sm text-trail-700">
+          <span className="text-summit-600"><InfoIcon /></span>
+          <p>{t("live.keepOpen")}</p>
+        </div>
+      )}
 
       {status === "idle" && draft && (
-        <div className="space-y-3 rounded-xl border border-summit-200 bg-summit-50 p-4">
+        <div className="space-y-3 rounded-2xl border border-summit-200 bg-summit-50 p-4">
           <p className="font-display text-xl tracking-wide text-trail-900">
             {t("live.draft.title")}
           </p>
@@ -379,81 +454,121 @@ export default function LiveRecorder() {
         <button
           type="button"
           onClick={handleStart}
-          className="w-full rounded-xl bg-summit-500 py-3 text-sm font-semibold text-white shadow-lg shadow-summit-500/30 transition hover:bg-summit-600"
+          className="flex w-full items-center justify-center gap-3 rounded-2xl bg-summit-500 py-4 text-base font-bold text-white shadow-lg shadow-summit-500/30 transition hover:bg-summit-600"
         >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M7 4.5v15l13-7.5z" />
+          </svg>
           {t("live.start")}
         </button>
       )}
 
       {status === "requesting" && (
-        <p className="rounded-xl border border-trail-200 bg-white p-4 text-center text-sm text-trail-600">
+        <p className="rounded-2xl border border-trail-200 bg-white p-4 text-center text-sm text-trail-600">
           {t("live.activating")}
         </p>
       )}
 
       {isRecording && (
-        <>
-          <div className="grid grid-cols-3 gap-3">
-            <div className="rounded-xl border border-trail-200 bg-white p-4 text-center">
-              <p className="font-display text-2xl tracking-wide text-trail-900">
-                {formatDuration(elapsedSeconds)}
-              </p>
-              <p className="mt-1 text-xs uppercase tracking-widest text-trail-500">{t("live.duration")}</p>
-            </div>
-            <div className="rounded-xl border border-trail-200 bg-white p-4 text-center">
-              <p className="font-display text-2xl tracking-wide text-trail-900">
-                {distanceKm.toFixed(2)} km
-              </p>
-              <p className="mt-1 text-xs uppercase tracking-widest text-trail-500">{t("live.distance")}</p>
-            </div>
-            <div className="rounded-xl border border-trail-200 bg-white p-4 text-center">
-              <p className="font-display text-2xl tracking-wide text-trail-900">
-                {points.length}
-              </p>
-              <p className="mt-1 text-xs uppercase tracking-widest text-trail-500">
-                {t("live.points")}
-              </p>
-            </div>
-          </div>
-
-          {gpsWarning && (
-            <p className="rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-800">
-              {gpsWarning}
-            </p>
-          )}
-          {gapNotice && (
-            <p className="rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-800">
-              {gapNotice}
-            </p>
-          )}
-          {!wakeLock.supported && (
-            <p className="text-xs text-trail-500">
-              {t("live.noWakeLock")}
-            </p>
-          )}
-
-          <div className="h-72 overflow-hidden rounded-2xl border border-trail-200">
+        <div className="-mx-6 sm:mx-0">
+          <div className="relative h-[46vh] min-h-72 overflow-hidden sm:rounded-3xl">
             <LiveMap points={points} />
           </div>
 
-          <button
-            type="button"
-            onClick={handleStop}
-            disabled={status === "finishing"}
-            className="w-full rounded-xl bg-trail-900 py-3 text-sm font-semibold text-white transition hover:bg-trail-800 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {status === "finishing" ? t("live.saving") : t("live.finish")}
-          </button>
-        </>
+          <div className="relative z-[500] -mt-7 rounded-t-[28px] bg-white px-6 pb-6 pt-3 shadow-[0_-10px_30px_rgba(15,26,12,0.10)] sm:mt-4 sm:rounded-[28px] sm:border sm:border-trail-100">
+            <div aria-hidden="true" className="mx-auto h-1.5 w-10 rounded-full bg-trail-200" />
+
+            <div
+              className={`mt-4 flex items-center gap-3 rounded-2xl px-4 py-3 ${
+                gpsWarning ? "bg-amber-50" : "bg-trail-50"
+              }`}
+            >
+              <span className="relative flex h-3 w-3 shrink-0">
+                <span
+                  className={`absolute inline-flex h-full w-full animate-ping rounded-full opacity-60 ${
+                    gpsWarning ? "bg-amber-500" : "bg-trail-500"
+                  }`}
+                />
+                <span
+                  className={`relative inline-flex h-3 w-3 rounded-full ${
+                    gpsWarning ? "bg-amber-500" : "bg-trail-600"
+                  }`}
+                />
+              </span>
+              <div className="min-w-0">
+                <p className="text-sm font-bold text-trail-950">{t("live.recordingNow")}</p>
+                <p className={`text-sm ${gpsWarning ? "text-amber-800" : "text-trail-600"}`}>
+                  {gpsWarning ? t("live.weakSignal") : t("live.gpsOk")}
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-5 grid grid-cols-2 gap-x-6 gap-y-5">
+              <LiveStat label={t("live.duration")} value={formatClock(elapsedSeconds)} />
+              <LiveStat label={t("live.distance")} value={distanceKm.toFixed(2)} unit="km" />
+              <LiveStat
+                label={t("live.elevation")}
+                value={hasElevation ? String(gainM) : "—"}
+                unit={hasElevation ? "m" : undefined}
+              />
+              <LiveStat
+                label={t("live.altitude")}
+                value={altitudeM !== null ? String(altitudeM) : "—"}
+                unit={altitudeM !== null ? "m" : undefined}
+              />
+              <LiveStat
+                label={t("live.speed")}
+                value={speedKmh > 0 ? speedKmh.toFixed(1) : "—"}
+                unit={speedKmh > 0 ? "km/h" : undefined}
+              />
+              <LiveStat
+                label={t("live.calories")}
+                value={distanceKm > 0 ? String(caloriesKcal) : "—"}
+                unit={distanceKm > 0 ? "kcal" : undefined}
+              />
+            </div>
+
+            {sunsetLabel && (
+              <p className="mt-5 flex items-center gap-2.5 text-sm text-trail-600">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="shrink-0 text-summit-500">
+                  <path d="M7 16a5 5 0 0 1 10 0M3 16h18M12 4v4M4.9 8.9l1.4 1.4M19.1 8.9l-1.4 1.4M9.5 20l2.5-2 2.5 2" />
+                </svg>
+                {t("live.sunset", { time: sunsetLabel })}
+              </p>
+            )}
+
+            {gapNotice && (
+              <p className="mt-4 flex gap-2 rounded-xl bg-amber-50 px-3 py-2 text-sm text-amber-800">
+                <InfoIcon />
+                {gapNotice}
+              </p>
+            )}
+
+            <button
+              type="button"
+              onClick={handleStop}
+              disabled={status === "finishing"}
+              className="mt-6 flex w-full items-center justify-center gap-3 rounded-full bg-trail-950 py-4 text-base font-bold text-white transition hover:bg-trail-800 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              <span aria-hidden="true" className="h-3.5 w-3.5 rounded-[3px] bg-summit-500" />
+              {status === "finishing" ? t("live.saving") : t("live.finish")}
+            </button>
+
+            <p className="mt-3 flex justify-center gap-1.5 text-center text-xs text-trail-500">
+              <InfoIcon />
+              {wakeLock.supported ? t("live.keepOpenShort") : t("live.noWakeLock")}
+            </p>
+          </div>
+        </div>
       )}
 
       {status === "error" && (
         <div className="space-y-3">
-          <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>
+          <p className="rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>
           <button
             type="button"
             onClick={handleRetry}
-            className="w-full rounded-xl border-2 border-trail-900 py-3 text-sm font-semibold text-trail-900 transition hover:bg-trail-900 hover:text-white"
+            className="w-full rounded-2xl border-2 border-trail-900 py-3 text-sm font-semibold text-trail-900 transition hover:bg-trail-900 hover:text-white"
           >
             {t("live.retry")}
           </button>
