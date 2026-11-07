@@ -7,6 +7,7 @@ import { haversineKm, trackDistanceKm, type TrackPoint } from "@/lib/gpx";
 import { clearDraft, loadDraft, saveDraft, type LiveDraft } from "@/lib/liveDraft";
 import { useWakeLock } from "@/hooks/useWakeLock";
 import { useT } from "@/lib/i18n/app/client";
+import { sunsetAt } from "@/lib/sun";
 import {
   saveLiveHikeAction,
   type LivePointTuple,
@@ -86,11 +87,11 @@ function InfoIcon() {
 
 function LiveStat({ label, value, unit }: { label: string; value: string; unit?: string }) {
   return (
-    <div className="px-1 py-3">
-      <p className="text-[0.7rem] font-semibold uppercase tracking-widest text-trail-500">{label}</p>
-      <p className="mt-1 font-display text-3xl leading-none tracking-wide text-trail-950 tabular-nums">
+    <div>
+      <p className="text-sm font-medium text-trail-500">{label}</p>
+      <p className="mt-0.5 text-[2rem] font-extrabold leading-tight tracking-tight text-trail-950 tabular-nums">
         {value}
-        {unit && <span className="ml-1 text-lg text-trail-500">{unit}</span>}
+        {unit && <span className="ml-0.5 text-base font-bold text-trail-700">{unit}</span>}
       </p>
     </div>
   );
@@ -390,6 +391,18 @@ export default function LiveRecorder() {
   const hasElevation = useMemo(() => points.some((p) => p.ele !== null), [points]);
   const speedKmh = elapsedSeconds > 60 ? distanceKm / (elapsedSeconds / 3600) : 0;
   const caloriesKcal = Math.round(REFERENCE_WEIGHT_KG * (0.8 * distanceKm + 0.01 * gainM));
+  const lastPoint = points.length > 0 ? points[points.length - 1] : null;
+  const altitudeM = lastPoint && lastPoint.ele !== null ? Math.round(lastPoint.ele) : null;
+  // Recomputed only when the position moves enough to matter (~1 km).
+  const sunLat = lastPoint ? Math.round(lastPoint.lat * 100) / 100 : null;
+  const sunLon = lastPoint ? Math.round(lastPoint.lon * 100) / 100 : null;
+  const sunsetLabel = useMemo(() => {
+    if (sunLat === null || sunLon === null) return null;
+    const sunset = sunsetAt(sunLat, sunLon);
+    return sunset
+      ? sunset.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" })
+      : null;
+  }, [sunLat, sunLon, locale]);
 
   return (
     <div className="space-y-4">
@@ -458,40 +471,71 @@ export default function LiveRecorder() {
 
       {isRecording && (
         <div className="-mx-6 sm:mx-0">
-          <div className="relative h-[48vh] min-h-72 overflow-hidden sm:rounded-3xl">
+          <div className="relative h-[46vh] min-h-72 overflow-hidden sm:rounded-3xl">
             <LiveMap points={points} />
-            <div className="pointer-events-none absolute left-3 top-3 z-[500] flex flex-wrap gap-2">
-              <span className="flex items-center gap-2 rounded-full bg-trail-950/85 px-3 py-1.5 text-xs font-bold uppercase tracking-widest text-white backdrop-blur">
-                <span className="relative flex h-2.5 w-2.5">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-75" />
-                  <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-red-500" />
-                </span>
-                {t("live.recordingBadge")}
-              </span>
-              {gpsWarning && (
-                <span className="rounded-full bg-amber-400/95 px-3 py-1.5 text-xs font-bold text-trail-950">
-                  {t("live.weakGps")}
-                </span>
-              )}
-            </div>
           </div>
 
-          <div className="relative z-[500] -mt-6 rounded-t-3xl bg-white px-6 pb-6 pt-5 shadow-[0_-8px_30px_rgba(15,26,12,0.12)] sm:mt-4 sm:rounded-3xl sm:border sm:border-trail-200">
-            <div className="text-center">
-              <p className="text-[0.7rem] font-semibold uppercase tracking-widest text-trail-500">{t("live.duration")}</p>
-              <p className="mt-1 font-display text-6xl leading-none tracking-wide text-trail-950 tabular-nums">
-                {formatClock(elapsedSeconds)}
-              </p>
+          <div className="relative z-[500] -mt-7 rounded-t-[28px] bg-white px-6 pb-6 pt-3 shadow-[0_-10px_30px_rgba(15,26,12,0.10)] sm:mt-4 sm:rounded-[28px] sm:border sm:border-trail-100">
+            <div aria-hidden="true" className="mx-auto h-1.5 w-10 rounded-full bg-trail-200" />
+
+            <div
+              className={`mt-4 flex items-center gap-3 rounded-2xl px-4 py-3 ${
+                gpsWarning ? "bg-amber-50" : "bg-trail-50"
+              }`}
+            >
+              <span className="relative flex h-3 w-3 shrink-0">
+                <span
+                  className={`absolute inline-flex h-full w-full animate-ping rounded-full opacity-60 ${
+                    gpsWarning ? "bg-amber-500" : "bg-trail-500"
+                  }`}
+                />
+                <span
+                  className={`relative inline-flex h-3 w-3 rounded-full ${
+                    gpsWarning ? "bg-amber-500" : "bg-trail-600"
+                  }`}
+                />
+              </span>
+              <div className="min-w-0">
+                <p className="text-sm font-bold text-trail-950">{t("live.recordingNow")}</p>
+                <p className={`text-sm ${gpsWarning ? "text-amber-800" : "text-trail-600"}`}>
+                  {gpsWarning ? t("live.weakSignal") : t("live.gpsOk")}
+                </p>
+              </div>
             </div>
 
-            <div className="mt-4 grid grid-cols-2 divide-x divide-trail-100 border-y border-trail-100 text-center">
+            <div className="mt-5 grid grid-cols-2 gap-x-6 gap-y-5">
+              <LiveStat label={t("live.duration")} value={formatClock(elapsedSeconds)} />
               <LiveStat label={t("live.distance")} value={distanceKm.toFixed(2)} unit="km" />
-              <LiveStat label={t("live.elevation")} value={hasElevation ? String(gainM) : "—"} unit={hasElevation ? "m" : undefined} />
+              <LiveStat
+                label={t("live.elevation")}
+                value={hasElevation ? String(gainM) : "—"}
+                unit={hasElevation ? "m" : undefined}
+              />
+              <LiveStat
+                label={t("live.altitude")}
+                value={altitudeM !== null ? String(altitudeM) : "—"}
+                unit={altitudeM !== null ? "m" : undefined}
+              />
+              <LiveStat
+                label={t("live.speed")}
+                value={speedKmh > 0 ? speedKmh.toFixed(1) : "—"}
+                unit={speedKmh > 0 ? "km/h" : undefined}
+              />
+              <LiveStat
+                label={t("live.calories")}
+                value={distanceKm > 0 ? String(caloriesKcal) : "—"}
+                unit={distanceKm > 0 ? "kcal" : undefined}
+              />
             </div>
-            <div className="grid grid-cols-2 divide-x divide-trail-100 border-b border-trail-100 text-center">
-              <LiveStat label={t("live.speed")} value={speedKmh > 0 ? speedKmh.toFixed(1) : "—"} unit={speedKmh > 0 ? "km/h" : undefined} />
-              <LiveStat label={t("live.calories")} value={distanceKm > 0 ? `≈ ${caloriesKcal}` : "—"} unit={distanceKm > 0 ? "kcal" : undefined} />
-            </div>
+
+            {sunsetLabel && (
+              <p className="mt-5 flex items-center gap-2.5 text-sm text-trail-600">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="shrink-0 text-summit-500">
+                  <path d="M7 16a5 5 0 0 1 10 0M3 16h18M12 4v4M4.9 8.9l1.4 1.4M19.1 8.9l-1.4 1.4M9.5 20l2.5-2 2.5 2" />
+                </svg>
+                {t("live.sunset", { time: sunsetLabel })}
+              </p>
+            )}
 
             {gapNotice && (
               <p className="mt-4 flex gap-2 rounded-xl bg-amber-50 px-3 py-2 text-sm text-amber-800">
@@ -504,9 +548,9 @@ export default function LiveRecorder() {
               type="button"
               onClick={handleStop}
               disabled={status === "finishing"}
-              className="mt-5 flex w-full items-center justify-center gap-3 rounded-2xl bg-trail-950 py-4 text-base font-bold text-white transition hover:bg-trail-800 disabled:cursor-not-allowed disabled:opacity-60"
+              className="mt-6 flex w-full items-center justify-center gap-3 rounded-full bg-trail-950 py-4 text-base font-bold text-white transition hover:bg-trail-800 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              <span aria-hidden="true" className="h-3.5 w-3.5 rounded-sm bg-summit-500" />
+              <span aria-hidden="true" className="h-3.5 w-3.5 rounded-[3px] bg-summit-500" />
               {status === "finishing" ? t("live.saving") : t("live.finish")}
             </button>
 

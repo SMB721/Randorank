@@ -36,8 +36,8 @@ export default function LiveMap({ points }: { points: { lat: number; lon: number
       {positions.length > 1 && (
         <>
           {/* White casing under the orange line keeps the track readable on any terrain. */}
-          <Polyline positions={positions} pathOptions={{ color: "#ffffff", weight: 9, opacity: 0.9 }} />
-          <Polyline positions={positions} pathOptions={{ color: "#fd7310", weight: 5, opacity: 1 }} />
+          <Polyline positions={positions} pathOptions={{ color: "#ffffff", weight: 11, opacity: 0.95 }} />
+          <Polyline positions={positions} pathOptions={{ color: "#fd7310", weight: 6, opacity: 1 }} />
         </>
       )}
       {start && positions.length > 1 && (
