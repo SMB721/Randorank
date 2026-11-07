@@ -5,12 +5,8 @@ import { MapContainer, TileLayer, Polyline, CircleMarker } from "react-leaflet";
 import type { LatLngBoundsLiteral, LatLngExpression } from "leaflet";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { blurEndpoints } from "@/lib/geoPrivacy";
+import { MAP_TILES } from "@/lib/mapTiles";
 
-const TILE_URLS = {
-  light:
-    "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}",
-  dark: "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
-};
 
 export default function HikeMap({
   coordinates,
@@ -52,9 +48,9 @@ export default function HikeMap({
     >
       <TileLayer
         key={scheme}
-        attribution="Esri, HERE, Garmin, &copy; OpenStreetMap contributors, and the GIS User Community"
-        url={TILE_URLS[scheme]}
-        maxZoom={16}
+        attribution={MAP_TILES[scheme].attribution}
+        url={MAP_TILES[scheme].url}
+        maxZoom={MAP_TILES[scheme].maxZoom}
       />
       {others.map((other, i) => (
         <Polyline
