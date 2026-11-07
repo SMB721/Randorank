@@ -5,6 +5,7 @@ import HikeMapLoader from "@/components/dashboard/HikeMapLoader";
 import AnimatedNumber from "@/components/ui/AnimatedNumber";
 import PhotoUploadForm from "@/components/dashboard/PhotoUploadForm";
 import PhotoGallery, { type GalleryPhoto } from "@/components/dashboard/PhotoGallery";
+import DeleteHikeButton from "@/components/dashboard/DeleteHikeButton";
 import { formatDate, formatDuration } from "@/lib/format";
 import { formatValidationNotes } from "@/lib/gpx";
 import { hasAdvancedStats, photosPerHikeLimit } from "@/lib/gating";
@@ -169,6 +170,10 @@ export default async function HikeDetailPage({
               <PhotoUploadForm hikeId={hike.id} />
             </div>
           )}
+        </div>
+
+        <div className="mt-10 border-t border-trail-200 pt-6">
+          <DeleteHikeButton hikeId={hike.id} />
         </div>
       </div>
     </main>
