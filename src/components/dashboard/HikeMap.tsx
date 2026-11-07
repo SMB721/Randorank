@@ -51,6 +51,8 @@ export default function HikeMap({
         attribution={MAP_TILES[scheme].attribution}
         url={MAP_TILES[scheme].url}
         maxZoom={MAP_TILES[scheme].maxZoom}
+        tileSize={MAP_TILES[scheme].tileSize}
+        zoomOffset={MAP_TILES[scheme].zoomOffset}
       />
       {others.map((other, i) => (
         <Polyline

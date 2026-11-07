@@ -32,7 +32,14 @@ export default function LiveMap({ points }: { points: { lat: number; lon: number
       zoomControl={false}
       className="h-full w-full"
     >
-      <TileLayer key={scheme} attribution={tiles.attribution} url={tiles.url} maxZoom={tiles.maxZoom} />
+      <TileLayer
+        key={scheme}
+        attribution={tiles.attribution}
+        url={tiles.url}
+        maxZoom={tiles.maxZoom}
+        tileSize={tiles.tileSize}
+        zoomOffset={tiles.zoomOffset}
+      />
       {positions.length > 1 && (
         <>
           {/* White casing under the orange line keeps the track readable on any terrain. */}

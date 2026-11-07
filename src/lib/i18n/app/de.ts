@@ -122,7 +122,7 @@ export const de: Dict = {
   "live.weakSignal": "Schwaches GPS-Signal — einige Punkte werden ignoriert.",
   "live.denied": "Standortzugriff verweigert. Erlauben Sie die Standortbestimmung in den Einstellungen Ihres Browsers, um Ihre Tour aufzuzeichnen.",
   "live.tooFewPoints": "Zu wenige GPS-Punkte aufgezeichnet, um eine Tour zu erstellen — versuchen Sie es mit besserem Empfang erneut.",
-  "live.keepOpen": "Lassen Sie diesen Tab geöffnet und den Bildschirm an. Sperrt sich das Telefon oder wechseln Sie die App, wird die Aufzeichnung unterbrochen: Die Lücke gilt als Pause und zählt nicht zur Distanz. Zeichnen Sie lange Bergtouren besser mit einer Uhr oder einer anderen App (Strava, Komoot …) auf und importieren Sie die GPX-Datei.",
+  "live.keepOpen": "Lassen Sie RandoRank während der Tour auf dem Bildschirm geöffnet. Sperrt sich das Telefon, zählt der fehlende Abschnitt als Pause. Sie wandern mit einer GPS-Uhr? Importieren Sie danach einfach ihre GPX-Datei.",
   "live.start": "Meine Tour starten",
   "live.activating": "GPS wird aktiviert...",
   "live.duration": "Dauer",

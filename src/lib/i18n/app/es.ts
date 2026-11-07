@@ -122,7 +122,7 @@ export const es: Dict = {
   "live.weakSignal": "Señal GPS débil — se ignoran algunos puntos.",
   "live.denied": "Acceso a la ubicación denegado. Autorice la geolocalización en los ajustes de su navegador para registrar su ruta.",
   "live.tooFewPoints": "No hay suficientes puntos GPS registrados para crear una ruta — inténtelo de nuevo con mejor señal.",
-  "live.keepOpen": "Mantenga esta pestaña abierta y la pantalla encendida durante la ruta. Si el teléfono se bloquea o cambia de aplicación, la grabación se interrumpe: el hueco se marca como una pausa y no cuenta en la distancia. Para una ruta larga de montaña, grabe mejor con un reloj u otra app (Strava, Komoot…) e importe el archivo GPX.",
+  "live.keepOpen": "Durante la ruta, mantenga RandoRank abierto en la pantalla. Si el teléfono se bloquea, el tramo que falta se cuenta como una pausa. ¿Camina con un reloj GPS? Importe su archivo GPX al terminar.",
   "live.start": "Empezar mi ruta",
   "live.activating": "Activando el GPS...",
   "live.duration": "Duración",
