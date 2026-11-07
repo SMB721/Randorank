@@ -122,7 +122,7 @@ export const fr = {
   "live.weakSignal": "Signal GPS faible — certains points sont ignorés.",
   "live.denied": "Accès à la position refusé. Autorisez la géolocalisation dans les réglages de votre navigateur pour enregistrer votre rando.",
   "live.tooFewPoints": "Pas assez de points GPS enregistrés pour créer une rando — réessayez avec un meilleur signal.",
-  "live.keepOpen": "Gardez cet onglet ouvert et l'écran allumé pendant la rando. Si le téléphone se verrouille ou si vous changez d'application, l'enregistrement s'interrompt : le trou est marqué comme une pause et ne compte pas dans la distance. Pour une longue rando en montagne, enregistrez plutôt avec une montre ou une autre app (Strava, Komoot…) et importez le fichier GPX.",
+  "live.keepOpen": "Pendant la rando, gardez RandoRank ouvert à l'écran. Si le téléphone se verrouille, la portion manquante est comptée comme une pause. Vous randonnez avec une montre GPS ? Importez simplement son fichier GPX après la sortie.",
   "live.start": "Démarrer ma rando",
   "live.activating": "Activation du GPS...",
   "live.duration": "Durée",

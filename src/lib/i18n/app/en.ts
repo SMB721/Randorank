@@ -121,7 +121,7 @@ export const en: Dict = {
   "live.weakSignal": "Weak GPS signal — some points are being ignored.",
   "live.denied": "Location access denied. Allow geolocation in your browser settings to record your hike.",
   "live.tooFewPoints": "Not enough GPS points recorded to create a hike — try again with a better signal.",
-  "live.keepOpen": "Keep this tab open and your screen on during the hike. If the phone locks or you switch apps, recording stops: the gap is marked as a pause and does not count towards the distance. For a long mountain hike, record with a watch or another app (Strava, Komoot…) and import the GPX file instead.",
+  "live.keepOpen": "Keep RandoRank open on screen during your hike. If the phone locks, the missing stretch is counted as a pause. Hiking with a GPS watch? Just import its GPX file afterwards.",
   "live.start": "Start my hike",
   "live.activating": "Activating GPS...",
   "live.duration": "Time",
