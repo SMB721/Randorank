@@ -87,7 +87,24 @@ export interface LandingDict {
     elevationLabel: string;
     chartLabel: string;
   };
-  howItWorks: { eyebrow: string; title: string; steps: { title: string; text: string }[] };
+  howItWorks: {
+    eyebrow: string;
+    title: string;
+    subtitle: string;
+    steps: { tag: string; title: string; text: string }[];
+    preview: {
+      distance: string; // label above the km value in the route preview
+      level: string; // "Amateur" chip
+      ready: string; // "loop ready" line under the mini map
+      recording: string; // live badge
+      elevation: string; // "D+" label
+      ranking: string; // ranking card title
+      you: string; // the visitor's own row
+      places: string; // "{n}" is replaced, e.g. "+47 places"
+    };
+    cta: string;
+    ctaNote: string;
+  };
   badges: { eyebrow: string; title: string; text: string; locked: string };
   challenge: {
     eyebrow: string;
