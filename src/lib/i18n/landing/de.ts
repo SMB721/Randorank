@@ -29,7 +29,7 @@ export const de: LandingDict = {
     subtitle:
       "Zeichnen Sie Ihre Wanderungen auf, schalten Sie neue Badges frei, klettern Sie in der Rangliste und teilen Sie Ihre schönsten Touren.",
     cta: "Den Aufstieg beginnen",
-    ctaNote: "Kostenlose Anmeldung, ohne Kreditkarte · E-Mail, Google oder Facebook",
+    ctaNote: "Kostenlose Anmeldung · E-Mail, Google oder Facebook",
     imageAlt: "Wanderer auf einem Grat vor Bergkulisse",
     liveBadge: "{km} km von der Community gewandert",
     stickyCta: "Starten Sie Ihre nächste Wanderung",
@@ -145,7 +145,7 @@ export const de: LandingDict = {
       {
         question: "Kostet RandoRank etwas?",
         answer:
-          "Nicht zum Einstieg: Wanderungs-Tracking, Ranglisten, Abzeichen und eine Challenge sind gratis: einfach ein Konto anlegen, ohne Kreditkarte. Premium ({monthly} pro Monat oder {yearly} pro Jahr, {days} Tage kostenlos testen mit Kreditkarte, jederzeit kündbar) schaltet unbegrenzt Routen, alle Challenges, unbegrenzt Fotos und die Teilen-Karte ohne Wasserzeichen frei.",
+          "Nicht zum Einstieg: Wanderungs-Tracking, Ranglisten, Abzeichen und eine Challenge sind gratis: einfach ein Konto anlegen. Premium ({monthly} pro Monat oder {yearly} pro Jahr, {days} Tage kostenlos testen mit Kreditkarte, jederzeit kündbar) schaltet unbegrenzt Routen, alle Challenges, unbegrenzt Fotos und die Teilen-Karte ohne Wasserzeichen frei.",
       },
       {
         question: "Wie funktioniert die Routenerstellung?",

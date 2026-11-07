@@ -399,7 +399,7 @@ export const it: Dict = {
   "start.meta": "Inizia — RandoRank",
   "start.eyebrow": "Zero registrazione",
   "start.title": "Allacci gli scarponi. Il resto può aspettare.",
-  "start.subtitle": "Scelga un nickname e via: niente email, niente password, niente carta di credito.",
+  "start.subtitle": "Scelga un nickname e via: niente email, niente password.",
   "start.pseudo.label": "Il suo nickname",
   "start.pseudo.hint": "Facoltativo. Lasci vuoto e ne troveremo uno noi.",
   "start.submit": "Si parte",

@@ -398,7 +398,7 @@ export const fr = {
   "start.meta": "Commencer — RandoRank",
   "start.eyebrow": "Zéro inscription",
   "start.title": "Lacez vos chaussures. Le reste attendra.",
-  "start.subtitle": "Choisissez un pseudo et c'est parti : ni email, ni mot de passe, ni carte bancaire.",
+  "start.subtitle": "Choisissez un pseudo et c'est parti : ni email, ni mot de passe.",
   "start.pseudo.label": "Votre pseudo",
   "start.pseudo.hint": "Facultatif. Laissez vide et on vous en trouve un.",
   "start.submit": "C'est parti",

@@ -399,7 +399,7 @@ export const es: Dict = {
   "start.meta": "Empezar — RandoRank",
   "start.eyebrow": "Sin registro",
   "start.title": "Átese las botas. Lo demás puede esperar.",
-  "start.subtitle": "Elija un apodo y listo: sin correo, sin contraseña, sin tarjeta.",
+  "start.subtitle": "Elija un apodo y listo: sin correo, sin contraseña.",
   "start.pseudo.label": "Su apodo",
   "start.pseudo.hint": "Opcional. Déjelo vacío y le buscamos uno.",
   "start.submit": "¡Vamos!",
