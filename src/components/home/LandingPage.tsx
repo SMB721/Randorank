@@ -124,9 +124,10 @@ export default async function LandingPage({ locale }: { locale: Locale }) {
           </div>
         </section>
 
-        {/* Comment ça marche */}
-        <section id="comment" className="bg-trail-50 px-6 py-20">
-          <div className="mx-auto max-w-5xl">
+        {/* Comment ça marche — each step shows a glimpse of the real product
+            (AI loop, live recording, ranking jump) instead of a bare number. */}
+        <section id="comment" className="bg-trail-50 px-6 py-20 sm:py-24">
+          <div className="mx-auto max-w-6xl">
             <div className="mx-auto max-w-2xl text-center">
               <span className="text-xs font-semibold uppercase tracking-[0.2em] text-summit-600">
                 {t.howItWorks.eyebrow}
@@ -134,20 +135,87 @@ export default async function LandingPage({ locale }: { locale: Locale }) {
               <h2 className="mt-3 font-display text-4xl tracking-wide text-trail-900 sm:text-5xl">
                 {t.howItWorks.title}
               </h2>
+              <p className="mt-3 text-trail-600">{t.howItWorks.subtitle}</p>
             </div>
-            <ol className="mt-12 grid gap-4 md:grid-cols-3">
+
+            <ol className="relative mt-14 grid gap-6 md:grid-cols-3">
               {t.howItWorks.steps.map((step, i) => (
-                <li key={step.title} className="rounded-2xl border border-trail-200 bg-white p-6">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-summit-500 font-display text-xl text-white">
-                    {i + 1}
-                  </span>
-                  <h3 className="mt-4 font-display text-2xl tracking-wide text-trail-900">
-                    {step.title}
-                  </h3>
-                  <p className="mt-2 text-sm text-trail-600">{step.text}</p>
+                <li key={step.title} className="relative flex flex-col overflow-hidden rounded-3xl border border-trail-200 bg-white shadow-sm">
+                  <div className="relative h-44 bg-trail-950 p-5 text-white">
+                    {i === 0 && (
+                      <div className="flex h-full items-center gap-4">
+                        <div className="flex-1 space-y-3">
+                          <p className="text-[0.7rem] font-semibold uppercase tracking-widest text-white/50">{t.howItWorks.preview.distance}</p>
+                          <p className="font-display text-5xl leading-none">12 km</p>
+                          <div className="h-1.5 rounded-full bg-white/15">
+                            <div className="h-1.5 w-1/2 rounded-full bg-summit-500" />
+                          </div>
+                          <span className="inline-block rounded-full bg-white/10 px-3 py-1 text-xs font-bold">{t.howItWorks.preview.level}</span>
+                        </div>
+                        <div className="flex w-28 flex-col items-center gap-2">
+                          <svg viewBox="0 0 100 100" className="h-24 w-24" aria-hidden="true">
+                            <rect width="100" height="100" rx="14" fill="#1c2a1a" />
+                            <path d="M25 78 C 10 60, 18 35, 40 25 C 62 15, 85 28, 82 50 C 79 72, 58 70, 46 80 C 38 86, 30 84, 25 78 Z" fill="none" stroke="#fd7310" strokeWidth="5" strokeLinejoin="round" />
+                            <circle cx="25" cy="78" r="6" fill="#4c9436" stroke="#fff" strokeWidth="2.5" />
+                          </svg>
+                          <span className="text-xs font-bold text-summit-400">{t.howItWorks.preview.ready}</span>
+                        </div>
+                      </div>
+                    )}
+                    {i === 1 && (
+                      <div className="flex h-full flex-col justify-between">
+                        <span className="flex w-fit items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-bold uppercase tracking-widest">
+                          <span className="h-2 w-2 animate-pulse rounded-full bg-red-500" />
+                          {t.howItWorks.preview.recording}
+                        </span>
+                        <p className="font-display text-6xl leading-none tabular-nums">1:42:08</p>
+                        <div className="flex gap-6 text-sm font-bold">
+                          <span>8,4 <span className="text-white/50">km</span></span>
+                          <span>412 <span className="text-white/50">m {t.howItWorks.preview.elevation}</span></span>
+                        </div>
+                      </div>
+                    )}
+                    {i === 2 && (
+                      <div className="flex h-full flex-col justify-center gap-2">
+                        <p className="text-[0.7rem] font-semibold uppercase tracking-widest text-white/50">{t.howItWorks.preview.ranking}</p>
+                        <div className="flex items-center gap-3 rounded-xl bg-white/10 px-3 py-2 text-sm opacity-60">
+                          <span className="w-10 font-display text-lg">#264</span>
+                          <span className="flex-1 font-semibold">Camille R.</span>
+                        </div>
+                        <div className="flex items-center gap-3 rounded-xl bg-summit-500 px-3 py-2.5 text-sm text-trail-950">
+                          <span className="w-10 font-display text-xl">#265</span>
+                          <span className="flex-1 font-extrabold">{t.howItWorks.preview.you}</span>
+                          <span className="flex items-center gap-1 font-extrabold">
+                            <svg width="12" height="12" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2 L14 12 H2 Z" fill="currentColor" /></svg>
+                            {t.howItWorks.preview.places.replace("{n}", "47")}
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex flex-1 flex-col p-6">
+                    <div className="flex items-center gap-3">
+                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-summit-500 font-display text-lg text-white">
+                        {i + 1}
+                      </span>
+                      <span className="text-xs font-bold uppercase tracking-widest text-summit-600">{step.tag}</span>
+                    </div>
+                    <h3 className="mt-3 font-display text-2xl tracking-wide text-trail-900">{step.title}</h3>
+                    <p className="mt-2 text-sm text-trail-600">{step.text}</p>
+                  </div>
                 </li>
               ))}
             </ol>
+
+            <div className="mt-12 flex flex-col items-center gap-3">
+              <Link
+                href="/start"
+                className="w-full max-w-md rounded-2xl bg-summit-500 px-8 py-4 text-center text-lg font-semibold text-white shadow-xl shadow-summit-500/30 transition hover:bg-summit-600 sm:w-auto sm:min-w-[22rem]"
+              >
+                {t.howItWorks.cta}
+              </Link>
+              <p className="text-sm text-trail-500">{t.howItWorks.ctaNote}</p>
+            </div>
           </div>
         </section>
 
