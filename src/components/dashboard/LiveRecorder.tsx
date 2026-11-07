@@ -118,6 +118,7 @@ export default function LiveRecorder() {
   const [gapNotice, setGapNotice] = useState<string | null>(null);
   const [draft, setDraft] = useState<LiveDraft | null>(null);
   const [is3D, setIs3D] = useState(false);
+  const [basemap, setBasemap] = useState<"satellite" | "plan">("satellite");
 
   const watchIdRef = useRef<number | null>(null);
   const tickIdRef = useRef<number | null>(null);
@@ -478,22 +479,36 @@ export default function LiveRecorder() {
       {isRecording && (
         <div className="-mx-6 sm:mx-0">
           <div className="relative h-[46vh] min-h-72 overflow-hidden sm:rounded-3xl">
-            {is3D ? <LiveMap3D points={points} /> : <LiveMap points={points} />}
-            <button
-              type="button"
-              onClick={() => setIs3D((v) => !v)}
-              aria-pressed={is3D}
-              aria-label={is3D ? t("map3d.show2d") : t("map3d.show3d")}
-              className={`absolute left-3 top-3 z-[500] flex h-11 items-center gap-2 rounded-full px-4 text-sm font-bold shadow-lg transition ${
-                is3D ? "bg-summit-500 text-white" : "bg-white text-trail-950 hover:bg-trail-50"
-              }`}
-            >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <path d="M12 3 3 7.5l9 4.5 9-4.5z" />
-                <path d="M3 7.5v9L12 21l9-4.5v-9M12 12v9" />
-              </svg>
-              {is3D ? "2D" : "3D"}
-            </button>
+            {is3D ? <LiveMap3D points={points} basemap={basemap} /> : <LiveMap points={points} basemap={basemap} />}
+            <div className="absolute left-3 top-3 z-[500] flex gap-2">
+              <button
+                type="button"
+                onClick={() => setBasemap((b) => (b === "satellite" ? "plan" : "satellite"))}
+                aria-label={basemap === "satellite" ? t("map.showPlan") : t("map.showSatellite")}
+                className="flex h-11 items-center gap-2 rounded-full bg-white px-4 text-sm font-bold text-trail-950 shadow-lg transition hover:bg-trail-50"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="m12 3 9 5-9 5-9-5z" />
+                  <path d="m3 13 9 5 9-5" />
+                </svg>
+                {basemap === "satellite" ? t("map.plan") : t("map.satellite")}
+              </button>
+              <button
+                type="button"
+                onClick={() => setIs3D((v) => !v)}
+                aria-pressed={is3D}
+                aria-label={is3D ? t("map3d.show2d") : t("map3d.show3d")}
+                className={`flex h-11 items-center gap-2 rounded-full px-4 text-sm font-bold shadow-lg transition ${
+                  is3D ? "bg-summit-500 text-white" : "bg-white text-trail-950 hover:bg-trail-50"
+                }`}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M12 3 3 7.5l9 4.5 9-4.5z" />
+                  <path d="M3 7.5v9L12 21l9-4.5v-9M12 12v9" />
+                </svg>
+                {is3D ? "2D" : "3D"}
+              </button>
+            </div>
           </div>
 
           <div className="relative z-[500] -mt-7 rounded-t-[28px] bg-white px-6 pb-6 pt-3 shadow-[0_-10px_30px_rgba(15,26,12,0.10)] sm:mt-4 sm:rounded-[28px] sm:border sm:border-trail-100">
