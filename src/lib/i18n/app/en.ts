@@ -398,7 +398,7 @@ export const en: Dict = {
   "start.meta": "Get started — RandoRank",
   "start.eyebrow": "No sign-up",
   "start.title": "Lace up. The rest can wait.",
-  "start.subtitle": "Pick a nickname and go: no email, no password, no credit card.",
+  "start.subtitle": "Pick a nickname and go: no email, no password.",
   "start.pseudo.label": "Your nickname",
   "start.pseudo.hint": "Optional. Leave it empty and we'll find you one.",
   "start.submit": "Let's go",

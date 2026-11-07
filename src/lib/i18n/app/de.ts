@@ -399,7 +399,7 @@ export const de: Dict = {
   "start.meta": "Loslegen — RandoRank",
   "start.eyebrow": "Ohne Anmeldung",
   "start.title": "Schnüren Sie die Schuhe. Der Rest kann warten.",
-  "start.subtitle": "Wählen Sie einen Spitznamen und los: keine E-Mail, kein Passwort, keine Kreditkarte.",
+  "start.subtitle": "Wählen Sie einen Spitznamen und los: keine E-Mail, kein Passwort.",
   "start.pseudo.label": "Ihr Spitzname",
   "start.pseudo.hint": "Optional. Lassen Sie es leer, wir finden einen für Sie.",
   "start.submit": "Los geht's",

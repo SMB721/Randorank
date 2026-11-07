@@ -29,7 +29,7 @@ export const en: LandingDict = {
     subtitle:
       "Track your hikes, unlock new badges, climb the leaderboard and share your best outings.",
     cta: "Start the climb",
-    ctaNote: "Free sign-up, no credit card · Email, Google or Facebook",
+    ctaNote: "Free sign-up · Email, Google or Facebook",
     imageAlt: "Hiker on a mountain ridge facing the peaks",
     liveBadge: "{km} km hiked by the community",
     stickyCta: "Start your next hike",
@@ -145,7 +145,7 @@ export const en: LandingDict = {
       {
         question: "Does RandoRank cost money?",
         answer:
-          "Not to get started: hike tracking, rankings, badges and one challenge are free: just create an account, no credit card needed. Premium ({monthly} a month or {yearly} a year, {days}-day free trial with a credit card required, cancel anytime) unlocks unlimited generated routes, every challenge, unlimited photos and the share card without watermark.",
+          "Not to get started: hike tracking, rankings, badges and one challenge are free: just create an account. Premium ({monthly} a month or {yearly} a year, {days}-day free trial with a credit card required, cancel anytime) unlocks unlimited generated routes, every challenge, unlimited photos and the share card without watermark.",
       },
       {
         question: "How does route generation work?",
