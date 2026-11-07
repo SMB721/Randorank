@@ -143,80 +143,97 @@ export default async function LandingPage({ locale }: { locale: Locale }) {
               <p className="mt-3 text-trail-600">{t.howItWorks.subtitle}</p>
             </div>
 
-            <ol className="relative mt-14 grid gap-6 md:grid-cols-3">
+            <ol className="mt-14 grid gap-12 md:grid-cols-3 md:gap-8">
               {t.howItWorks.steps.map((step, i) => (
-                <li key={step.title} className="relative flex flex-col overflow-hidden rounded-3xl border border-trail-200 bg-white shadow-sm">
-                  <div className="relative h-44 bg-trail-950 p-5 text-white">
+                <li key={step.title} className="flex flex-col items-center text-center">
+                  {/* Light phone screen, cut at the bottom like a device peeking out. */}
+                  <div className="relative h-80 w-full max-w-[19rem] overflow-hidden rounded-t-[2.25rem] border-[10px] border-b-0 border-white bg-white shadow-[0_20px_50px_-20px_rgba(15,26,12,0.35)] ring-1 ring-trail-100">
                     {i === 0 && (
-                      <div className="flex h-full items-center gap-4">
-                        <div className="flex-1 space-y-3">
-                          <p className="text-[0.7rem] font-semibold uppercase tracking-widest text-white/50">{t.howItWorks.preview.distance}</p>
-                          <p className="font-display text-5xl leading-none">12 km</p>
-                          <div className="h-1.5 rounded-full bg-white/15">
-                            <div className="h-1.5 w-1/2 rounded-full bg-summit-500" />
-                          </div>
-                          <span className="inline-block rounded-full bg-white/10 px-3 py-1 text-xs font-bold">{t.howItWorks.preview.level}</span>
+                      <div className="flex h-full flex-col">
+                        <div className="flex gap-2 p-3">
+                          <span className="rounded-full border border-summit-500 bg-summit-50 px-3 py-1 text-xs font-bold text-summit-700">12 km</span>
+                          <span className="rounded-full border border-trail-200 px-3 py-1 text-xs font-semibold text-trail-700">{t.howItWorks.preview.level}</span>
                         </div>
-                        <div className="flex w-32 shrink-0 flex-col items-center gap-2">
-                          <div className="relative h-[7.6rem] w-32 overflow-hidden rounded-2xl ring-1 ring-white/15">
-                            <Image
-                              src="/images/landing-loop-relief.jpg"
-                              alt=""
-                              fill
-                              sizes="128px"
-                              className="object-cover"
-                            />
-                            <svg viewBox="0 0 880 840" preserveAspectRatio="xMidYMid slice" className="absolute inset-0 h-full w-full" aria-hidden="true">
-                              <path d={LOOP_TRAIL} fill="none" stroke="#ffffff" strokeWidth="26" strokeLinejoin="round" strokeLinecap="round" />
-                              <path d={LOOP_TRAIL} fill="none" stroke="#fd7310" strokeWidth="15" strokeLinejoin="round" strokeLinecap="round" />
-                              <circle cx="388" cy="624" r="30" fill="#3a7529" stroke="#ffffff" strokeWidth="12" />
-                            </svg>
+                        <div className="relative mx-3 flex-1 overflow-hidden rounded-2xl">
+                          <Image src="/images/landing-loop-relief.jpg" alt="" fill sizes="300px" className="object-cover" />
+                          <svg viewBox="0 0 880 840" preserveAspectRatio="xMidYMid slice" className="absolute inset-0 h-full w-full" aria-hidden="true">
+                            <path d={LOOP_TRAIL} fill="none" stroke="#ffffff" strokeWidth="20" strokeLinejoin="round" strokeLinecap="round" />
+                            <path d={LOOP_TRAIL} fill="none" stroke="#fd7310" strokeWidth="11" strokeLinejoin="round" strokeLinecap="round" />
+                            <circle cx="388" cy="624" r="24" fill="#3a7529" stroke="#ffffff" strokeWidth="10" />
+                          </svg>
+                        </div>
+                        <div className="m-3 flex items-center gap-3 rounded-2xl border border-trail-100 bg-white p-3 text-left shadow-sm">
+                          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-summit-500 text-white">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7" /></svg>
+                          </span>
+                          <div className="min-w-0">
+                            <p className="text-sm font-bold text-trail-950">{t.howItWorks.preview.ready}</p>
+                            <p className="text-xs text-trail-500">12,1 km · 280 m {t.howItWorks.preview.elevation}</p>
                           </div>
-                          <span className="text-xs font-bold text-summit-400">{t.howItWorks.preview.ready}</span>
                         </div>
                       </div>
                     )}
                     {i === 1 && (
-                      <div className="flex h-full flex-col justify-between">
-                        <span className="flex w-fit items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-bold uppercase tracking-widest">
+                      <div className="flex h-full flex-col p-4 text-left">
+                        <span className="flex w-fit items-center gap-2 rounded-full bg-trail-50 px-3 py-1 text-xs font-bold text-trail-800">
                           <span className="h-2 w-2 animate-pulse rounded-full bg-red-500" />
                           {t.howItWorks.preview.recording}
                         </span>
-                        <p className="font-display text-6xl leading-none tabular-nums">1:42:08</p>
-                        <div className="flex gap-6 text-sm font-bold">
-                          <span>8,4 <span className="text-white/50">km</span></span>
-                          <span>412 <span className="text-white/50">m {t.howItWorks.preview.elevation}</span></span>
+                        <p className="mt-3 text-4xl font-extrabold tracking-tight text-trail-950 tabular-nums">1:42:08</p>
+                        <div className="mt-1 flex gap-5 text-sm font-bold text-trail-950">
+                          <span>8,4 <span className="font-semibold text-trail-500">km</span></span>
+                          <span>412 <span className="font-semibold text-trail-500">m {t.howItWorks.preview.elevation}</span></span>
                         </div>
+                        {/* Elevation profile so far. */}
+                        <svg viewBox="0 0 260 130" className="mt-auto w-full" aria-hidden="true">
+                          <defs>
+                            <linearGradient id="howProfile" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="0" stopColor="#fd7310" stopOpacity="0.35" />
+                              <stop offset="1" stopColor="#fd7310" stopOpacity="0.03" />
+                            </linearGradient>
+                          </defs>
+                          {[26, 52, 78, 104].map((y) => (
+                            <line key={y} x1="0" x2="260" y1={y} y2={y} stroke="#e5ebe2" strokeWidth="1" />
+                          ))}
+                          <path d="M0 118 L20 112 L40 104 L60 96 L80 80 L100 72 L120 58 L140 50 L160 34 L175 28 L190 36 L210 52 L230 48 L260 40 L260 130 L0 130 Z" fill="url(#howProfile)" />
+                          <path d="M0 118 L20 112 L40 104 L60 96 L80 80 L100 72 L120 58 L140 50 L160 34 L175 28 L190 36 L210 52 L230 48 L260 40" fill="none" stroke="#fd7310" strokeWidth="3" strokeLinejoin="round" />
+                          <line x1="175" x2="175" y1="0" y2="130" stroke="#fd7310" strokeWidth="1.5" strokeDasharray="3 3" />
+                          <circle cx="175" cy="28" r="6" fill="#fd7310" stroke="#ffffff" strokeWidth="3" />
+                        </svg>
                       </div>
                     )}
                     {i === 2 && (
-                      <div className="flex h-full flex-col justify-center gap-2">
-                        <p className="text-[0.7rem] font-semibold uppercase tracking-widest text-white/50">{t.howItWorks.preview.ranking}</p>
-                        <div className="flex items-center gap-3 rounded-xl bg-white/10 px-3 py-2 text-sm opacity-60">
-                          <span className="w-10 font-display text-lg">#264</span>
-                          <span className="flex-1 font-semibold">Camille R.</span>
-                        </div>
-                        <div className="flex items-center gap-3 rounded-xl bg-summit-500 px-3 py-2.5 text-sm text-trail-950">
-                          <span className="w-10 font-display text-xl">#265</span>
+                      <div className="flex h-full flex-col gap-2 p-4 text-left">
+                        <p className="text-sm font-bold text-trail-950">{t.howItWorks.preview.ranking}</p>
+                        {[
+                          { rank: 262, name: "Léa D.", km: "61,2", tone: "bg-[#c9d3e6]" },
+                          { rank: 263, name: "Hugo M.", km: "60,8", tone: "bg-[#e6d3b3]" },
+                          { rank: 264, name: "Camille R.", km: "59,4", tone: "bg-[#b8d4c2]" },
+                        ].map((row) => (
+                          <div key={row.rank} className="flex items-center gap-3 rounded-xl border border-trail-100 px-3 py-2 text-sm">
+                            <span className="w-9 font-bold text-trail-500">#{row.rank}</span>
+                            <span className={`h-7 w-7 rounded-full ${row.tone}`} />
+                            <span className="flex-1 font-semibold text-trail-900">{row.name}</span>
+                            <span className="text-xs font-semibold text-trail-500">{row.km} km</span>
+                          </div>
+                        ))}
+                        <div className="flex items-center gap-3 rounded-xl bg-summit-500 px-3 py-2.5 text-sm text-white shadow-lg shadow-summit-500/30">
+                          <span className="w-9 font-extrabold">#265</span>
+                          <span className="h-7 w-7 rounded-full bg-white/30" />
                           <span className="flex-1 font-extrabold">{t.howItWorks.preview.you}</span>
-                          <span className="flex items-center gap-1 font-extrabold">
-                            <svg width="12" height="12" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2 L14 12 H2 Z" fill="currentColor" /></svg>
+                          <span className="flex items-center gap-1 text-xs font-extrabold">
+                            <svg width="10" height="10" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2 L14 12 H2 Z" fill="currentColor" /></svg>
                             {t.howItWorks.preview.places.replace("{n}", "47")}
                           </span>
                         </div>
                       </div>
                     )}
                   </div>
-                  <div className="flex flex-1 flex-col p-6">
-                    <div className="flex items-center gap-3">
-                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-summit-500 font-display text-lg text-white">
-                        {i + 1}
-                      </span>
-                      <span className="text-xs font-bold uppercase tracking-widest text-summit-600">{step.tag}</span>
-                    </div>
-                    <h3 className="mt-3 font-display text-2xl tracking-wide text-trail-900">{step.title}</h3>
-                    <p className="mt-2 text-sm text-trail-600">{step.text}</p>
-                  </div>
+                  <span className="mt-6 text-xs font-bold uppercase tracking-widest text-summit-600">
+                    {i + 1} · {step.tag}
+                  </span>
+                  <h3 className="mt-2 text-2xl font-extrabold tracking-tight text-trail-950">{step.title}</h3>
+                  <p className="mt-2 max-w-xs text-trail-600">{step.text}</p>
                 </li>
               ))}
             </ol>
