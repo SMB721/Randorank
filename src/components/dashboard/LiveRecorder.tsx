@@ -5,6 +5,8 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { haversineKm, trackDistanceKm, type TrackPoint } from "@/lib/gpx";
 import { clearDraft, loadDraft, saveDraft, type LiveDraft } from "@/lib/liveDraft";
+import Compass from "./Compass";
+import { useCompass } from "@/hooks/useCompass";
 import { useWakeLock } from "@/hooks/useWakeLock";
 import { useT } from "@/lib/i18n/app/client";
 import { sunsetAt } from "@/lib/sun";
@@ -108,6 +110,7 @@ export default function LiveRecorder() {
   const router = useRouter();
   const { t, locale } = useT();
   const wakeLock = useWakeLock();
+  const compass = useCompass();
 
   const [status, setStatus] = useState<Status>("idle");
   const [points, setPoints] = useState<TrackPoint[]>([]);
@@ -274,6 +277,9 @@ export default function LiveRecorder() {
   }
 
   async function handleStart() {
+    // First, while the tap is fresh: iOS only shows the sensor prompt then.
+    // It runs alongside the GPS prompt and never blocks the recording.
+    void compass.start();
     setError(null);
     setGpsWarning(null);
     setGapNotice(null);
@@ -306,6 +312,7 @@ export default function LiveRecorder() {
   // segment, so the time spent away is a gap, not a teleport.
   async function handleResume() {
     if (!draft) return;
+    void compass.start();
     setError(null);
     setGpsWarning(null);
     setGapNotice(null);
@@ -336,6 +343,7 @@ export default function LiveRecorder() {
   async function finishWith(track: TrackPoint[]) {
     setStatus("finishing");
     stopWatching();
+    compass.stop();
     await wakeLock.release();
 
     if (track.length < 2) {
@@ -394,6 +402,8 @@ export default function LiveRecorder() {
   }
 
   const isRecording = status === "recording" || status === "finishing";
+  // N, NE, E, SE, S, SW, W, NW in the visitor's language (one dictionary entry).
+  const compassPoints = t("live.compass.points").split(",");
   const gainM = useMemo(() => elevationGainM(points), [points]);
   const hasElevation = useMemo(() => points.some((p) => p.ele !== null), [points]);
   const speedKmh = elapsedSeconds > 60 ? distanceKm / (elapsedSeconds / 3600) : 0;
@@ -563,6 +573,34 @@ export default function LiveRecorder() {
                 unit={distanceKm > 0 ? "kcal" : undefined}
               />
             </div>
+
+            {compass.supported &&
+              (compass.heading !== null ? (
+                <div className="mt-5 flex items-center gap-4 rounded-2xl bg-trail-50 px-4 py-3">
+                  <Compass
+                    heading={compass.heading}
+                    points={[compassPoints[0], compassPoints[2], compassPoints[4], compassPoints[6]]}
+                  />
+                  <div>
+                    <p className="font-display text-3xl tracking-wide text-trail-950">
+                      {compassPoints[Math.round(compass.heading / 45) % 8]} · {compass.heading}°
+                    </p>
+                    <p className="mt-1 text-xs uppercase tracking-widest text-trail-500">
+                      {t("live.compass.label")}
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                compass.state !== "granted" && (
+                  <button
+                    type="button"
+                    onClick={() => void compass.start()}
+                    className="mt-5 w-full rounded-2xl bg-trail-50 py-3 text-sm font-semibold text-trail-700 transition hover:bg-trail-100"
+                  >
+                    {t("live.compass.enable")}
+                  </button>
+                )
+              ))}
 
             {sunsetLabel && (
               <p className="mt-5 flex items-center gap-2.5 text-sm text-trail-600">
