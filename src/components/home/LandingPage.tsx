@@ -16,6 +16,11 @@ import { fill } from "@/lib/i18n/funnel";
 import { PREMIUM_PRICE, PREMIUM_TRIAL_DAYS } from "@/lib/pricing";
 import type { CommunityStats, CommunityWeeklyKm } from "@/lib/supabase/types";
 
+// A real-looking hiking loop around a mountain lake, drawn over a
+// shaded-relief tile, for the "how it works" preview.
+const LOOP_TRAIL =
+  "M388.5 624.1 L382.7 627.3 L374.4 626.5 L366.2 625.0 L359.4 627.9 L350.6 629.9 L343.2 629.2 L334.0 634.3 L327.9 636.2 L318.1 635.0 L307.4 638.6 L297.1 641.3 L288.9 637.9 L282.3 636.2 L275.2 634.5 L267.2 629.7 L261.7 623.7 L255.6 620.3 L252.8 613.5 L249.6 607.9 L249.3 600.9 L245.5 594.7 L241.5 587.8 L236.1 586.2 L230.0 582.5 L227.6 576.4 L220.4 572.5 L215.8 570.3 L211.9 561.7 L208.0 559.3 L210.0 552.9 L207.5 547.3 L208.9 540.1 L209.2 535.6 L210.0 528.5 L208.6 523.9 L211.1 518.8 L208.2 513.8 L203.6 508.1 L203.0 506.3 L197.4 501.0 L194.9 496.9 L193.0 489.7 L191.3 486.6 L189.5 480.9 L190.6 473.6 L192.7 470.5 L196.9 462.5 L204.9 460.8 L209.4 456.9 L213.2 450.5 L219.0 447.2 L222.3 441.8 L225.6 440.8 L229.9 435.5 L228.7 428.6 L231.1 424.4 L230.7 417.0 L229.7 414.8 L233.9 409.7 L236.0 403.1 L239.6 400.3 L243.1 395.1 L248.0 392.4 L252.1 388.5 L260.9 382.2 L264.0 380.6 L269.1 375.7 L270.3 369.6 L276.4 365.5 L276.3 355.6 L279.7 348.4 L285.2 342.0 L291.9 337.7 L294.9 331.8 L302.7 327.5 L310.2 323.4 L318.7 323.0 L329.8 323.8 L336.3 325.6 L348.8 327.8 L357.3 327.1 L364.5 329.6 L373.9 332.0 L381.6 334.0 L389.3 335.5 L394.3 336.8 L403.0 339.9 L410.3 339.7 L418.5 343.5 L423.6 345.0 L431.7 349.3 L439.3 352.2 L443.4 358.3 L447.5 362.0 L452.8 371.0 L455.0 373.4 L461.8 376.7 L462.8 379.7 L471.1 384.5 L475.8 385.1 L481.1 385.6 L490.6 385.1 L498.5 384.6 L506.1 383.5 L514.9 385.3 L523.3 389.4 L529.9 390.6 L533.4 393.7 L538.9 398.7 L544.7 401.0 L546.3 407.2 L550.7 413.3 L554.9 416.5 L559.3 420.8 L564.9 424.9 L570.0 426.9 L577.1 431.4 L582.0 437.3 L589.0 442.4 L589.8 444.6 L594.2 450.2 L595.2 456.4 L595.0 461.2 L597.2 468.8 L593.1 472.1 L592.4 480.1 L587.0 484.1 L586.9 490.8 L584.6 497.2 L585.2 499.8 L588.8 504.9 L590.5 510.9 L592.9 517.2 L594.5 526.0 L596.7 530.3 L597.8 536.0 L595.1 542.4 L592.9 547.3 L591.4 551.8 L585.4 560.1 L578.7 560.6 L571.2 564.6 L564.9 570.9 L557.1 571.8 L552.5 575.9 L546.3 581.3 L543.7 585.2 L535.8 591.1 L533.5 594.1 L524.7 596.4 L519.7 600.9 L511.7 604.0 L506.0 605.5 L497.4 601.9 L487.1 601.3 L479.3 602.5 L470.0 598.5 L459.0 599.4 L453.8 597.6 L446.7 598.2 L440.3 597.0 L435.0 599.2 L431.1 604.5 L423.8 605.0 L420.3 611.5 L413.4 614.0 L406.8 616.7 L402.2 622.3 L396.1 622.4 L387.0 626.9";
+
 const heroImage =
   "https://images.unsplash.com/photo-1616494268339-f49a1c4ac8f8?auto=format&fit=crop&w=2000&q=80";
 const forestSpot =
@@ -124,9 +129,10 @@ export default async function LandingPage({ locale }: { locale: Locale }) {
           </div>
         </section>
 
-        {/* Comment ça marche */}
-        <section id="comment" className="bg-trail-50 px-6 py-20">
-          <div className="mx-auto max-w-5xl">
+        {/* Comment ça marche — each step shows a glimpse of the real product
+            (AI loop, live recording, ranking jump) instead of a bare number. */}
+        <section id="comment" className="bg-trail-50 px-6 py-20 sm:py-24">
+          <div className="mx-auto max-w-6xl">
             <div className="mx-auto max-w-2xl text-center">
               <span className="text-xs font-semibold uppercase tracking-[0.2em] text-summit-600">
                 {t.howItWorks.eyebrow}
@@ -134,20 +140,113 @@ export default async function LandingPage({ locale }: { locale: Locale }) {
               <h2 className="mt-3 font-display text-4xl tracking-wide text-trail-900 sm:text-5xl">
                 {t.howItWorks.title}
               </h2>
+              <p className="mt-3 text-trail-600">{t.howItWorks.subtitle}</p>
             </div>
-            <ol className="mt-12 grid gap-4 md:grid-cols-3">
+
+            <ol className="mt-14 grid gap-12 md:grid-cols-3 md:gap-8">
               {t.howItWorks.steps.map((step, i) => (
-                <li key={step.title} className="rounded-2xl border border-trail-200 bg-white p-6">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-summit-500 font-display text-xl text-white">
-                    {i + 1}
+                <li key={step.title} className="flex flex-col items-center text-center">
+                  {/* Light phone screen, cut at the bottom like a device peeking out. */}
+                  <div className="relative h-80 w-full max-w-[19rem] overflow-hidden rounded-t-[2.25rem] border-[10px] border-b-0 border-white bg-white shadow-[0_20px_50px_-20px_rgba(15,26,12,0.35)] ring-1 ring-trail-100">
+                    {i === 0 && (
+                      <div className="flex h-full flex-col">
+                        <div className="flex gap-2 p-3">
+                          <span className="rounded-full border border-summit-500 bg-summit-50 px-3 py-1 text-xs font-bold text-summit-700">12 km</span>
+                          <span className="rounded-full border border-trail-200 px-3 py-1 text-xs font-semibold text-trail-700">{t.howItWorks.preview.level}</span>
+                        </div>
+                        <div className="relative mx-3 flex-1 overflow-hidden rounded-2xl">
+                          <Image src="/images/landing-loop-relief.jpg" alt="" fill sizes="300px" className="object-cover" />
+                          <svg viewBox="0 0 880 840" preserveAspectRatio="xMidYMid slice" className="absolute inset-0 h-full w-full" aria-hidden="true">
+                            <path d={LOOP_TRAIL} fill="none" stroke="#ffffff" strokeWidth="20" strokeLinejoin="round" strokeLinecap="round" />
+                            <path d={LOOP_TRAIL} fill="none" stroke="#fd7310" strokeWidth="11" strokeLinejoin="round" strokeLinecap="round" />
+                            <circle cx="388" cy="624" r="24" fill="#3a7529" stroke="#ffffff" strokeWidth="10" />
+                          </svg>
+                        </div>
+                        <div className="m-3 flex items-center gap-3 rounded-2xl border border-trail-100 bg-white p-3 text-left shadow-sm">
+                          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-summit-500 text-white">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m5 12 5 5L20 7" /></svg>
+                          </span>
+                          <div className="min-w-0">
+                            <p className="text-sm font-bold text-trail-950">{t.howItWorks.preview.ready}</p>
+                            <p className="text-xs text-trail-500">12,1 km · 280 m {t.howItWorks.preview.elevation}</p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    {i === 1 && (
+                      <div className="flex h-full flex-col p-4 text-left">
+                        <span className="flex w-fit items-center gap-2 rounded-full bg-trail-50 px-3 py-1 text-xs font-bold text-trail-800">
+                          <span className="h-2 w-2 animate-pulse rounded-full bg-red-500" />
+                          {t.howItWorks.preview.recording}
+                        </span>
+                        <p className="mt-3 text-4xl font-extrabold tracking-tight text-trail-950 tabular-nums">1:42:08</p>
+                        <div className="mt-1 flex gap-5 text-sm font-bold text-trail-950">
+                          <span>8,4 <span className="font-semibold text-trail-500">km</span></span>
+                          <span>412 <span className="font-semibold text-trail-500">m {t.howItWorks.preview.elevation}</span></span>
+                        </div>
+                        {/* Elevation profile so far. */}
+                        <svg viewBox="0 0 260 130" className="mt-auto w-full" aria-hidden="true">
+                          <defs>
+                            <linearGradient id="howProfile" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="0" stopColor="#fd7310" stopOpacity="0.35" />
+                              <stop offset="1" stopColor="#fd7310" stopOpacity="0.03" />
+                            </linearGradient>
+                          </defs>
+                          {[26, 52, 78, 104].map((y) => (
+                            <line key={y} x1="0" x2="260" y1={y} y2={y} stroke="#e5ebe2" strokeWidth="1" />
+                          ))}
+                          <path d="M0 118 L20 112 L40 104 L60 96 L80 80 L100 72 L120 58 L140 50 L160 34 L175 28 L190 36 L210 52 L230 48 L260 40 L260 130 L0 130 Z" fill="url(#howProfile)" />
+                          <path d="M0 118 L20 112 L40 104 L60 96 L80 80 L100 72 L120 58 L140 50 L160 34 L175 28 L190 36 L210 52 L230 48 L260 40" fill="none" stroke="#fd7310" strokeWidth="3" strokeLinejoin="round" />
+                          <line x1="175" x2="175" y1="0" y2="130" stroke="#fd7310" strokeWidth="1.5" strokeDasharray="3 3" />
+                          <circle cx="175" cy="28" r="6" fill="#fd7310" stroke="#ffffff" strokeWidth="3" />
+                        </svg>
+                      </div>
+                    )}
+                    {i === 2 && (
+                      <div className="flex h-full flex-col gap-2 p-4 text-left">
+                        <p className="text-sm font-bold text-trail-950">{t.howItWorks.preview.ranking}</p>
+                        {[
+                          { rank: 262, name: "Léa D.", km: "61,2", tone: "bg-[#c9d3e6]" },
+                          { rank: 263, name: "Hugo M.", km: "60,8", tone: "bg-[#e6d3b3]" },
+                          { rank: 264, name: "Camille R.", km: "59,4", tone: "bg-[#b8d4c2]" },
+                        ].map((row) => (
+                          <div key={row.rank} className="flex items-center gap-3 rounded-xl border border-trail-100 px-3 py-2 text-sm">
+                            <span className="w-9 font-bold text-trail-500">#{row.rank}</span>
+                            <span className={`h-7 w-7 rounded-full ${row.tone}`} />
+                            <span className="flex-1 font-semibold text-trail-900">{row.name}</span>
+                            <span className="text-xs font-semibold text-trail-500">{row.km} km</span>
+                          </div>
+                        ))}
+                        <div className="flex items-center gap-3 rounded-xl bg-summit-500 px-3 py-2.5 text-sm text-white shadow-lg shadow-summit-500/30">
+                          <span className="w-9 font-extrabold">#265</span>
+                          <span className="h-7 w-7 rounded-full bg-white/30" />
+                          <span className="flex-1 font-extrabold">{t.howItWorks.preview.you}</span>
+                          <span className="flex items-center gap-1 text-xs font-extrabold">
+                            <svg width="10" height="10" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2 L14 12 H2 Z" fill="currentColor" /></svg>
+                            {t.howItWorks.preview.places.replace("{n}", "47")}
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  <span className="mt-6 text-xs font-bold uppercase tracking-widest text-summit-600">
+                    {i + 1} · {step.tag}
                   </span>
-                  <h3 className="mt-4 font-display text-2xl tracking-wide text-trail-900">
-                    {step.title}
-                  </h3>
-                  <p className="mt-2 text-sm text-trail-600">{step.text}</p>
+                  <h3 className="mt-2 text-2xl font-extrabold tracking-tight text-trail-950">{step.title}</h3>
+                  <p className="mt-2 max-w-xs text-trail-600">{step.text}</p>
                 </li>
               ))}
             </ol>
+
+            <div className="mt-12 flex flex-col items-center gap-3">
+              <Link
+                href="/start"
+                className="w-full max-w-md rounded-2xl bg-summit-500 px-8 py-4 text-center text-lg font-semibold text-white shadow-xl shadow-summit-500/30 transition hover:bg-summit-600 sm:w-auto sm:min-w-[22rem]"
+              >
+                {t.howItWorks.cta}
+              </Link>
+              <p className="text-sm text-trail-500">{t.howItWorks.ctaNote}</p>
+            </div>
           </div>
         </section>
 

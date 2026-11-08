@@ -30,7 +30,7 @@ export const fr: LandingDict = {
     subtitle:
       "Suivez vos randos, débloquez de nouveaux badges, grimpez au classement et partagez vos plus belles sorties.",
     cta: "Commencer l'ascension",
-    ctaNote: "Inscription gratuite, sans carte bancaire · E-mail, Google ou Facebook",
+    ctaNote: "Inscription gratuite · E-mail, Google ou Facebook",
     imageAlt: "Randonneur au sommet d'une crête face aux montagnes",
     liveBadge: "{km} km parcourus par la communauté",
     stickyCta: "Démarrez votre nouvelle randonnée",
@@ -115,12 +115,25 @@ export const fr: LandingDict = {
   },
   howItWorks: {
     eyebrow: "Comment ça marche",
-    title: "Trois étapes. Zéro prise de tête.",
+    title: "Du canapé au classement en 3 étapes.",
+    subtitle: "Pas besoin d'être un grand sportif : il suffit de marcher.",
     steps: [
-      { title: "Partez en rando", text: "Choisissez votre sortie, ou laissez RandoRank vous proposer une boucle à votre mesure." },
-      { title: "Grimpez au classement", text: "Chaque kilomètre compte : montez dans le classement de votre pays, version fun." },
-      { title: "Visez plus haut", text: "Générez un tracé sur mesure pour de nouveaux défis, décrochez des badges et partagez vos exploits." },
+      { tag: "30 secondes", title: "Dites combien de km", text: "Choisissez une distance et votre niveau : RandoRank trace une boucle au départ de chez vous." },
+      { tag: "Pendant la rando", title: "Marchez, on s'occupe du reste", text: "Lancez l'enregistrement : distance, dénivelé et chrono se mettent à jour en direct." },
+      { tag: "À l'arrivée", title: "Grimpez au classement", text: "Chaque kilomètre vous fait monter dans le classement de votre région et du pays, et débloque des badges." },
     ],
+    preview: {
+      distance: "Distance",
+      level: "Amateur",
+      ready: "Boucle prête",
+      recording: "En direct",
+      elevation: "D+",
+      ranking: "Classement",
+      you: "Vous",
+      places: "+{n} places",
+    },
+    cta: "Commencer l'ascension",
+    ctaNote: "Votre première boucle en 30 secondes",
   },
   badges: {
     eyebrow: "Badges",
@@ -146,7 +159,7 @@ export const fr: LandingDict = {
       {
         question: "RandoRank est-il payant ?",
         answer:
-          "Pas pour commencer : le suivi de vos sorties, les classements, les badges et un défi sont gratuits, avec un simple compte et sans carte bancaire. Premium ({monthly} par mois ou {yearly} par an, {days} jours d'essai offerts avec carte bancaire requise, résiliable à tout moment) débloque les tracés illimités, tous les défis, les photos illimitées et la fiche de partage sans filigrane.",
+          "Pas pour commencer : le suivi de vos sorties, les classements, les badges et un défi sont gratuits avec un simple compte. Premium ({monthly} par mois ou {yearly} par an, {days} jours d'essai offerts avec carte bancaire requise, résiliable à tout moment) débloque les tracés illimités, tous les défis, les photos illimitées et la fiche de partage sans filigrane.",
       },
       {
         question: "Comment fonctionne la génération d'itinéraire ?",

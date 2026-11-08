@@ -5,17 +5,13 @@ import { MapContainer, TileLayer, Polyline, CircleMarker } from "react-leaflet";
 import type { LatLngBoundsLiteral, LatLngExpression } from "leaflet";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { blurEndpoints } from "@/lib/geoPrivacy";
-
-const TILE_URLS = {
-  light:
-    "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}",
-  dark: "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
-};
+import { MAP_TILES, SATELLITE_LABELS_URL, SATELLITE_TILES, type Basemap } from "@/lib/mapTiles";
 
 export default function HikeMap({
   coordinates,
   blurred = false,
   others = [],
+  basemap = "satellite",
 }: {
   // GeoJSON order: [lon, lat] — Leaflet wants [lat, lon].
   coordinates: [number, number][];
@@ -25,8 +21,10 @@ export default function HikeMap({
   // Other proposals (route comparison): drawn faded under the main track and
   // included in the bounds, so switching the highlighted one never re-zooms.
   others?: [number, number][][];
+  basemap?: Basemap;
 }) {
   const scheme = useColorScheme();
+  const tiles = basemap === "satellite" ? SATELLITE_TILES : MAP_TILES[scheme];
   const displayCoordinates = blurred ? blurEndpoints(coordinates) : coordinates;
   const positions: LatLngExpression[] = displayCoordinates.map(([lon, lat]) => [lat, lon]);
   const start = positions[0];
@@ -51,11 +49,14 @@ export default function HikeMap({
       className="h-full w-full"
     >
       <TileLayer
-        key={scheme}
-        attribution="Esri, HERE, Garmin, &copy; OpenStreetMap contributors, and the GIS User Community"
-        url={TILE_URLS[scheme]}
-        maxZoom={16}
+        key={`${basemap}-${scheme}`}
+        attribution={tiles.attribution}
+        url={tiles.url}
+        maxZoom={tiles.maxZoom}
+        tileSize={tiles.tileSize}
+        zoomOffset={tiles.zoomOffset}
       />
+      {basemap === "satellite" && <TileLayer key="labels" url={SATELLITE_LABELS_URL} maxZoom={18} />}
       {others.map((other, i) => (
         <Polyline
           key={i}
@@ -63,7 +64,8 @@ export default function HikeMap({
           pathOptions={{ color: "#8a9a85", weight: 4, opacity: 0.7, dashArray: "6 8" }}
         />
       ))}
-      <Polyline positions={positions} pathOptions={{ color: "#fd7310", weight: 5, opacity: 0.95 }} />
+      <Polyline positions={positions} pathOptions={{ color: "#ffffff", weight: 9, opacity: 0.9 }} />
+      <Polyline positions={positions} pathOptions={{ color: "#fd7310", weight: 5, opacity: 1 }} />
       <CircleMarker
         center={start}
         radius={6}

@@ -82,3 +82,50 @@ export async function importGpxAction(formData: FormData): Promise<ImportGpxResu
     warning: stats.isValid ? null : formatValidationNotes(stats.validationNotes, tr),
   };
 }
+
+export type DeleteHikeResult = { success: true } | { success: false; error: string };
+
+export async function deleteHikeAction(hikeId: string): Promise<DeleteHikeResult> {
+  const { t } = await getT();
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    return { success: false, error: t("action.notLoggedIn") };
+  }
+
+  const { data: hike } = await supabase
+    .from("hikes")
+    .select("id, user_id")
+    .eq("id", hikeId)
+    .single<{ id: string; user_id: string }>();
+
+  if (!hike || hike.user_id !== user.id) {
+    return { success: false, error: t("hike.delete.notFound") };
+  }
+
+  // Photo rows go with the hike (on delete cascade), but the files in
+  // Storage don't: remove them first so nothing is left orphaned.
+  const { data: photos } = await supabase
+    .from("photos")
+    .select("storage_path")
+    .eq("hike_id", hikeId)
+    .returns<{ storage_path: string }[]>();
+  const paths = (photos ?? []).map((p) => p.storage_path);
+  if (paths.length > 0) {
+    await supabase.storage.from("photos").remove(paths);
+  }
+
+  // RLS only lets the owner delete; the on_hike_change trigger then
+  // recalculates their totals and level, and rankings/challenges are read
+  // live from the remaining hikes.
+  const { error } = await supabase.from("hikes").delete().eq("id", hikeId);
+  if (error) {
+    return { success: false, error: t("hike.delete.error") };
+  }
+
+  revalidatePath("/dashboard/randos");
+  revalidatePath("/dashboard");
+  return { success: true };
+}

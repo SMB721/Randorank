@@ -5,12 +5,7 @@ import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Polyline, CircleMarker, useMap } from "react-leaflet";
 import type { LatLngExpression } from "leaflet";
 import { useColorScheme } from "@/hooks/useColorScheme";
-
-const TILE_URLS = {
-  light:
-    "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}",
-  dark: "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
-};
+import { MAP_TILES, SATELLITE_LABELS_URL, SATELLITE_TILES, type Basemap } from "@/lib/mapTiles";
 
 function RecenterOnUpdate({ position }: { position: LatLngExpression | null }) {
   const map = useMap();
@@ -22,9 +17,17 @@ function RecenterOnUpdate({ position }: { position: LatLngExpression | null }) {
   return null;
 }
 
-export default function LiveMap({ points }: { points: { lat: number; lon: number }[] }) {
+export default function LiveMap({
+  points,
+  basemap = "satellite",
+}: {
+  points: { lat: number; lon: number }[];
+  basemap?: Basemap;
+}) {
   const scheme = useColorScheme();
+  const tiles = basemap === "satellite" ? SATELLITE_TILES : MAP_TILES[scheme];
   const positions: LatLngExpression[] = points.map((p) => [p.lat, p.lon]);
+  const start = positions.length > 0 ? positions[0] : null;
   const current = positions.length > 0 ? positions[positions.length - 1] : null;
 
   return (
@@ -32,23 +35,46 @@ export default function LiveMap({ points }: { points: { lat: number; lon: number
       center={current ?? [46.5, 2.5]}
       zoom={current ? 15 : 5}
       scrollWheelZoom={false}
+      zoomControl={false}
       className="h-full w-full"
     >
       <TileLayer
-        key={scheme}
-        attribution="Esri, HERE, Garmin, &copy; OpenStreetMap contributors, and the GIS User Community"
-        url={TILE_URLS[scheme]}
-        maxZoom={16}
+        key={`${basemap}-${scheme}`}
+        attribution={tiles.attribution}
+        url={tiles.url}
+        maxZoom={tiles.maxZoom}
+        tileSize={tiles.tileSize}
+        zoomOffset={tiles.zoomOffset}
       />
+      {basemap === "satellite" && <TileLayer key="labels" url={SATELLITE_LABELS_URL} maxZoom={18} />}
       {positions.length > 1 && (
-        <Polyline positions={positions} pathOptions={{ color: "#fd7310", weight: 5, opacity: 0.95 }} />
+        <>
+          {/* White casing under the orange line keeps the track readable on any terrain. */}
+          <Polyline positions={positions} pathOptions={{ color: "#ffffff", weight: 11, opacity: 0.95 }} />
+          <Polyline positions={positions} pathOptions={{ color: "#fd7310", weight: 6, opacity: 1 }} />
+        </>
+      )}
+      {start && positions.length > 1 && (
+        <CircleMarker
+          center={start}
+          radius={6}
+          pathOptions={{ color: "#ffffff", weight: 3, fillColor: "#3a7529", fillOpacity: 1 }}
+        />
       )}
       {current && (
-        <CircleMarker
-          center={current}
-          radius={7}
-          pathOptions={{ color: "#0f1a0c", weight: 2, fillColor: "#4c9436", fillOpacity: 1 }}
-        />
+        <>
+          {/* Soft halo + solid dot: the usual "you are here" marker. */}
+          <CircleMarker
+            center={current}
+            radius={16}
+            pathOptions={{ stroke: false, fillColor: "#fd7310", fillOpacity: 0.2 }}
+          />
+          <CircleMarker
+            center={current}
+            radius={8}
+            pathOptions={{ color: "#ffffff", weight: 3, fillColor: "#fd7310", fillOpacity: 1 }}
+          />
+        </>
       )}
       <RecenterOnUpdate position={current} />
     </MapContainer>

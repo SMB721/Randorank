@@ -29,7 +29,7 @@ export const es: LandingDict = {
     subtitle:
       "Registre sus rutas, desbloquee nuevas insignias, escale en la clasificación y comparta sus mejores salidas.",
     cta: "Comenzar el ascenso",
-    ctaNote: "Registro gratuito, sin tarjeta · Correo, Google o Facebook",
+    ctaNote: "Registro gratuito · Correo, Google o Facebook",
     imageAlt: "Senderista en una cresta frente a las montañas",
     liveBadge: "{km} km recorridos por la comunidad",
     stickyCta: "Empiece su nueva ruta",
@@ -114,12 +114,25 @@ export const es: LandingDict = {
   },
   howItWorks: {
     eyebrow: "Cómo funciona",
-    title: "Tres pasos. Cero complicaciones.",
+    title: "Del sofá a la clasificación en 3 pasos.",
+    subtitle: "No hace falta ser un gran deportista: basta con caminar.",
     steps: [
-      { title: "Salga a caminar", text: "Elija su ruta o deje que RandoRank le proponga un circuito a su medida." },
-      { title: "Suba en la clasificación", text: "Cada kilómetro cuenta: suba en la clasificación de su país, en plan divertido." },
-      { title: "Apunte más alto", text: "Genere un recorrido a medida para nuevos retos, consiga insignias y comparta sus hazañas." },
+      { tag: "30 segundos", title: "Diga cuántos km", text: "Elija una distancia y su nivel: RandoRank traza un circuito desde su puerta." },
+      { tag: "Durante la ruta", title: "Camine, nosotros hacemos el resto", text: "Inicie la grabación: distancia, desnivel y tiempo se actualizan en directo." },
+      { tag: "Al llegar", title: "Suba en la clasificación", text: "Cada kilómetro le hace subir en la clasificación de su región y de su país, y desbloquea insignias." },
     ],
+    preview: {
+      distance: "Distancia",
+      level: "Aficionado",
+      ready: "Circuito listo",
+      recording: "En directo",
+      elevation: "D+",
+      ranking: "Clasificación",
+      you: "Usted",
+      places: "+{n} puestos",
+    },
+    cta: "Empezar el ascenso",
+    ctaNote: "Su primer circuito en 30 segundos",
   },
   badges: {
     eyebrow: "Insignias",
@@ -145,7 +158,7 @@ export const es: LandingDict = {
       {
         question: "¿RandoRank es de pago?",
         answer:
-          "No para empezar: el seguimiento de salidas, las clasificaciones, las insignias y un reto son gratuitos: basta crear una cuenta, sin tarjeta. Premium ({monthly} al mes o {yearly} al año, prueba gratuita de {days} días con tarjeta, cancelable en cualquier momento) desbloquea rutas ilimitadas, todos los retos, fotos ilimitadas y la ficha para compartir sin marca de agua.",
+          "No para empezar: el seguimiento de salidas, las clasificaciones, las insignias y un reto son gratuitos: basta crear una cuenta. Premium ({monthly} al mes o {yearly} al año, prueba gratuita de {days} días con tarjeta, cancelable en cualquier momento) desbloquea rutas ilimitadas, todos los retos, fotos ilimitadas y la ficha para compartir sin marca de agua.",
       },
       {
         question: "¿Cómo funciona la generación de itinerarios?",

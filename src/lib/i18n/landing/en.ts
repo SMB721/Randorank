@@ -29,7 +29,7 @@ export const en: LandingDict = {
     subtitle:
       "Track your hikes, unlock new badges, climb the leaderboard and share your best outings.",
     cta: "Start the climb",
-    ctaNote: "Free sign-up, no credit card · Email, Google or Facebook",
+    ctaNote: "Free sign-up · Email, Google or Facebook",
     imageAlt: "Hiker on a mountain ridge facing the peaks",
     liveBadge: "{km} km hiked by the community",
     stickyCta: "Start your next hike",
@@ -114,12 +114,25 @@ export const en: LandingDict = {
   },
   howItWorks: {
     eyebrow: "How it works",
-    title: "Three steps. Zero hassle.",
+    title: "From the sofa to the leaderboard in 3 steps.",
+    subtitle: "No need to be an athlete: all it takes is walking.",
     steps: [
-      { title: "Hit the trail", text: "Pick your outing, or let RandoRank suggest a loop made for you." },
-      { title: "Climb the leaderboard", text: "Every kilometre counts: move up your country's leaderboard, the fun way." },
-      { title: "Aim higher", text: "Generate a custom route for new challenges, earn badges and share your feats." },
+      { tag: "30 seconds", title: "Say how many km", text: "Pick a distance and your level: RandoRank draws a loop starting from your door." },
+      { tag: "During the hike", title: "Walk, we handle the rest", text: "Start recording: distance, elevation and time update live." },
+      { tag: "At the finish", title: "Climb the leaderboard", text: "Every kilometre moves you up your region's and country's ranking, and unlocks badges." },
     ],
+    preview: {
+      distance: "Distance",
+      level: "Amateur",
+      ready: "Loop ready",
+      recording: "Live",
+      elevation: "Gain",
+      ranking: "Ranking",
+      you: "You",
+      places: "+{n} places",
+    },
+    cta: "Start the climb",
+    ctaNote: "Your first loop in 30 seconds",
   },
   badges: {
     eyebrow: "Badges",
@@ -145,7 +158,7 @@ export const en: LandingDict = {
       {
         question: "Does RandoRank cost money?",
         answer:
-          "Not to get started: hike tracking, rankings, badges and one challenge are free: just create an account, no credit card needed. Premium ({monthly} a month or {yearly} a year, {days}-day free trial with a credit card required, cancel anytime) unlocks unlimited generated routes, every challenge, unlimited photos and the share card without watermark.",
+          "Not to get started: hike tracking, rankings, badges and one challenge are free: just create an account. Premium ({monthly} a month or {yearly} a year, {days}-day free trial with a credit card required, cancel anytime) unlocks unlimited generated routes, every challenge, unlimited photos and the share card without watermark.",
       },
       {
         question: "How does route generation work?",

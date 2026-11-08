@@ -29,7 +29,7 @@ export const de: LandingDict = {
     subtitle:
       "Zeichnen Sie Ihre Wanderungen auf, schalten Sie neue Badges frei, klettern Sie in der Rangliste und teilen Sie Ihre schönsten Touren.",
     cta: "Den Aufstieg beginnen",
-    ctaNote: "Kostenlose Anmeldung, ohne Kreditkarte · E-Mail, Google oder Facebook",
+    ctaNote: "Kostenlose Anmeldung · E-Mail, Google oder Facebook",
     imageAlt: "Wanderer auf einem Grat vor Bergkulisse",
     liveBadge: "{km} km von der Community gewandert",
     stickyCta: "Starten Sie Ihre nächste Wanderung",
@@ -114,12 +114,25 @@ export const de: LandingDict = {
   },
   howItWorks: {
     eyebrow: "So funktioniert's",
-    title: "Drei Schritte. Null Aufwand.",
+    title: "Vom Sofa in die Rangliste in 3 Schritten.",
+    subtitle: "Sie müssen kein Profisportler sein: Gehen genügt.",
     steps: [
-      { title: "Ab auf den Weg", text: "Wählen Sie Ihre Tour oder lassen Sie sich von RandoRank eine passende Runde vorschlagen." },
-      { title: "In der Rangliste aufsteigen", text: "Jeder Kilometer zählt: Steigen Sie in der Rangliste Ihres Landes auf, mit Spaß." },
-      { title: "Höher hinaus", text: "Erstellen Sie eine Strecke nach Maß für neue Challenges, sammeln Sie Abzeichen und teilen Sie Ihre Erfolge." },
+      { tag: "30 Sekunden", title: "Sagen Sie, wie viele km", text: "Wählen Sie Distanz und Level: RandoRank zeichnet eine Runde ab Ihrer Haustür." },
+      { tag: "Unterwegs", title: "Gehen Sie, wir erledigen den Rest", text: "Starten Sie die Aufzeichnung: Distanz, Höhenmeter und Zeit werden live aktualisiert." },
+      { tag: "Am Ziel", title: "Klettern Sie in der Rangliste", text: "Jeder Kilometer bringt Sie in der Rangliste Ihrer Region und Ihres Landes nach oben und schaltet Abzeichen frei." },
     ],
+    preview: {
+      distance: "Distanz",
+      level: "Amateur",
+      ready: "Runde bereit",
+      recording: "Live",
+      elevation: "Hm",
+      ranking: "Rangliste",
+      you: "Sie",
+      places: "+{n} Plätze",
+    },
+    cta: "Aufstieg starten",
+    ctaNote: "Ihre erste Runde in 30 Sekunden",
   },
   badges: {
     eyebrow: "Abzeichen",
@@ -145,7 +158,7 @@ export const de: LandingDict = {
       {
         question: "Kostet RandoRank etwas?",
         answer:
-          "Nicht zum Einstieg: Wanderungs-Tracking, Ranglisten, Abzeichen und eine Challenge sind gratis: einfach ein Konto anlegen, ohne Kreditkarte. Premium ({monthly} pro Monat oder {yearly} pro Jahr, {days} Tage kostenlos testen mit Kreditkarte, jederzeit kündbar) schaltet unbegrenzt Routen, alle Challenges, unbegrenzt Fotos und die Teilen-Karte ohne Wasserzeichen frei.",
+          "Nicht zum Einstieg: Wanderungs-Tracking, Ranglisten, Abzeichen und eine Challenge sind gratis: einfach ein Konto anlegen. Premium ({monthly} pro Monat oder {yearly} pro Jahr, {days} Tage kostenlos testen mit Kreditkarte, jederzeit kündbar) schaltet unbegrenzt Routen, alle Challenges, unbegrenzt Fotos und die Teilen-Karte ohne Wasserzeichen frei.",
       },
       {
         question: "Wie funktioniert die Routenerstellung?",
