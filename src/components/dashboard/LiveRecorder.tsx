@@ -5,6 +5,8 @@ import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { haversineKm, trackDistanceKm, type TrackPoint } from "@/lib/gpx";
 import { clearDraft, loadDraft, saveDraft, type LiveDraft } from "@/lib/liveDraft";
+import Compass from "./Compass";
+import { useCompass } from "@/hooks/useCompass";
 import { useWakeLock } from "@/hooks/useWakeLock";
 import { formatDuration } from "@/lib/format";
 import { useT } from "@/lib/i18n/app/client";
@@ -47,6 +49,7 @@ export default function LiveRecorder() {
   const router = useRouter();
   const { t, locale } = useT();
   const wakeLock = useWakeLock();
+  const compass = useCompass();
 
   const [status, setStatus] = useState<Status>("idle");
   const [points, setPoints] = useState<TrackPoint[]>([]);
@@ -211,6 +214,9 @@ export default function LiveRecorder() {
   }
 
   async function handleStart() {
+    // First, while the tap is fresh: iOS only shows the sensor prompt then.
+    // It runs alongside the GPS prompt and never blocks the recording.
+    void compass.start();
     setError(null);
     setGpsWarning(null);
     setGapNotice(null);
@@ -243,6 +249,7 @@ export default function LiveRecorder() {
   // segment, so the time spent away is a gap, not a teleport.
   async function handleResume() {
     if (!draft) return;
+    void compass.start();
     setError(null);
     setGpsWarning(null);
     setGapNotice(null);
@@ -273,6 +280,7 @@ export default function LiveRecorder() {
   async function finishWith(track: TrackPoint[]) {
     setStatus("finishing");
     stopWatching();
+    compass.stop();
     await wakeLock.release();
 
     if (track.length < 2) {
@@ -331,6 +339,8 @@ export default function LiveRecorder() {
   }
 
   const isRecording = status === "recording" || status === "finishing";
+  // N, NE, E, SE, S, SW, W, NW in the visitor's language (one dictionary entry).
+  const compassPoints = t("live.compass.points").split(",");
 
   return (
     <div className="space-y-4">
@@ -431,6 +441,34 @@ export default function LiveRecorder() {
               {t("live.noWakeLock")}
             </p>
           )}
+
+          {compass.supported &&
+            (compass.heading !== null ? (
+              <div className="flex items-center gap-4 rounded-xl border border-trail-200 bg-white p-4">
+                <Compass
+                  heading={compass.heading}
+                  points={[compassPoints[0], compassPoints[2], compassPoints[4], compassPoints[6]]}
+                />
+                <div>
+                  <p className="font-display text-3xl tracking-wide text-trail-900">
+                    {compassPoints[Math.round(compass.heading / 45) % 8]} · {compass.heading}°
+                  </p>
+                  <p className="mt-1 text-xs uppercase tracking-widest text-trail-500">
+                    {t("live.compass.label")}
+                  </p>
+                </div>
+              </div>
+            ) : (
+              compass.state !== "granted" && (
+                <button
+                  type="button"
+                  onClick={() => void compass.start()}
+                  className="w-full rounded-xl border border-trail-200 bg-white py-3 text-sm font-semibold text-trail-700 transition hover:bg-trail-50"
+                >
+                  {t("live.compass.enable")}
+                </button>
+              )
+            ))}
 
           <div className="h-72 overflow-hidden rounded-2xl border border-trail-200">
             <LiveMap points={points} />
