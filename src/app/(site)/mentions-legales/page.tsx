@@ -52,8 +52,8 @@ export default function MentionsLegalesPage() {
           Le site RandoRank est édité par [Raison sociale à compléter], [forme juridique
           à compléter — ex. société par actions simplifiée, entreprise individuelle], au
           capital de [montant à compléter le cas échéant], immatriculée au Registre du
-          Commerce et des Sociétés de [ville à compléter] sous le numéro SIREN/SIRET
-          [à compléter], dont le siège social est situé [adresse à compléter].
+          Commerce et des Sociétés de [ville à compléter] sous le numéro SIRET
+          131 628 588 00017, dont le siège social est situé [adresse à compléter].
         </p>
         <p className="text-trail-700">
           Numéro de TVA intracommunautaire : [à compléter, le cas échéant].
