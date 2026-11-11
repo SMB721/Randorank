@@ -18,6 +18,7 @@ import {
 } from "@/lib/supabase/types";
 import { getT } from "@/lib/i18n/app/server";
 import { countryName } from "@/lib/countries";
+import SuggestionBag from "@/components/dashboard/SuggestionBag";
 import { levelKey } from "@/lib/i18n/app/labels";
 import type { DictKey } from "@/lib/i18n/app";
 
@@ -293,6 +294,7 @@ export default async function DashboardPage() {
         <SpotCarousel spots={shuffledSpots} />
       </div>
     </main>
+    <SuggestionBag />
     </div>
   );
 }
