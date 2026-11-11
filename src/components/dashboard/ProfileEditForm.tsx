@@ -7,6 +7,7 @@ import { computeAge } from "@/lib/birthday";
 import { COUNTRY_CODES, countryName } from "@/lib/countries";
 import type { Profile } from "@/lib/supabase/types";
 import { useT } from "@/lib/i18n/app/client";
+import { nicknameRequired } from "@/lib/nickname";
 
 function isoDateYearsAgo(years: number): string {
   const d = new Date();
@@ -65,6 +66,8 @@ export default function ProfileEditForm({ profile }: { profile: Profile }) {
         <input
           id="username"
           type="text"
+          required={Boolean(profile.username) || nicknameRequired(profile.created_at)}
+          minLength={2}
           maxLength={30}
           value={username}
           onChange={(e) => setUsername(e.target.value)}
